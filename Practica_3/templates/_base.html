@@ -1,0 +1,53 @@
+<html>
+ <head>
+   <title>
+      {% block title %}Sitio Creado con Google App Engine{% endblock %}
+   </title>
+   <link rel="stylesheet" type="text/css" href="/static/estilo.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.css" rel="stylesheet">
+    <!-- All the files that are required -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+
+
+
+    <!-- Custom styles for this template -->
+    <link href="/static/bootsnip.css" rel="stylesheet">
+
+ </head>
+
+ <body>
+ <div class="container">
+
+   <div id="header">
+      <h1><a href="#">Sitio Creado con Google App Engine</a></h1>
+
+	  {% block navigation %}
+			{% set navigation_bar = [
+				('/', 'index', 'Index'),
+				('/sitios', 'sitios', 'Sitios'),
+				('/topicos', 'topicos', 'Topicos'),
+        ('/registro', 'registro', 'Registro')
+				] -%}
+			{% set active_page = active_page|default('index') -%}
+			<ul id="navigation">
+				{%for href, id, caption in navigation_bar%}
+					<li{% if id == active_page %} class="active"{% endif %}>
+					<a href="{{href|e}}">{{caption|e}}</a></li>
+				{%endfor%}
+			</ul>
+	  {% endblock %}
+
+   </div>
+
+   <div id="bodycontent">
+      {% block bodycontent %}
+           Replace this
+      {% endblock %}
+   </div>
+
+  </div>
+ </body>
+</html>

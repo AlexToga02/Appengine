@@ -1,0 +1,114 @@
+{% extends "_base.html" %}
+
+{% set active_page = "juego" %}
+
+{% block title %}
+   Juego
+{% endblock %}
+{% block navigation %}
+	{% if user.user %}
+  {% set navigation_bar = [
+    ('/', 'index', 'Home'),
+    ('/sitios', 'sitios', 'Sitios'),
+    ('/juego', 'juego', 'Juego'),
+    ] -%}
+
+
+	<nav id="navigation" class="navbar navbar-inverse ">
+			<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						</button>
+						</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+									<ul class="nav navbar-nav">
+												{%for href, id, caption in navigation_bar%}
+													<li{% if id == active_page %} class="active"{% endif %}>
+													<a href="{{href|e}}">{{caption|e}}</a>
+												</li>
+												{%endfor%}
+									</ul>
+
+									<ul class="nav navbar-nav navbar-right">
+											 <li class="dropdown">
+												 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{user.user}} <span class="caret"></span></a>
+												 <ul class="dropdown-menu">
+													 <li><a href="/perfil">Perfil&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+													 <li><a href="/logout">Logout  <span class="glyphicon glyphicon-log-out" aria-hidden="true"> </span></a></li>
+
+												 </ul>
+											 </li>
+								 </ul>
+						</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+	</nav>
+	{% else %}
+		{{ super() }}
+
+	{% endif %}
+{% endblock %}
+
+{% block bodycontent %}
+<h1 class="text-center">Tiempo de jugar al Ahorcado, {{user.user}}!!</h1>
+<h2>Turnos: {{turns}}</h2>
+
+<form action="/juego" method="post" class="text-center">
+<h3>La Categoría es Animales (en Inglés)</h3>
+
+  {%for letter in letters%}
+
+        {% if letter in desac %}
+         <button name="letra" class="btn btn-default" value="{{letter}}" disabled>{{letter}}</button>
+        {% else %}
+         <button name="letra" class="btn btn-default" value="{{letter}}">{{letter}}</button>
+        {% endif %}
+
+
+  {%endfor%}
+  <div id="listas">
+
+  </div>
+</form>
+{%if msg %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong> {{msg}}</strong>
+</div>
+{%endif%}
+
+
+missed: {{missed}}<p>
+
+<div id="hangmanImagen">
+{%if img%}
+<img src="{{img}}" alt="imagen">
+{%endif%}
+
+
+</div>
+  <!-- {{secret}}</p> -->
+  <hr>
+  <hr>
+
+  <div class="form-group text-center">
+      {%for letra in animal%}
+       <label for="" class="letrasSalida">{{letra}}</label>
+    {%endfor%}
+  </div>
+<hr>
+<hr>
+  <!-- {{animal}} -->
+<!-- <hr>
+<p>{{letra}}</p>
+<hr>
+<p>{{guesses}}</p> -->
+
+
+{% endblock %}

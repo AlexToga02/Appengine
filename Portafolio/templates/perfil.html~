@@ -1,0 +1,56 @@
+{% extends "_base.html" %}
+   
+{% block cuerpo %}
+
+ <div  class="container">
+<!--Empieza el container -->
+ <p>
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title"><img alt="User Pic" src="img/profile-icon.png" class="img-responsive" align="left" width="3%"> &nbsp;&nbsp;Perfil</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="img/avatar.jpg" class="img-responsive"> </div>
+                <div class=" col-md-9 col-lg-9 ">
+                  <table class="table table-user-information">
+                    <tbody>
+                    <tr>
+                        <td>Nombre Completo:</td>
+                        <td>Alejandro Pérez Toga</td>
+                      </tr>
+		    <tr>
+                        <td>Fecha de Nacimiento:</td>
+                        <td>02/octubre/1993</td>
+                      </tr>
+		    <tr>
+                        <td>Ocupación:</td>
+                        <td>Estudiante</td>
+                      </tr>
+		     <tr>
+                        <td>Lugar de Nacimiento:</td>
+                        <td>Manzanillo,Col</td>
+                      </tr>
+		     <tr>
+                        <td>Matricula:</td>
+                        <td>11460294</td>
+                      </tr>
+		     <tr>
+                        <td>Semestre:</td>
+                        <td>9no</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+
+          </div>
+        </div>
+      </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Guessing Number Game</title>
+    <link rel="stylesheet" type="text/css"
+    href="css/bootstrap.min.css" />
+    <link rel="stylesheet"  type="text/css" href="css/estilos.css" />
+  </head>
+  <body>
+
+    <div class="container">
+        <div class="jumbotron">
+          <h1>Guessing Number Game</h1>
+          <form action="/juego" method="post">
+
+            <label for="mensaje">Escoje un numero ._  .</label> <br>
+            <input type="text" name="numero" value="">
+            <input type="submit" value="Play">
+
+          </form>
+          <div class="game_messages">
+            {% if mensaje %}
+            <p id="game_messages_content">{{mensaje}}</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+    </div>
+
+  </body>
+</html>
