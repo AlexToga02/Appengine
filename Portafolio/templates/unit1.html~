@@ -41,11 +41,24 @@
        <div class="col-md-5">
        <h2 class="text-center"> Reporte de la Práctica No.1  </h2>
        <div data-configid="19300600/30494062" style="width:650px; height:420px;" class="issuuembed"></div>
-       </div>
-      
+       </div>      
        <div class="col-md-4">
+		
        </div>
+	
+
      </div>
+	<div class="row">
+	<p>
+	<div class="col-md-1">
+	</div>
+	 <div class="col-md-8">
+	<a href="https://github.com/AlexToga02/Appengine/tree/master/Practica1" target="_blank">Código Aquí </a>	
+       </div>
+	</div>
+
+		
+
 
       <div class="row">
 	 <div class="col-md-3">
@@ -86,16 +99,7 @@
 		       </div>
 
 		     </div><!--/row -->
-		   <div class="row">
-		       <div class="col-md-2">
-		      </div>
-		       <div class="col-md-10">
-			 <h2 class="text-left">How to explain REST to my wife..</h2>
-          		<div data-configid="19300600/30495160" style="width:700px; height:498px;" class="issuuembed"></div>
-
-		       </div>
-
-		     </div><!--/row -->
+		  
 		 <div class="row">
 		       <div class="col-md-2">
 		      </div>
