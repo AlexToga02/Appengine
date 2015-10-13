@@ -17,3 +17,5 @@ console.developers.google.com
 $ cd AppengineProjects/
 $ appcfg.py -A id update Practica_3/
 
+https://id.appspot.com
+

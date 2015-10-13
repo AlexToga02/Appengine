@@ -15,7 +15,7 @@ console.developers.google.com
 		id: (Será el que sustituya el app.yam donde dice application:id)
 
 $ cd AppengineProjects/
-$ appcfg.py -A id update Practica_3/
+$ appcfg.py -A portafolio-atoga update Portafolio/
 
 https://id.appspot.com
 
