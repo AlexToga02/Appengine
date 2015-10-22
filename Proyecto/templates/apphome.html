@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+
+{% set active_page = "t" %}
+
+{% block title %}
+   Topicos
+{% endblock %}
+
+{% set navigation_bar = [
+  ('/login', 'sitios', 'Inicia Sesión'),
+  ] -%}
+
+{% block opciones %}
+    {%for href, id, caption in navigation_bar%}
+      <li{% if id == active_page %} class="active"{% endif %}>
+      <a href="{{href|e}}">{{caption|e}}</a></li>
+    {%endfor%}
+{% endblock %}
+
+
+
+{% block bodycontent %}
+      <h2>Topicos para el Desarrollo de Aplicaciones en la Nube</h2>
+      <ul>
+        <li>Python</li>
+        <li>Google App Engine</li>
+        <li>WebApp2</li>
+        <li>Protocolo WSGI</li>
+        <li>Mi primer aplicacion en Google App Engine</li>
+        <li>Usando Jinja</li>
+      </ul>
+{% endblock %}
