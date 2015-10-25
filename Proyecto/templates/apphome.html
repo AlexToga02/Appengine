@@ -1,13 +1,11 @@
 {% extends "_base.html" %}
 
-{% set active_page = "t" %}
-
 {% block title %}
-   Topicos
+   Application Home
 {% endblock %}
 
 {% set navigation_bar = [
-  ('/login', 'sitios', 'Inicia Sesión'),
+  ('/login', 'login', 'Inicia Sesión'),
   ] -%}
 
 {% block opciones %}
@@ -17,6 +15,8 @@
     {%endfor%}
 {% endblock %}
 
+
+{% set active_page = "login" %}
 
 
 {% block bodycontent %}
@@ -29,14 +29,50 @@
      <img src="img/portada.jpg" alt="wklnw" class="margin-Left">
   </div>
   <div id="otrolado">
-    
-    <div class="row">
-      <div class="col-md-12 text-center">Formulario de Inicio de Sesión xsajbkjasbfa</div>
 
+    <div class="row">
+      <h2 class="col-md-12 text-center"><img src="img/registro-img.png" alt="" width="20">Registro</h2>
     </div>
 
+    <form method="post" action="/registro">
+      <div class="row">
+        <div class="form-group  col-md-6">
+          <input type="text" class="form-control" id="reg_firstname" name="reg_firstname" placeholder="Nombre(s)">
+        </div>
+        <div class="col-md-1"></div>
+        <div class="form-group  col-md-6">
+          <input type="text" class="form-control" id="reg_lastname" name="reg_lastname" placeholder="Apellidos">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group  col-md-12">
+          <input type="email" class="form-control" id="email" name="email" placeholder="Correo eléctronico">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group  col-md-12">
+          <input type="text" class="form-control" id="reg_username" name="reg_username" placeholder="Usuario">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group  col-md-12">
+          <input type="password" class="form-control" id="reg_password" name="reg_password" placeholder="Contraseña">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
 
+        </div>
+        <button type="submit" class="col-md-5 btn btn-default btn btn-primary ">Enviar</button>
+        <div class="col-md-3">
+
+        </div>
+      </div>
+
+
+    </form>
   </div>
+
   <div id="principal">
     <p class="separacion-30">
 
