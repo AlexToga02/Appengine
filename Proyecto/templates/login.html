@@ -1,33 +1,35 @@
-{% extends "_base.html" %}
-{% set active_page = "loggin" %}
+    <h2 class="text-center">• Enterprise Professional Services •</h2>
+    <br>
+    <br>
+   <form method="post" action="/login">
 
-{% block bodycontent %}
-<!-- LOGIN FORM -->
-<div class="text-center" style="padding:50px 0">
-<div class="logo">login</div>
-<!-- Main Form -->
-<div class="login-form-1">
-<form id="login-form" class="text-left" action="/login" method="post">
-	<div class="login-form-main-message"></div>
-	<div class="main-login-form">
-		<div class="login-group">
-			<div class="form-group">
-				<label for="lg_username" class="sr-only">Username</label>
-				<input type="text" class="form-control" id="lg_username" name="lg_username" placeholder="username">
-			</div>
-			<div class="form-group">
-				<label for="lg_password" class="sr-only">Password</label>
-				<input type="password" class="form-control" id="lg_password" name="lg_password" placeholder="password">
-			</div>
-		</div>
-		<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
-	</div>
-	<div class="etc-login-form">
-		<p>{{ error }}</p>
-		<p>new user? <a href="/registro">create new account</a></p>
-	</div>
-</form>
-</div>
-<!-- end:Main Form -->
-</div>
-{% endblock %}
+     <div class="row">
+       <div class="col-md-1"></div>
+       <div class="form-group  col-md-10">
+         <input type="text" class="form-control" id="lg_username" name="lg_username" placeholder="Usuario">
+       </div>
+       <div class="col-md-1"></div>
+     </div>
+     <div class="row">
+       <div class="col-md-1"></div>
+       <div class="form-group  col-md-10">
+         <input type="password" class="form-control" id="lg_password" name="lg_password" placeholder="Contraseña">
+       </div>
+       <div class="col-md-1"></div>
+     </div>
+     <br>
+     <br>
+
+     <div class="row">
+       <div class="col-md-4"></div>
+       <div class="col-md-4"></div>
+       <div class="col-md-4">
+          <button type="submit" class="btn btn-default btn btn-primary">Iniciar Sesión</button>
+       </div>
+     </div>
+
+      {% if error %}
+       	<p>{{ error }}</p>
+       {% endif %}
+
+   </form>

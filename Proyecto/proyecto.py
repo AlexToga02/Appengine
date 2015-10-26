@@ -47,30 +47,33 @@ class Cuentas(ndb.Model):
     password = ndb.StringProperty()
 
 class Login(Handler):
-	def get(self):
-		self.render("login.html")
+    def get(self):
+        self.render("login.html")
 
-	def post(self):
-		user = self.request.get('lg_username')
-		pw = self.request.get('lg_password')
+    def post(self):
+        user = self.request.get('lg_username')
+        pw = self.request.get('lg_password')
 
-		logging.info('Checking user='+ str(user) + 'pw='+ str(pw))
-		msg = ''
-		if pw == '' or user == '' :
-			msg = 'Please specify Account and Password'
-			self.render("login.html", error=msg)
-		else:
-			consulta=Cuentas.query(ndb.AND(Cuentas.username==user, Cuentas.password==pw )).get()
-			if consulta is not None:
-				logging.info('POST consulta=' + str(consulta))
-				#Vinculo el usuario obtenido de mi datastore con mi sesion.
-				self.session['user'] = consulta.username
-				logging.info("%s just logged in" % user)
-				self.redirect('/')
-			else:
-				logging.info('POST consulta=' + str(consulta))
-				msg = 'Incorrect user or password.. please try again'
-				self.render("login.html", error=msg)
+        logging.info('Checking user='+ str(user) + 'pw='+ str(pw))
+        msg = ''
+        band=1
+
+        if pw == '' or user == '' :
+            msg = 'Please specify Account and Password'
+            self.render("login.html", error=msg)
+
+        else:
+            consulta=Cuentas.query(ndb.AND(Cuentas.username==user, Cuentas.password==pw )).get()
+            if consulta is not None:
+                logging.info('POST consulta=' + str(consulta))
+                #Vinculo el usuario obtenido de mi datastore con mi sesion.
+                self.session['user'] = consulta.username
+                logging.info("%s just logged in" % user)
+                self.redirect('/')
+            else:
+                logging.info('POST consulta=' + str(consulta))
+                msg = 'Incorrect user or password.. please try again'
+                self.render("login.html", error=msg,bandera=band)
 
 class Registro(Handler):
     def get(self):
@@ -106,8 +109,8 @@ class Index(Handler):
             }
         self.render("index.html", user=template_values)
 
-class ApppHome(Handler):
-   def get(self):
+class AppHome(Handler):
+   def get  (self):
        user = self.session.get('user')
        logging.info('Checkin index user value='+str(user))
        template_values={
@@ -139,7 +142,7 @@ config['webapp2_extras.sessions'] = {
 }
 
 app = webapp2.WSGIApplication([('/', Index),
-            			       ('/application',ApppHome),
+            			       ('/application',AppHome),
             			       ('/sitios',Sitios),
             			       ('/registro',Registro),
             			       ('/login',Login),

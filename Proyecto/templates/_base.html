@@ -3,15 +3,13 @@
    <link rel="icon" type="image/png" href="img/team-img-2.png">
    <title> {% block title %}Sitio Creado con Google App Engine{% endblock %}</title>
 
-    <!-- All the files that are required -->
-    <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script> -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/animate.min.css">
 		<link rel="stylesheet" href="css/templatemo-style.css">
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+		<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' >
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/ekko-lightbox.min.css">
 
     <style type="text/css">
 		.auto-style1 {
@@ -105,10 +103,6 @@
            </div>
          </section>
          <!-- end home -->
-
-
-
-
       {% endblock %}
    </div>
   <footer>
@@ -120,7 +114,14 @@
     		<script src="js/wow.min.js"></script>
     		<script src="js/jquery.flexslider.js"></script>
     		<script src="js/templatemo-script.js"></script>
+        <script src="js/ekko-lightbox.min.js"></script>
+
     		<!-- end javascript -->
+
+      {% block pie %}
+
+      {% endblock %}
+  
 
   </footer>
 

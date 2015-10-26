@@ -11,7 +11,10 @@
 {% block opciones %}
     {%for href, id, caption in navigation_bar%}
       <li{% if id == active_page %} class="active"{% endif %}>
-      <a href="{{href|e}}">{{caption|e}}</a></li>
+      <a  id="login" href="{{href|e}}" data-title="<img src='img/team-img-2.png' width='10%' alt='imagen'
+      style='display: block;
+    margin-left: auto;
+    margin-right: auto;'/>" >{{caption|e}}</a></li>
     {%endfor%}
 {% endblock %}
 
@@ -92,5 +95,21 @@
    creativo
      </p>
 
+
   </div>
+
+
+{% endblock %}
+
+{% block pie %}
+<script>
+
+    $('#login').click( function (e) {
+      e.preventDefault();
+      $(this).ekkoLightbox();
+    });
+</script>
+
+
+
 {% endblock %}
