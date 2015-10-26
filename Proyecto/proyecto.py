@@ -9,6 +9,8 @@ from webapp2_extras import sessions
 
 global bandera
 
+bandera= 0
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
@@ -50,13 +52,7 @@ class Cuentas(ndb.Model):
 class Login(Handler):
     def get(self):
         global bandera
-
-        if bandera == 0:
-            self.render("login.html")
-        elif bandera ==1:
-            self.render("login2.html")
-        else:
-            self.render("login3.html")
+        self.render("login.html",bandera=bandera)
 
     def post(self):
         global bandera
@@ -89,6 +85,8 @@ class Registro(Handler):
 	       self.render("registro.html")
 
     def post(self):
+        global bandera
+        bandera= 0
         user= self.request.get('reg_username')
         pw=self.request.get('reg_password')
 
@@ -97,15 +95,8 @@ class Registro(Handler):
         cuenta_user=cuentakey.get()
 
         if cuenta_user == cuenta:
-            print "Cuenta de usuario: ",cuenta_user
-            print
             msg= "Gracias Por Registarse..."
-            self.render("registro.html",error=msg)
-
-        query = Cuentas.query()
-        for resultado in query:
-            print "Resultado.username: ",resultado.username
-            print "resultado: ",resultado
+            self.render("apphome.html",msg=msg,bandera=bandera)
 
 
 
