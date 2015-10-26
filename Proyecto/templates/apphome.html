@@ -98,6 +98,8 @@
 
   </div>
 
+  <!-- <p>#{{bandera}}</p> -->
+
 
 {% endblock %}
 
@@ -108,6 +110,10 @@
       e.preventDefault();
       $(this).ekkoLightbox();
     });
+
+    {% if bandera %}
+    $('#login').click();
+    {% endif %}
 </script>
 
 

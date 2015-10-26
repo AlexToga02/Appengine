@@ -7,6 +7,7 @@ import logging
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
 
+global bandera
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
@@ -48,32 +49,40 @@ class Cuentas(ndb.Model):
 
 class Login(Handler):
     def get(self):
-        self.render("login.html")
+        global bandera
+
+        if bandera == 0:
+            self.render("login.html")
+        elif bandera ==1:
+            self.render("login2.html")
+        else:
+            self.render("login3.html")
 
     def post(self):
+        global bandera
         user = self.request.get('lg_username')
         pw = self.request.get('lg_password')
 
         logging.info('Checking user='+ str(user) + 'pw='+ str(pw))
         msg = ''
-        band=1
-
         if pw == '' or user == '' :
-            msg = 'Please specify Account and Password'
-            self.render("login.html", error=msg)
-
+            # msg = 'Please specify Account and Password'
+            bandera = 1
+            self.render("apphome.html", bandera=bandera)
         else:
             consulta=Cuentas.query(ndb.AND(Cuentas.username==user, Cuentas.password==pw )).get()
             if consulta is not None:
                 logging.info('POST consulta=' + str(consulta))
                 #Vinculo el usuario obtenido de mi datastore con mi sesion.
+                bandera=0
                 self.session['user'] = consulta.username
                 logging.info("%s just logged in" % user)
                 self.redirect('/')
             else:
                 logging.info('POST consulta=' + str(consulta))
-                msg = 'Incorrect user or password.. please try again'
-                self.render("login.html", error=msg,bandera=band)
+                bandera = 2
+                # msg = 'Incorrect user or password.. please try again'
+                self.render("apphome.html", bandera=bandera)
 
 class Registro(Handler):
     def get(self):
@@ -110,7 +119,9 @@ class Index(Handler):
         self.render("index.html", user=template_values)
 
 class AppHome(Handler):
-   def get  (self):
+   def get(self):
+       global bandera
+       bandera=0
        user = self.session.get('user')
        logging.info('Checkin index user value='+str(user))
        template_values={
