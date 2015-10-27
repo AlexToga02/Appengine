@@ -7,19 +7,19 @@ import logging
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
 from google.appengine.api import mail
+from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
 global bandera
 
 bandera= 0
 
-
-
-
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
-
+class LogSenderHandler(InboundMailHandler):
+    def receive(self, mail_message):
+        logging.info("Received a message from: " + mail_message.sender)
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -171,5 +171,5 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/registro',Registro),
             			       ('/login',Login),
             			       ('/logout',Logout)
-                              ],
+                              ]
                               debug=True, config=config)
