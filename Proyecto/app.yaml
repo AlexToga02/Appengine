@@ -5,9 +5,14 @@ api_version: 1
 threadsafe: true
 
 inbound_services:
+- mail_bounce
 - mail
 
 handlers:
+- url: /_ah/bounce
+  script: handle_bounced_email.app
+  login: admin
+
 - url: /_ah/mail/owner@.*proyecto-eps\.appspotmail\.com
   script: handle_owner.app
   login: admin

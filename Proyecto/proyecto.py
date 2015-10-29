@@ -171,5 +171,5 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/registro',Registro),
             			       ('/login',Login),
             			       ('/logout',Logout)
-                              ]
+                              ],
                               debug=True, config=config)
