@@ -14,9 +14,6 @@ handlers:
 - url: /img
   static_dir: static/img
 
-- url: /fonts
-  static_dir: static/fonts
-
 - url: /.*
   script: proyecto.app
 

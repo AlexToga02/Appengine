@@ -6,14 +6,10 @@ import logging
 
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
-from google.appengine.api import mail
 
 global bandera
 
 bandera= 0
-
-
-
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
@@ -52,7 +48,6 @@ class Handler(webapp2.RequestHandler):
 class Cuentas(ndb.Model):
     username = ndb.StringProperty()
     password = ndb.StringProperty()
-    email   =  ndb.StringProperty()
 
 class Login(Handler):
     def get(self):
@@ -94,25 +89,8 @@ class Registro(Handler):
         bandera= 0
         user= self.request.get('reg_username')
         pw=self.request.get('reg_password')
-        correo =self.request.get('reg_email')
 
-        message = mail.EmailMessage(sender="Example.com Support <proyecto-eps@appspot.gserviceaccount.com>",
-                                    subject="Your account has been approved")
-        #message.to = "ZulmaRocio <zulmaarb@gmail.com>"
-        message.to = correo
-        message.body = """
-        Dear """+user+ """:
-
-        Your example.com account has been approved.  You can now visit
-        http://www.example.com/ and sign in using your Google Account to
-        access new features.
-
-        Please let us know if you have any questions.
-
-        The example.com Team
-        """
-        message.send()
-        cuenta=Cuentas(username=user,password=pw,email=correo)
+        cuenta=Cuentas(username=user,password=pw)
         cuentakey=cuenta.put()
         cuenta_user=cuentakey.get()
 
@@ -158,7 +136,21 @@ class Logout(Handler):
             self.render("logout.html", error=msg)
             del self.session['user']
 
+class Message(Handler):
+    def get(self):
+        self.render("message.html")
 
+class Profile(Handler):
+    def get(self):
+        self.render("profile.html")
+
+class Messageadmin(Handler):
+    def get(self):
+        self.render("messageadmin.html")
+
+class Paginaadmin(Handler):
+    def get(self):
+        self.render("paginaadmin.html")
 
 config = {}
 config['webapp2_extras.sessions'] = {
@@ -170,6 +162,10 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/sitios',Sitios),
             			       ('/registro',Registro),
             			       ('/login',Login),
-            			       ('/logout',Logout)
+            			       ('/logout',Logout),
+                               ('/message',Message ),
+                               ('/profile', Profile),
+                               ('/messageadmin',Messageadmin),
+                               ('/Paginaadmin',Paginaadmin)
                               ],
                               debug=True, config=config)

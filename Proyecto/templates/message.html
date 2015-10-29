@@ -1,0 +1,181 @@
+{% extends "_base2.html" %}
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="container">
+  <div class="row">
+    <div class="navbar-header">
+      <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon icon-bar"></span>
+        <span class="icon icon-bar"></span>
+        <span class="icon icon-bar"></span>
+      </button>
+      <a  class="navbar-brand">
+      <h3 style="width: 410px" class="auto-style1">• Enterprise Professional Services •</h3></a>
+    </div>
+      <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{user.user}} <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/perfil">Perfil&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+            <li><a href="/logout">Logout  <span class="glyphicon glyphicon-log-out" aria-hidden="true"> </span></a></li>
+
+          </ul>
+        </li>
+
+
+
+     {% block opciones %}
+
+     {% set navigation_bar = [
+             ('/usuario', 'usuario', 'Usuario')
+      ] -%}
+
+     {%for href, id, caption in navigation_bar%}
+       <li{% if id == active_page %} class="active"{% endif %}>
+       <a href="{{href|e}}">{{caption|e}}</a></li>
+     {%endfor%}
+
+
+     {% endblock %}
+
+      </ul>
+    </div>
+  </div>
+</div>
+</nav>
+<!-- end navigation -->
+
+
+
+{% block titlepanel %}  <h1>Mensajeria</h1>{% endblock %}
+
+ {% block bodypanel %}
+
+      <div class="row">
+          <br>
+        <div class="col-md-2"></div>
+        <div class="form-group  col-md-2">
+          <botton class="btninbox"><a href="#"><span class="badge">42</span> Inbox </a>
+          </botton>
+        </div>
+
+        <div class="form-group  col-md-4">
+          <div class="col-md-3"></div>
+          <button type="button" class="btn btn-primary btn-xs" >+</button>
+        </div>
+
+        <div class="form-group  col-md-1">
+          <label for="conversacion">Conversacion</label>
+        </div>
+
+        <div class="form-group  col-md-3">
+          <div class="col-md-4"></div>
+          <label for="cerrar"> X</label>
+        </div>
+
+      </div>  <!-- cierra row 4 -->
+
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="form-group  col-md-5"> <!-- Div Inbox -->
+
+          <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="http://www.jquery2dotnet.com">Inicio</a></li>
+                <li><a href="http://www.jquery2dotnet.com">Correos enviados</a></li>
+            </ul>
+
+            <div class="pull-right">
+                <span class="text-muted"><b>1</b>–<b>50</b> de <b>277</b></span>
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-inbox">
+                </span>Mensajes</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="home">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                </label>
+                            </div>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="name" style="min-width: 120px; display: inline-block;">Bhaumik Patel</span>
+                            <span class="">This is big title</span>...
+                            <span>12:10 AM</span>
+                        </a>
+
+                        <a href="#" class="list-group-item">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                </label>
+                            </div>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="name" style="min-width: 120px; display: inline-block;">Bhaumik Patel</span>
+                            <span class="">Holii una du</span>...
+                            <span>12:10 AM</span>
+                        </a>
+
+                        <a href="#" class="list-group-item read">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                </label>
+                            </div>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="name" style="min-width: 120px; display: inline-block;">Bhaumik Patel</span>
+                            <span class="">fdfdsfh fdfdf</span>...
+                            <span>12:10 AM</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-pane fade in" id="profile">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <span class="text-center">This tab is empty.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade in" id="messages">
+                    ...</div>
+                <div class="tab-pane fade in" id="settings">
+                    esta basio</div>
+            </div>
+            <!-- Ad -->
+
+            </div>
+        </div>
+    </div>
+
+        </div> <!-- Cierra div Inbox -->
+
+        <div class="form-group  col-md-6">
+          <br> <br> <br>
+          <div class="col-md-3"></div>
+          <textarea type="text" name="mensaje" rows="4" cols="40" placeholder="Mensaje"></textarea>
+
+          <br>
+          <div class="col-md-8"></div>
+            <button type="button" class="btn btn-primary">Enviar</button>
+        </div>
+
+      </div>
+{% endblock %}
