@@ -41,8 +41,9 @@
 }
 #diveventos{
   background-color: 29919A;
-  height: 40px;
-  width: 30px;
+  height: 150px;
+  text-align: center;
+  width: 250px;
 }
 
 /*css de bootsnip Inbox*/

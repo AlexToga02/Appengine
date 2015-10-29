@@ -27,7 +27,7 @@
      {% block opciones %}
 
      {% set navigation_bar = [
-             ('/eventos', 'eventos', 'Eventos'),
+             ('/paginaadmin', 'paginaadmin', 'Eventos'),
              ('/usuario', 'usuario', 'Usuario')
       ] -%}
 
@@ -60,12 +60,13 @@
           </botton>
         </div>
 
-        <div class="form-group  col-md-4">
-          <div class="col-md-3"></div>
+        <div class="form-group  col-md-1">
+
           <button type="button" class="btn btn-primary btn-xs" >+</button>
         </div>
 
-        <div class="form-group  col-md-1">
+        <div class="form-group  col-md-3">
+            <div class="col-md-4"></div>
           <label for="conversacion">Conversacion</label>
         </div>
 
@@ -82,10 +83,12 @@
 
           <div class="container">
     <div class="row">
-        <div class="col-md-2">
-            <ul class="nav nav-pills nav-stacked">
-                <li><a href="http://www.jquery2dotnet.com">Inicio</a></li>
-                <li><a href="http://www.jquery2dotnet.com">Correos enviados</a></li>
+
+        <div class="col-md-3">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-inbox">
+                </span>Mensajes</a></li>
             </ul>
 
             <div class="pull-right">
@@ -99,14 +102,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-3">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-inbox">
-                </span>Mensajes</a></li>
-            </ul>
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="home">
