@@ -1,0 +1,134 @@
+{% extends "_base.html" %}
+
+{% block title %}
+   Application Home
+{% endblock %}
+
+{% set navigation_bar = [
+  ('/login', 'login', 'Inicia Sesión'),
+  ] -%}
+
+{% block opciones %}
+    {%for href, id, caption in navigation_bar%}
+      <li{% if id == active_page %} class="active"{% endif %}>
+      <a  id="login" href="{{href|e}}" data-title="<img src='img/team-img-2.png' width='10%' alt='imagen'
+      style='display: block;
+    margin-left: auto;
+    margin-right: auto;'/>" >{{caption|e}}</a></li>
+    {%endfor%}
+{% endblock %}
+
+
+{% set active_page = "login" %}
+
+
+{% block bodycontent %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="lateral">
+     <img src="img/portada.jpg" alt="wklnw" class="margin-Left">
+  </div>
+  <div id="otrolado">
+
+    <div class="row">
+      <h2 class="col-md-12 text-center"><img src="img/registro-img.png" alt="" width="20">Registro</h2>
+    </div>
+
+    <form method="post" action="/registro">
+      <div class="row">
+        <div class="form-group  col-md-6">
+          <input type="text" class="form-control" id="reg_firstname" name="reg_firstname" placeholder="Nombre(s)">
+        </div>
+        <div class="col-md-1"></div>
+        <div class="form-group  col-md-6">
+          <input type="text" class="form-control" id="reg_lastname" name="reg_lastname" placeholder="Apellidos">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group  col-md-12">
+          <input type="email" class="form-control" id="reg_email" name="reg_email" placeholder="Correo eléctronico">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group  col-md-12">
+          <input type="text" class="form-control" id="reg_username" name="reg_username" placeholder="Usuario">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group  col-md-12">
+          <input type="password" class="form-control" id="reg_password" name="reg_password" placeholder="Contraseña">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <button type="submit" class="col-md-5 btn btn-default btn btn-primary ">Enviar</button>
+        <div class="col-md-3">
+
+        </div>
+      </div>
+
+    </form>
+      {% if msg %}
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+          <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{msg}}</strong>
+
+          </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    {% endif %}
+  </div>
+
+  <div id="principal">
+    <p class="separacion-30">
+
+    </p>
+
+     <p class="text-blu">
+       Si  tienes  alguna pregunta acerca de los servicios que ofrecemos, no dude en preguntarnos.
+     </p>
+    <p class="separacion-100">
+    </p>
+    <p class="separacion-30">
+    </p>
+     <p class="text-blu">
+       Recibirá la asesoría que usted espera
+   de nosotros, unida a las excelentes
+   ideas que les sugerirá nuestro equipo
+   creativo
+     </p>
+
+
+  </div>
+
+  <!-- <p>#{{bandera}}</p> -->
+
+
+{% endblock %}
+
+{% block pie %}
+<script>
+
+    $('#login').click( function (e) {
+      e.preventDefault();
+      $(this).ekkoLightbox();
+    });
+
+    {% if bandera %}
+    $('#login').click();
+    {% endif %}
+</script>
+
+
+
+{% endblock %}
