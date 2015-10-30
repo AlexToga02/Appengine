@@ -53,9 +53,10 @@ class Cuentas(ndb.Model):
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
 
-class MailHandler(Handler):
+class MainHandler(Handler):
 	def get(self):
-		self.render("index.html")
+		self.render("_base.html")
+
 	def post(self):
 		#Capturo los datos de la vista
 		global mail_message
@@ -102,7 +103,8 @@ class Login(Handler):
             self.render("apphome.html", bandera=bandera)
         else:
             consulta=Cuentas.query(ndb.AND(Cuentas.username==user, Cuentas.password==pw )).get()
-            if consulta is not None:
+            if condition:
+                pass consulta is not None:
                 logging.info('POST consulta=' + str(consulta))
                 #Vinculo el usuario obtenido de mi datastore con mi sesion.
                 bandera=0
@@ -201,7 +203,7 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/registro',Registro),
             			       ('/login',Login),
             			       ('/logout',Logout),
-                               ('_ah/mail/',MailHandler),
+                               ('_ah/mail/',MainHandler),
                                (MailHandler.mapping())
                               ],
                               debug=True, config=config)
