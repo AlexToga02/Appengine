@@ -17,9 +17,11 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
-class LogSenderHandler(InboundMailHandler):
+class MailHandler(InboundMailHandler):
     def receive(self, mail_message):
-        logging.info("Received a message from: " + mail_message.sender)
+        for content_type, pl in mail_message.bodies("text/plain"):
+            mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
+            mensaje.put()
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -53,6 +55,10 @@ class Cuentas(ndb.Model):
     username = ndb.StringProperty()
     password = ndb.StringProperty()
     email   =  ndb.StringProperty()
+
+class Correos(ndb.Model):
+    mensaje_body = ndb.StringProperty()
+
 
 class Login(Handler):
     def get(self):
@@ -170,6 +176,8 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/sitios',Sitios),
             			       ('/registro',Registro),
             			       ('/login',Login),
-            			       ('/logout',Logout)
+            			       ('/logout',Logout),
+                               ('_ah/mail/',MailHandler),
+                               (MailHandler.mapping())
                               ],
                               debug=True, config=config)
