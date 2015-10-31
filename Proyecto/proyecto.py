@@ -53,31 +53,31 @@ class Cuentas(ndb.Model):
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
 
-class MainHandler(Handler):
-	def get(self):
-		self.render("_base.html")
-
-	def post(self):
-		#Capturo los datos de la vista
-		global mail_message
-		sender_email = self.request.get("contacto_email")
-		logging.info("sender_email: " + sender_email)
-		message = self.request.get("contacto_body")
-		logging.info("message: " + message)
-
-		#Defino el correo de la aplicación, en donde se mandará el mensaje.
-		app_mail = "proyecto-eps@myapp.appspotmail.com"
-
-		#Envió el correo a la aplicación.
-		mail_message.sender = sender_email
-		mail_message.to = app_mail
-		mail_message.subject = "Esto es una prueba"
-		mail_message.body = message
-		mail_message.send()
-
-		#Muestro un mensaje de que su mensaje ha sido enviado
-
-		self.response.write("Gracias, su mensaje se ha enviado.")
+# class MainHandler(Handler):
+# 	def get(self):
+# 		self.render("_base.html")
+#
+# 	def post(self):
+# 		#Capturo los datos de la vista
+# 		global mail_message
+# 		sender_email = self.request.get("contacto_email")
+# 		logging.info("sender_email: " + sender_email)
+# 		message = self.request.get("contacto_body")
+# 		logging.info("message: " + message)
+#
+# 		#Defino el correo de la aplicación, en donde se mandará el mensaje.
+# 		app_mail = "proyecto-eps@myapp.appspotmail.com"
+#
+# 		#Envió el correo a la aplicación.
+# 		mail_message.sender = sender_email
+# 		mail_message.to = app_mail
+# 		mail_message.subject = "Esto es una prueba"
+# 		mail_message.body = message
+# 		mail_message.send()
+#
+# 		#Muestro un mensaje de que su mensaje ha sido enviado
+#
+# 		self.response.write("Gracias, su mensaje se ha enviado.")
 
 class MailHandler(InboundMailHandler):
     def receive(self, mail_message):
@@ -103,8 +103,7 @@ class Login(Handler):
             self.render("apphome.html", bandera=bandera)
         else:
             consulta=Cuentas.query(ndb.AND(Cuentas.username==user, Cuentas.password==pw )).get()
-            if condition:
-                pass consulta is not None:
+            if consulta is not None:
                 logging.info('POST consulta=' + str(consulta))
                 #Vinculo el usuario obtenido de mi datastore con mi sesion.
                 bandera=0
@@ -203,7 +202,7 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/registro',Registro),
             			       ('/login',Login),
             			       ('/logout',Logout),
-                               ('_ah/mail/',MainHandler),
+                               ('_ah/mail/',MailHandler),
                                (MailHandler.mapping())
                               ],
                               debug=True, config=config)
