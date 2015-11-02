@@ -34,6 +34,10 @@ class UnidadDos(Handler):
     def get(self):
         self.render("unit2.html")
 
+class UnidadTres(Handler):
+    def get(self):
+        self.render("unit3.html")
+
 class Profile(Handler):
     def get(self):
         self.render("perfil.html")
@@ -42,5 +46,6 @@ app = webapp2.WSGIApplication([
                         ('/', MainPage),
                         ('/unidadI',UnidadUno),
 			('/unidadII',UnidadDos),
+            ('/unidadIII',UnidadTres),
 			('/profile',Profile)
 ], debug=True)
