@@ -4,7 +4,28 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
+inbound_services:
+- mail_bounce
+- mail
+
 handlers:
+<<<<<<< HEAD
+- url: /_ah/mail/.+
+  script: proyecto.app
+  login: admin
+
+- url: /_ah/mail/proyecto-eps@myapp\.appspotmail\.com
+  script: proyecto.app
+=======
+- url: /_ah/bounce
+  script: handle_bounced_email.app
+  login: admin
+
+- url: /_ah/mail/owner@.*proyecto-eps\.appspotmail\.com
+  script: handle_owner.app
+>>>>>>> Combinados
+  login: admin
+
 - url: /css
   static_dir: static/css
 
