@@ -1,0 +1,71 @@
+{% extends "_base2.html" %}
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="container">
+  <div class="row">
+    <div class="navbar-header">
+      <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon icon-bar"></span>
+        <span class="icon icon-bar"></span>
+        <span class="icon icon-bar"></span>
+      </button>
+      <a  class="navbar-brand">
+      <h3 style="width: 410px" class="auto-style1">• Enterprise Professional Services •</h3></a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+
+
+
+     {% block opciones %}
+
+     {% set navigation_bar = [
+            ('/messageadmin', 'messageadmin', 'Mensajeria'),
+             ('/usuario', 'usuario', 'Usuario')
+      ] -%}
+
+     {%for href, id, caption in navigation_bar%}
+       <li{% if id == active_page %} class="active"{% endif %}>
+       <a href="{{href|e}}">{{caption|e}}</a></li>
+     {%endfor%}
+
+
+     {% endblock %}
+
+      </ul>
+    </div>
+  </div>
+</div>
+</nav>
+<!-- end navigation -->
+{% block titlepanel %}
+<div class="" id="divazul">
+  <h1>Bienvenida</h1>
+</div>{% endblock %}
+
+ {% block bodypanel %}
+ <div class="row">
+   <div class="col-md-1"></div>
+   <div class="form-group  col-md-6">
+     <br>
+     <h2 style="color: 055961"><strong>Eventos Proximos</strong></h2>
+   </div>
+ </div>
+
+ <div class="row">
+   <div class="col-md-1"></div>
+   <div class="form-group  col-md-5">
+     <ul>
+       <a href="#"> <li>Evento Aniversario ITC</li></a>
+       <a href="#"><li>Evento Feria de todos los santos</li></a>
+
+     </ul>
+   </div>
+
+    <div class="col-md-1"></div>
+   <div class="form-group  col-md-5" id='diveventos'>
+     <br>
+      <button class="btn btn-2 btn-2a" style="background-color: 06717B; color:white">Agregar Evento</button> <br> <br>
+      <button class="btn btn-2 btn-2a" style="background-color: 06717B; color:white">Editar o Eliminar Evento</button>
+   </div>
+ </div>
+  {% endblock %}
