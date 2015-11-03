@@ -9,13 +9,16 @@ inbound_services:
 - mail
 
 handlers:
+- url: /_ah/bounce
+  script: proyecto.app
+  login: admin
+
 - url: /_ah/mail/.+
   script: proyecto.app
   login: admin
 
 - url: /_ah/mail/proyecto-eps@myapp\.appspotmail\.com
   script: proyecto.app
-
   login: admin
 
 - url: /css

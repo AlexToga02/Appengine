@@ -10,6 +10,10 @@ from webapp2_extras import sessions
 from google.appengine.api import mail
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
+from google.appengine.ext.webapp.mail_handlers import BounceNotification
+from google.appengine.ext.webapp.mail_handlers import BounceNotificationHandler
+
+
 global bandera
 mail_message = mail.EmailMessage()
 bandera= 0
@@ -53,37 +57,17 @@ class Cuentas(ndb.Model):
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
 
-# class MainHandler(Handler):
-# 	def get(self):
-# 		self.render("_base.html")
-#
-# 	def post(self):
-# 		#Capturo los datos de la vista
-# 		global mail_message
-# 		sender_email = self.request.get("contacto_email")
-# 		logging.info("sender_email: " + sender_email)
-# 		message = self.request.get("contacto_body")
-# 		logging.info("message: " + message)
-#
-# 		#Defino el correo de la aplicación, en donde se mandará el mensaje.
-# 		app_mail = "proyecto-eps@myapp.appspotmail.com"
-#
-# 		#Envió el correo a la aplicación.
-# 		mail_message.sender = sender_email
-# 		mail_message.to = app_mail
-# 		mail_message.subject = "Esto es una prueba"
-# 		mail_message.body = message
-# 		mail_message.send()
-#
-# 		#Muestro un mensaje de que su mensaje ha sido enviado
-#
-# 		self.response.write("Gracias, su mensaje se ha enviado.")
-
 class MailHandler(InboundMailHandler):
     def receive(self, mail_message):
         for content_type, pl in mail_message.bodies("text/plain"):
             mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
             mensaje.put()
+            
+class LogBounceHandler(BounceNotificationHandler):
+  def receive(self, bounce_message):
+    logging.info('Received bounce post ... [%s]', self.request)
+    logging.info('Bounce original: %s', bounce_message.original)
+    logging.info('Bounce notification: %s', bounce_message.notification)
 
 class Login(Handler):
     def get(self):
@@ -204,6 +188,8 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/messageadmin',Messageadmin),
                                ('/Paginaadmin',Paginaadmin),
                                ('/_ah/mail/',MailHandler),
+                               ('/_ah/bounce', LogBounceHandler),
+                               (LogBounceHandler.mapping()),
                                (MailHandler.mapping())
                               ],
                               debug=True, config=config)
