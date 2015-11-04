@@ -62,12 +62,14 @@ class MailHandler(InboundMailHandler):
         for content_type, pl in mail_message.bodies("text/plain"):
             mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
             mensaje.put()
-            
+        self.redirect('/')
+
 class LogBounceHandler(BounceNotificationHandler):
   def receive(self, bounce_message):
     logging.info('Received bounce post ... [%s]', self.request)
     logging.info('Bounce original: %s', bounce_message.original)
     logging.info('Bounce notification: %s', bounce_message.notification)
+
 
 class Login(Handler):
     def get(self):
@@ -172,6 +174,10 @@ class Paginaadmin(Handler):
     def get(self):
         self.render("paginaadmin.html")
 
+class Bouncecontrol(Handler):
+    def get(self):
+        self.render("bouncepage.html")
+
 config = {}
 config['webapp2_extras.sessions'] = {
     'secret_key': 'some-secret-key',
@@ -188,6 +194,7 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/messageadmin',Messageadmin),
                                ('/Paginaadmin',Paginaadmin),
                                ('/_ah/mail/',MailHandler),
+                               ('/bounce',Bouncecontrol),
                                ('/_ah/bounce', LogBounceHandler),
                                (LogBounceHandler.mapping()),
                                (MailHandler.mapping())
