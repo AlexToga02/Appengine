@@ -9,17 +9,7 @@ inbound_services:
 - mail
 
 handlers:
-- url: /_ah/bounce
-  script: proyecto.app
-  login: admin
 
-- url: /_ah/mail/.+
-  script: proyecto.app
-  login: admin
-
-- url: /_ah/mail/proyecto-eps@myapp\.appspotmail\.com
-  script: proyecto.app
-  login: admin
 
 - url: /css
   static_dir: static/css
@@ -35,6 +25,19 @@ handlers:
 
 - url: /.*
   script: proyecto.app
+
+- url: /_ah/mail/.+
+  script: proyecto.app
+  login: admin
+
+- url: /_ah/mail/proyecto-eps@myapp\.appspotmail\.com
+  script: proyecto.app
+  login: admin
+
+- url: /_ah/bounce
+  script: proyecto.app
+  login: admin
+
 
 libraries:
 - name: jinja2

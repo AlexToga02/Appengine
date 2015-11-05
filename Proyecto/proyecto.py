@@ -64,12 +64,6 @@ class MailHandler(InboundMailHandler):
             mensaje.put()
         self.redirect('/')
 
-class LogBounceHandler(BounceNotificationHandler):
-  def receive(self, bounce_message):
-    logging.info('Received bounce post ... [%s]', self.request)
-    logging.info('Bounce original: %s', bounce_message.original)
-    logging.info('Bounce notification: %s', bounce_message.notification)
-
 
 class Login(Handler):
     def get(self):
@@ -104,15 +98,32 @@ class Login(Handler):
 
 class Registro(Handler):
     def get(self):
-	       self.render("registro.html")
+        self.render("registro.html")
 
     def post(self):
         global bandera
+        global mail_message
+        to_email = self.request.get("reg_email")
+        logging.info("message: " + message)
         bandera= 0
         user= self.request.get('reg_username')
         pw=self.request.get('reg_password')
+        correo =self.request.get('reg_email')
 
-        cuenta=Cuentas(username=user,password=pw)
+        message = mail.EmailMessage(sender="Example.com Support <proyecto-eps@appspot.gserviceaccount.com>",
+                                    subject="Your account has been approved")
+        message.to = correo
+        message.body = """
+        Dear """+user+ """:
+        Your example.com account has been approved.  You can now visit
+        http://www.example.com/ and sign in using your Google Account to
+        access new features.
+        Please let us know if you have any questions.
+        The example.com Team
+        """
+        message.send()
+
+        cuenta=Cuentas(username=user,password=pw,email=correo)
         cuentakey=cuenta.put()
         cuenta_user=cuentakey.get()
 
@@ -174,9 +185,11 @@ class Paginaadmin(Handler):
     def get(self):
         self.render("paginaadmin.html")
 
-class Bouncecontrol(Handler):
-    def get(self):
-        self.render("bouncepage.html")
+class LogBounceHandler(BounceNotificationHandler):
+    def receive(self, bounce_message):
+        logging.info('Received bounce post ... [%s]', self.request)
+        logging.info('Bounce original: %s', bounce_message.original)
+        logging.info('Bounce notification: %s', bounce_message.notification)
 
 config = {}
 config['webapp2_extras.sessions'] = {
@@ -194,8 +207,6 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/messageadmin',Messageadmin),
                                ('/Paginaadmin',Paginaadmin),
                                ('/_ah/mail/',MailHandler),
-                               ('/bounce',Bouncecontrol),
-                               ('/_ah/bounce', LogBounceHandler),
                                (LogBounceHandler.mapping()),
                                (MailHandler.mapping())
                               ],
