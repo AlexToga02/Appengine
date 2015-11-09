@@ -13,6 +13,10 @@ from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 from google.appengine.ext.webapp.mail_handlers import BounceNotification
 from google.appengine.ext.webapp.mail_handlers import BounceNotificationHandler
 
+
+from apiclient.discovery import build
+from oauth2client.appengine import OAuth2Decorator
+
 global bandera
 bandera= 0
 
@@ -172,6 +176,20 @@ class LogBounceHandler(BounceNotificationHandler):
 		logging.info('Bounce original: %s', bounce_message.original)
 		logging.info('Bounce notification: %s', bounce_message.notification)
 
+#************ oauth2Decorator
+decorator = OAuth2Decorator(
+    client_id='141147046388-jekjfmorkjlhpt5eh9nh9rvuk3h443lv.apps.googleusercontent.com',
+    client_secret='foKPCKiZST5HloYvhGStc-iJ',
+    scope='https://www.googleapis.com/auth/tasks')
+service = build('tasks','v1')
+
+class OAuth(Handler):
+ @decorator.oauth_required
+ def get(self):
+     tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+     items = tasks.get('items', [])
+     response = '\n'.join([task.get('title','') for task in items])
+     self.render("oauth.html", response=response)
 
 config = {}
 config['webapp2_extras.sessions'] = {
@@ -184,8 +202,9 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/registro',Registro),
             			       ('/login',Login),
             			       ('/logout',Logout),
-                               ('_ah/mail/',MailHandler),
+                               ('/OAuth',OAuth),
                                (LogBounceHandler.mapping()),
-                               (MailHandler.mapping())
+                               (MailHandler.mapping()),
+                               (decorator.callback_path, decorator.callback_handler())
                               ],
                               debug=True, config=config)
