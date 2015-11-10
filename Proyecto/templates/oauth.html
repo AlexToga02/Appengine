@@ -2,14 +2,40 @@
   <head>
    <meta charset="utf-8">
    <title>oAuth 2.0 Example</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
   </head>
   <body>
     <div class="container">
        <div class="header">
          <h3 class="text-muted">Ejemplo de Tasks API</h3>
+         <h4 class="text-muted"> Numero de Tareas = {{num}}</h4>
        </div>
        <div class="jumbo">
-         <p>{{response}}</p>
+
+       {% for item in response %}
+              <div class="row">
+                    <div class="col-lg-4">
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                           <input type="checkbox" aria-label="...">
+                        </span>
+                        <input type="text" class="form-control" value="{{item}}">
+                      </div><!-- /input-group -->
+
+                  </div><!-- /.col-lg-6 -->
+
+
+              </div><!-- /.row -->
+              <br>
+          {% endfor %}
+          <br>
+          <button type="button" class="btn btn-default btn-lg">
+             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          </button>
+
+
+
        </div>
    </div>
   </body>

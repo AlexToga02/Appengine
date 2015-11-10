@@ -188,8 +188,13 @@ class OAuth(Handler):
  def get(self):
      tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
      items = tasks.get('items', [])
-     response = '\n'.join([task.get('title','') for task in items])
-     self.render("oauth.html", response=response)
+    #  response = '\n'.join([task.get('title','') for task in items])
+     response = ','.join([task.get('title','') for task in items])
+     lista = response.split (',')
+     numero = len(lista)
+
+
+     self.render("oauth.html", response=lista,num=numero)
 
 config = {}
 config['webapp2_extras.sessions'] = {
