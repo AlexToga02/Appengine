@@ -1,42 +1,40 @@
 <html>
   <head>
    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
    <title>oAuth 2.0 Example</title>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
     integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/tasks.css">
   </head>
   <body>
-    <div class="container">
-       <div class="header">
-         <h3 class="text-muted">Ejemplo de Tasks API</h3>
-         <h4 class="text-muted"> Numero de Tareas = {{num}}</h4>
-       </div>
-       <div class="jumbo">
+    {{bandera}}
+          <form  action="/OAuth" method="post">
+          <section class="tasks">
+            <header class="tasks-header">
+              <h2 class="tasks-title">Lista de tareas</h2>
+              <a href="#" class="tasks-lists">Lists</a>
+            </header>
+                <fieldset class="tasks-list">
+                {% for task in items %}
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="{{task.id}}" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">{{task.title}}</span>
+                  </label>
+                {% endfor %}
+                </fieldset>
+            </section>
 
-       {% for item in response %}
-              <div class="row">
-                    <div class="col-lg-4">
-                      <div class="input-group">
-                        <span class="input-group-addon">
-                           <input type="checkbox" aria-label="...">
-                        </span>
-                        <input type="text" class="form-control" value="{{item}}">
-                      </div><!-- /input-group -->
 
-                  </div><!-- /.col-lg-6 -->
-
-
-              </div><!-- /.row -->
-              <br>
-          {% endfor %}
-          <br>
-          <button type="button" class="btn btn-default btn-lg">
-             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-          </button>
+             <button type="submit" name="bandera" value="1">Agregar</button>
+             <button type="submit" name="bandera" value="0">Eliminar</button>
+            <button type="submit" name="bandera" value="3">Modificar</button>
+            </form>
 
 
 
-       </div>
-   </div>
+
+       <footer><h4 class="text-muted"> Numero de Tareas: {{num}}</h4></footer>
   </body>
 </html>

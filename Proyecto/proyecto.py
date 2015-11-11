@@ -3,6 +3,8 @@ import os
 import webapp2
 import jinja2
 import logging
+import httplib2
+import datetime
 
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
@@ -180,21 +182,67 @@ class LogBounceHandler(BounceNotificationHandler):
 decorator = OAuth2Decorator(
     client_id='141147046388-jekjfmorkjlhpt5eh9nh9rvuk3h443lv.apps.googleusercontent.com',
     client_secret='foKPCKiZST5HloYvhGStc-iJ',
-    scope='https://www.googleapis.com/auth/tasks')
+    scope='https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/calendar')
 service = build('tasks','v1')
+service_calendar = build('calendar', 'v3')
 
 class OAuth(Handler):
- @decorator.oauth_required
- def get(self):
-     tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
-     items = tasks.get('items', [])
-    #  response = '\n'.join([task.get('title','') for task in items])
-     response = ','.join([task.get('title','') for task in items])
-     lista = response.split (',')
-     numero = len(lista)
+    @decorator.oauth_required
+    def get(self):
+         tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+         items = tasks.get('items', [])
+         notas = ','.join([task.get('title','') for task in items])
+         lista = notas.split(',')
+         numero = len(lista)
+         self.render("oauth.html", items=items,num=numero)
+
+    @decorator.oauth_required
+    def post(self):
+        bandera = self.request.get("bandera")
+        task_id = self.request.get("task_id")
+
+        if ( bandera == "1"):
+             task = {
+              'title': 'New Task'
+              }
+             service.tasks().insert(tasklist='@default', body=task).execute(http=decorator.http())
+        elif (bandera == "0"):
+            # service.tasks().delete(tasklist='@default',task='MTU1MTAxNzI3NzEzNDc3NTI5NTY6MDo0MDU0ODEwMg').execute(http=decorator.http())
+            service.tasks().delete(tasklist='@default',task=task_id).execute(http=decorator.http())
+        else:
+             task = service.tasks().get(tasklist='@default', task=task_id).execute(http=decorator.http())
+             task['title'] = 'modificado'
+             service.tasks().update(tasklist='@default', task=task_id, body=task).execute(http=decorator.http())
 
 
-     self.render("oauth.html", response=lista,num=numero)
+
+        tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+        items = tasks.get('items', [])
+        notas = ','.join([task.get('title','') for task in items])
+        lista = notas.split(',')
+        numero = len(lista)
+        self.render("oauth.html", items=items , bandera=bandera, num=numero)
+
+class Calendario(Handler):
+	@decorator.oauth_required
+	def get(self):
+		tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+		items = tasks.get('items', [])
+		response = '\n'.join([task.get('title','') for task in items])
+
+		#############################################################
+		# PARA CALENDARIO
+		http=decorator.http()
+		request=service_calendar.events().list(calendarId='primary')
+		response_calendar=request.execute(http=http)
+		logging.info("RESPUESTA" + str(response_calendar))
+		for events in response_calendar['items']:
+			summary=events['summary']
+
+		#############################################################
+		self.render("calendario.html", response=response, response_calendar=summary)
+
+
 
 config = {}
 config['webapp2_extras.sessions'] = {
@@ -208,6 +256,7 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/login',Login),
             			       ('/logout',Logout),
                                ('/OAuth',OAuth),
+                               ('/calendario',Calendario),
                                (LogBounceHandler.mapping()),
                                (MailHandler.mapping()),
                                (decorator.callback_path, decorator.callback_handler())
