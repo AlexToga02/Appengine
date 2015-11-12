@@ -21,10 +21,16 @@ handlers:
 - url: /.*
   script: proyecto.app
 
+
 - url: /admin/.*
   script: proyecto.app
 
+
 - url: /_ah/mail/.+
+  script: proyecto.app
+  login: admin
+
+- url: /_ah/bounce
   script: proyecto.app
   login: admin
 

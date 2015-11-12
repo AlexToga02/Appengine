@@ -1,4 +1,11 @@
 
+@import url(http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css);
+body {
+  font: 13px/20px 'Lucida Grande', Verdana, sans-serif;
+  color: #404040;
+  background: #f2f8fc;
+}
+
 .tasks {
   margin: 40px auto;
   width: 240px;
