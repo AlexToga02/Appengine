@@ -1,9 +1,14 @@
 {% extends "_basepanel.html" %}
+{% block linkcss %}
+  <link rel="stylesheet" href="../css/paneldesple.css">
+  <link rel="stylesheet" href="../css/tasks.css">
+  <link rel="stylesheet" href="../css/agregartarea.css">
 
+{% endblock %}
   {% block opciones %}
 
   {% set navigation_bar = [
-         ('/admin/messageadmin', 'messageadmin', 'Mensajeria'),
+         ('/messageadmin', 'messageadmin', 'Mensajeria'),
           ('/usuario', 'usuario', 'Usuario')
    ] -%}
 
@@ -12,15 +17,14 @@
          <a href="{{href|e}}">{{caption|e}}</a></li>
        {% endfor %}
 
-     {% endblock %}
+{% endblock %}
 
 {% block titlepanel %}
-
     <ul class="nav navbar-nav">
         <li class="dropdown">
-          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" >Bienvenido <span class="caret"></span></a></h2>
+          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" style="color:red;text-decoration: none;">Bienvenido<span class="caret"></span></a></h2>
           <ul class="dropdown-menu">
-            <li><a href="#">Tareas </a></li>
+            <li><a href="#" id="addClass">Tareas </a></li>
             <li class="divider"></li>
             <li><a href="#">Calendario</a></li>
             </ul>
@@ -29,30 +33,113 @@
 
 {% endblock %}
 
- {% block bodypanel %}
-     <div class="row">
-       <div class="col-md-1"></div>
-       <div class="form-group  col-md-6">
-         <br>
-         <h2 style="color: 055961"><strong>Eventos Proximos</strong></h2>
-       </div>
-     </div>
+  {% block bodypanel %}
 
-     <div class="row">
-       <div class="col-md-1"></div>
-       <div class="form-group  col-md-5">
-         <ul>
-           <a href="#"> <li>Evento Aniversario ITC</li></a>
-           <a href="#"><li>Evento Feria de todos los santos</li></a>
 
-         </ul>
-       </div>
 
-       <div class="col-md-1"></div>
-       <div class="form-group  col-md-5" id='diveventos'>
-         <br>
-          <button class="btn btn-2 btn-2a" style="background-color: 06717B; color:white">Agregar Evento</button> <br> <br>
-          <button class="btn btn-2 btn-2a" style="background-color: 06717B; color:white">Editar o Eliminar Evento</button>
-       </div>
- </div>
-  {% endblock %}
+   {% endblock %}
+
+   {% block cuerpopagina %}
+
+    <div class="popup-box chat-popup" id="qnimate">
+    		  <div class="popup-head">
+				        <div class="popup-head-left pull-left"><span>Tareas</span></div>
+    					  <div class="popup-head-right pull-right">
+    						<button data-widget="remove" id="removeClass" class="btn btn-default dropdown-toggle btn-circle btn-lg" type="button"><i class="fa fa-power-off fa-2x"></i></button>
+                </div>
+			  </div>
+        <form  action="/OAuth" method="post">
+
+                <fieldset class="tasks-list">
+
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">title</span>
+                  </label>
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">titl2e</span>
+                  </label>
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">titl3</span>
+                  </label>
+
+                </fieldset>
+
+
+
+
+
+                <div class="popup-messages-footer">
+                		<div class="btn-footer">
+                    <button class="btn btn-danger dropdown-toggle btn-circle btn-lg" type="submit" name="bandera" value="0"><i class="fa fa-trash-o fa-2x"></i></button>   <!-- eliminar -->
+
+                      <button  class="btn btn-warning dropdown-toggle btn-circle btn-lg" type="submit" name="bandera" value="3"><i class="fa fa-pencil fa-2x"></i></button>   <!-- modificar-->
+                      <!-- <button class="bg_none pull-right" type="submit" name="bandera" value="1"><i class="glyphicon glyphicon-plus"></i> </button> -->  <!-- agregar-->
+
+        			    </div>
+        		    </div>
+            </form>
+
+                                  <div class="feedback right">
+                                    <div class="tooltips">
+                                        <div class="btn-group dropup">
+                                          <button type="button" class="btn btn-primary dropdown-toggle btn-circle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-plus fa-2x" title="Report Bug"></i>
+                                          </button>
+                                          <ul class="dropdown-menu dropdown-menu-right dropdown-menu-form">
+                                            <li>
+                                              <div class="report">
+                                                <h2 class="text-center">Agregar Tarea</h2>
+                                                <form class="doo" method="post" action="/OAuth">
+                                                  <div class="col-sm-12">
+                                                    <textarea required name="comment" class="form-control" placeholder="Please tell us what bug or issue you've found, provide as much detail as possible."></textarea>
+                                                    <input name="screenshot" type="hidden" class="screen-uri">
+                                                    <span class="screenshot pull-right"><i class="fa fa-camera cam" title="Take Screenshot"></i></span>
+                                                   </div>
+                                                   <div class="col-sm-12 clearfix">
+                                                    <button class="btn btn-primary btn-block" name="bandera" value="1">Enviar</button>
+                                                   </div>
+                                               </form>
+                                              </div>
+                                              <div class="loading text-center hideme">
+                                                <h2>Please wait...</h2>
+                                                <h2><i class="fa fa-refresh fa-spin"></i></h2>
+                                              </div>
+                                              <div class="reported text-center hideme">
+                                                <h2>Thank you!</h2>
+                                                <p>Your submission has been received, we will review it shortly.</p>
+                                                 <div class="col-sm-12 clearfix">
+                                                    <button class="btn btn-success btn-block do-close">Close</button>
+                                                 </div>
+                                              </div>
+                                              <div class="failed text-center hideme">
+                                                <h2>Oh no!</h2>
+                                                <p>It looks like your submission was not sent</p>
+                                                 <div class="col-sm-12 clearfix">
+                                                    <button class="btn btn-danger btn-block do-close">Close</button>
+                                                 </div>
+                                              </div>
+
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                  </div>
+
+
+
+
+
+	  </div>
+   {% endblock %}
+
+
+  {%block pie%}
+  <script type="text/javascript" src="../js/paneldesple.js"></script>
+  <script type="text/javascript" src="../js/agregartarea.js"></script>
+  {% endblock%}
