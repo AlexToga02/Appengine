@@ -17,18 +17,21 @@ handlers:
 - url: /fonts
   static_dir: static/fonts
 
+
 - url: /.*
+  script: proyecto.app
+
+- url: /admin/.*
   script: proyecto.app
 
 - url: /_ah/mail/.+
   script: proyecto.app
   login: admin
 
-- url: /_ah/bounce
-  script: proyecto.app
-  login: admin
-
 libraries:
+- name: webapp2
+  version: latest
+
 - name: jinja2
   version: latest
 

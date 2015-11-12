@@ -1,3 +1,12 @@
+.social-footer a{
+  color: #555555;
+
+}
+.social-footer a:hover{
+   text-decoration:none;
+   color: black;
+
+}
 #lineaazul{
   background-color: 489DD2;
   height: 170px;
@@ -11,34 +20,27 @@
   width: 100%;
 }
 
-#cuadrogrissolido{
-  background-color: gray;
-  border-color: gray;
-  border-style: solid;
+#panel{
   color: black;
-  height: 70px;
+  height: 470px;
   margin: 0 auto;
   width: 80%;
 }
-
-#cuadrogris{
-  background-color: white;
-  border-color: gray;
-  border-style: solid;
-  height: 400px;
+#paneltitulo{
+  color: black;
+  height: 90px;
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
+}
+
+#adminpanel{
+  background-color: blue;
+  height: 50px;
+  width: 40%;
 }
 
 /*Pagina admin*/
-#divazul{
-  background-color: 7DC1EB;
-  border-style: solid;
-  color: white;
-  height: 40px;
-  margin: 0 auto;
-  width: 40%;
-}
+
 #diveventos{
   background-color: 29919A;
   border-style: none;

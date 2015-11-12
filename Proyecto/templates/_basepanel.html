@@ -3,14 +3,15 @@
    <link rel="icon" type="image/png" href="img/team-img-2.png">
    <title> {% block title %}Sitio Creado con Google App Engine{% endblock %}</title>
 
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-		<link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="../css/animate.min.css">
 		<link rel="stylesheet" href="../css/templatemo-style.css">
-		<link rel='stylesheet' href='../http://fonts.googleapis.com/css?family=Open+Sans:400,700' >
+		<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' >
     <link rel="stylesheet" href="../css/estil.css">
     <link rel="stylesheet" href="../css/estilos.css">
     <link rel="stylesheet" href="../css/ekko-lightbox.min.css">
+      {% block linkcss %} {% endblock %}
 
     <style type="text/css">
 		.auto-style1 {
@@ -49,25 +50,22 @@
          <div class="collapse navbar-collapse">
            <ul class="nav navbar-nav navbar-right">
 
-
+             {% set navigation_bar = [
+                    ('/', 'inicio', 'Inicio'),
+                    ('#', 'nosotros', 'Nosotros'),
+                    ('#', 'equipo', 'Equipo'),
+                    ('#', 'servicios', 'Servicios'),
+                    ('#', 'portafolio', 'Portafolio'),
+                    ('#', 'contacto', 'Contacto'),
+                     ('/application', 'aplicacion', 'Aplicación')
+              ] -%}
 
           {% block opciones %}
 
-          {% set navigation_bar = [
-                 ('/', 'inicio', 'Inicio'),
-                 ('#', 'nosotros', 'Nosotros'),
-                 ('#', 'equipo', 'Equipo'),
-                 ('#', 'servicios', 'Servicios'),
-                 ('#', 'portafolio', 'Portafolio'),
-                 ('#', 'contacto', 'Contacto'),
-                  ('/application', 'aplicacion', 'Aplicación')
-           ] -%}
-
-          {%for href, id, caption in navigation_bar%}
+          {% for href, id, caption in navigation_bar %}
             <li{% if id == active_page %} class="active"{% endif %}>
             <a href="{{href|e}}">{{caption|e}}</a></li>
-          {%endfor%}
-
+          {% endfor %}
 
           {% endblock %}
 
@@ -77,43 +75,65 @@
      </div>
      </nav>
      <!-- end navigation -->
-     <div id="bodycontent">
-       <div class="lineaazul" id="lineaazul">
-         <div id="enterseparar"> </div> <br><br>
-         <div class="row">
-           <div class="col-md-4"></div>
-           <div class="cuadrogrissolido" id='cuadrogrissolido'>
-           <br>
-             <h1>{% block titlepanel %}replace this{% endblock %}</h1>
+
+    <div id="bodycontent">
+
+      <div class="lineaazul" id="lineaazul">
+        <div id="enterseparar"> </div> <br><br>
+        <div class="row">
+
+          <div class="panel panel-default" id="panel">
+             <div class="panel-heading" id="paneltitulo">
+
+                 {% block titlepanel %}replace this{% endblock %}
+
+               </div>
+             <div class="panel-body" id="panelcuerpo">
+               {% block bodypanel %}replace this
+               {% endblock %}
            </div>
-           <div class="cuadrogris" id='cuadrogris'>
-             {% block bodypanel %}replace this{% endblock %}
+         </div>
 
-           	<!-- end:Main Form -->
-           </div>
-         </div> <!-- end:row cuadrogris -->
+        </div> <!-- end:row -->
+      {% block cuerpopagina %}
 
+      {% endblock %}
+        <div id="social" class="row social-footer">
+          <div class="col-md-9">
 
-       </div>
+          </div>
+          <div class="col-md-2">
+           <a href="www.google.com">  <i class="fa fa-google-plus-square fa-3x" > </i> </a>
+           <a href="www.facebook.com">      <i class="fa fa-facebook-square fa-3x"></i>  </a>
+           <a href="www.twitter.com">      <i class="fa fa-twitter-square fa-3x"></i>  </a>
+          </div>
 
-     </div>
+          <div class="col-md-1">
+
+          </div>
+      </div>
+    </div>
+    </div>
+
 
      <footer>
        <!-- start javascript -->
-          <script src="../js/jquery.js"></script>
-          <script src="../js/bootstrap.min.js"></script>
+          <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+          <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
           <script src="../js/jquery.simple-text-rotator.js"></script>
           <script src="../js/smoothscroll.js"></script>
           <script src="../js/wow.min.js"></script>
           <script src="../js/jquery.flexslider.js"></script>
           <script src="../js/templatemo-script.js"></script>
-           <script src="../js/ekko-lightbox.min.js"></script>
+         <script src="../js/ekko-lightbox.min.js"></script>
 
           <!-- end javascript -->
 
          {% block pie %}
 
+
          {% endblock %}
+
 
 
      </footer>

@@ -1,9 +1,9 @@
-# -*- encoding: utf-8 -*-
 import os
 import webapp2
 import jinja2
 import logging
 
+from admin_controller.admin import *
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
 
@@ -21,6 +21,7 @@ bandera= 0
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
+
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -177,14 +178,6 @@ class Profile(Handler):
     def get(self):
         self.render("profile.html")
 
-class Messageadmin(Handler):
-    def get(self):
-        self.render("messageadmin.html")
-
-class Paginaadmin(Handler):
-    def get(self):
-        self.render("paginaadmin.html")
-
 class LogBounceHandler(BounceNotificationHandler):
     def receive(self, bounce_message):
         logging.info('Received bounce post ... [%s]', self.request)
@@ -204,10 +197,10 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/logout',Logout),
                                ('/message',Message ),
                                ('/profile', Profile),
-                               ('/messageadmin',Messageadmin),
-                               ('/Paginaadmin',Paginaadmin),
-                               ('/_ah/mail/',MailHandler),
-                               (LogBounceHandler.mapping()),
+                               ('/admin/messageadmin',Messageadmin),
+                               ('_ah/mail/',MailHandler),
+                               ('/admin', AdminHandler),
+                               ('/admin/AgregarTarea', AgregarTarea),
                                (MailHandler.mapping())
                               ],
                               debug=True, config=config)
