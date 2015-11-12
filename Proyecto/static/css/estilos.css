@@ -18,6 +18,7 @@ body{
 		background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(251,251,251,1) 21%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 97%, rgba(237,237,237,1) 100%);
 		background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(251,251,251,1) 21%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 97%, rgba(237,237,237,1) 100%);
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+		height: 100%;
 }
 
 
