@@ -208,7 +208,6 @@ class OAuth(Handler):
     @decorator.oauth_required
     def post(self):
         bandera = self.request.get("bandera")
-        task_id = self.request.get("task_id")
 
         if ( bandera == "1"):
              task = {
@@ -216,9 +215,13 @@ class OAuth(Handler):
               }
              service.tasks().insert(tasklist='@default', body=task).execute(http=decorator.http())
         elif (bandera == "0"):
+            task_id = self.request.get('task_id',allow_multiple = True)
             # service.tasks().delete(tasklist='@default',task='MTU1MTAxNzI3NzEzNDc3NTI5NTY6MDo0MDU0ODEwMg').execute(http=decorator.http())
-            service.tasks().delete(tasklist='@default',task=task_id).execute(http=decorator.http())
+            # service.tasks().delete(tasklist='@default',task=task_id).execute(http=decorator.http())
+            for a in task_id:
+                service.tasks().delete(tasklist='@default',task=a).execute(http=decorator.http())
         else:
+             task_id = self.request.get('task_id')
              task = service.tasks().get(tasklist='@default', task=task_id).execute(http=decorator.http())
              task['title'] = 'modificado'
              service.tasks().update(tasklist='@default', task=task_id, body=task).execute(http=decorator.http())
@@ -230,7 +233,7 @@ class OAuth(Handler):
         notas = ','.join([task.get('title','') for task in items])
         lista = notas.split(',')
         numero = len(lista)
-        self.render("oauth.html", items=items , bandera=bandera, num=numero)
+        self.render("oauth.html", items=items, bandera=bandera, num=numero)
 
 class Calendario(Handler):
 	@decorator.oauth_required
