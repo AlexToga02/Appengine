@@ -1,0 +1,93 @@
+{% extends "_basepanel.html" %}
+{% block linkcss %}
+  <link rel="stylesheet" href="../css/paneldesple.css">
+  <link rel="stylesheet" href="../css/tasks.css">
+{% endblock %}
+  {% block opciones %}
+
+  {% set navigation_bar = [
+         ('/messageadmin', 'messageadmin', 'Mensajeria'),
+          ('/usuario', 'usuario', 'Usuario')
+   ] -%}
+
+       {% for href, id, caption in navigation_bar %}
+         <li{% if id == active_page %} class="active"{% endif %}>
+         <a href="{{href|e}}">{{caption|e}}</a></li>
+       {% endfor %}
+
+{% endblock %}
+
+{% block titlepanel %}
+    <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" style="color:red;text-decoration: none;">Bienvenido<span class="caret"></span></a></h2>
+          <ul class="dropdown-menu">
+            <li><a href="#" id="addClass">Tareas </a></li>
+            <li class="divider"></li>
+            <li><a href="#">Calendario</a></li>
+            </ul>
+        </li>
+      </ul>
+
+{% endblock %}
+
+  {% block bodypanel %}
+
+
+
+   {% endblock %}
+
+   {% block cuerpopagina %}
+
+    <div class="popup-box chat-popup" id="qnimate">
+    		  <div class="popup-head">
+				        <div class="popup-head-left pull-left"><span>Tareas</span></div>
+    					  <div class="popup-head-right pull-right">
+    						<button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-off"></i></button>
+                </div>
+			  </div>
+        <form  action="/OAuth" method="post">
+
+                <fieldset class="tasks-list">
+
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">title</span>
+                  </label>
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">titl2e</span>
+                  </label>
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">titl3</span>
+                  </label>
+
+                </fieldset>
+
+
+
+
+
+                <div class="popup-messages-footer">
+                		<div class="btn-footer">
+                    <button class="bg_none" type="submit" name="bandera" value="0"><i class="glyphicon glyphicon-trash"></i></button>   <!-- eliminar -->
+
+                      <button  class="bg_none" type="submit" name="bandera" value="3"><i class="glyphicon glyphicon-pencil"></i></button>   <!-- modificar-->
+                      <button class="bg_none pull-right" type="submit" name="bandera" value="1"><i class="glyphicon glyphicon-plus"></i> </button>  <!-- agregar-->
+        			    </div>
+        		    </div>
+            </form>
+
+
+
+	  </div>
+   {% endblock %}
+
+
+  {%block pie%}
+  <script type="text/javascript" src="../js/paneldesple.js"></script>
+  {% endblock%}

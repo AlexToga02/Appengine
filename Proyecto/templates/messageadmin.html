@@ -1,177 +1,88 @@
-{% extends "_base2.html" %}
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-<div class="container">
-  <div class="row">
-    <div class="navbar-header">
-      <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="icon icon-bar"></span>
-        <span class="icon icon-bar"></span>
-        <span class="icon icon-bar"></span>
-      </button>
-      <a  class="navbar-brand">
-      <h3 style="width: 410px" class="auto-style1">• Enterprise Professional Services •</h3></a>
-    </div>
-      <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{user.user}} <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/perfil">Perfil&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-            <li><a href="/logout">Logout  <span class="glyphicon glyphicon-log-out" aria-hidden="true"> </span></a></li>
-
-          </ul>
-        </li>
+{% extends "_basepanel.html" %}
 
 
 
      {% block opciones %}
 
-     {% set navigation_bar = [
-             ('/Paginaadmin', 'paginaadmin', 'Eventos'),
-             ('/usuario', 'usuario', 'Usuario')
-      ] -%}
 
-     {%for href, id, caption in navigation_bar%}
-       <li{% if id == active_page %} class="active"{% endif %}>
-       <a href="{{href|e}}">{{caption|e}}</a></li>
-     {%endfor%}
-
+     <ul class="nav navbar-nav navbar-right">
+       <li class="active dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+         <ul class="dropdown-menu">
+           <li><a href="#">Action</a></li>
+           <li><a href="#">Another action</a></li>
+           <li><a href="#">Something else here</a></li>
+           <li role="separator" class="divider"></li>
+           <li><a href="#">Separated link</a></li>
+         </ul>
+       </li>
+     </ul>
 
      {% endblock %}
-
-      </ul>
-    </div>
-  </div>
-</div>
-</nav>
 <!-- end navigation -->
-
-
-
-{% block titlepanel %}  <h1>Mensajeria</h1>{% endblock %}
+{% block titlepanel %}<h1>Mensajería</h1>{% endblock %}
 
  {% block bodypanel %}
 
-      <div class="row">
-          <br>
-        <div class="col-md-2"></div>
-        <div class="form-group  col-md-2">
-          <botton class="btninbox"><a href="#"><span class="badge">42</span> Inbox </a>
-          </botton>
+
+
+          <div class="row">
+            <div class="form-group  col-md-12">
+
+         <table id="table" class="table table-striped table-bordered"  width="100%" >
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th class="span2">Nombre</th>
+
+                    <th class="span9">Mensaje</th>
+                    <th class="span2">Fecha</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
+                    <td><strong>John Doe</strong></td>
+
+                    <td><strong>Message body goes here</strong></td>
+                    <td><strong>Sept6</strong></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
+                    <td>John Doe</td>
+
+                    <td>Message body goes here</td>
+                    <td>Sept4</td>
+                  </tr>
+
+
+
+                </tbody>
+          </table>
         </div>
 
-        <div class="form-group  col-md-1">
-
-          <button type="button" class="btn btn-primary btn-xs" >+</button>
-        </div>
-
-        <div class="form-group  col-md-3">
-            <div class="col-md-4"></div>
-          <label for="conversacion">Conversacion</label>
-        </div>
-
-        <div class="form-group  col-md-3">
-          <div class="col-md-4"></div>
-          <label for="cerrar"> X</label>
-        </div>
-
-      </div>  <!-- cierra row 4 -->
-
-      <div class="row">
-        <div class="col-md-1"></div>
-        <div class="form-group  col-md-5"> <!-- Div Inbox -->
-
-          <div class="container">
-    <div class="row">
-
-        <div class="col-md-3">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-inbox">
-                </span>Mensajes</a></li>
-            </ul>
-
-            <div class="pull-right">
-                <span class="text-muted"><b>1</b>–<b>50</b> de <b>277</b></span>
-                <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </button>
-                    <button type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </button>
-                </div>
-            </div>
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane fade in active" id="home">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox">
-                                </label>
-                            </div>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            <span class="name" style="min-width: 120px; display: inline-block;">Bhaumik Patel</span>
-                            <span class="">This is big title</span>...
-                            <span>12:10 AM</span>
-                        </a>
-
-                        <a href="#" class="list-group-item">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox">
-                                </label>
-                            </div>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            <span class="name" style="min-width: 120px; display: inline-block;">Bhaumik Patel</span>
-                            <span class="">Holii una du</span>...
-                            <span>12:10 AM</span>
-                        </a>
-
-                        <a href="#" class="list-group-item read">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox">
-                                </label>
-                            </div>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="name" style="min-width: 120px; display: inline-block;">Bhaumik Patel</span>
-                            <span class="">fdfdsfh fdfdf</span>...
-                            <span>12:10 AM</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="tab-pane fade in" id="profile">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <span class="text-center">This tab is empty.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade in" id="messages">
-                    ...</div>
-                <div class="tab-pane fade in" id="settings">
-                    esta basio</div>
-            </div>
-            <!-- Ad -->
-
-            </div>
-        </div>
-    </div>
-
-        </div> <!-- Cierra div Inbox -->
-
-        <div class="form-group  col-md-6">
-          <br> <br> <br>
-          <div class="col-md-3"></div>
-          <textarea type="text" name="mensaje" rows="4" cols="40" placeholder="Mensaje"></textarea>
-
-          <br>
-          <div class="col-md-8"></div>
-            <button type="button" class="btn btn-primary">Enviar</button>
-        </div>
 
       </div>
+{% endblock %}
+
+
+{% block pie %}
+<script src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+
+$('#table').DataTable( {
+          "language": {
+             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+         },
+        // paginate: true,
+        scrollY:   '30vh',
+        scrollCollapse: true,
+        ordering: true,
+        searching:true,
+  } );
+</script>
+
 {% endblock %}

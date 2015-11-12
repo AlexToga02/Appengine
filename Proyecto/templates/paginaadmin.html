@@ -3,7 +3,7 @@
   {% block opciones %}
 
   {% set navigation_bar = [
-         ('/messageadmin', 'messageadmin', 'Mensajeria'),
+         ('/admin/messageadmin', 'messageadmin', 'Mensajeria'),
           ('/usuario', 'usuario', 'Usuario')
    ] -%}
 
@@ -15,7 +15,18 @@
      {% endblock %}
 
 {% block titlepanel %}
-  <label>Bienvenida</label>
+
+    <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" >Bienvenido <span class="caret"></span></a></h2>
+          <ul class="dropdown-menu">
+            <li><a href="#">Tareas </a></li>
+            <li class="divider"></li>
+            <li><a href="#">Calendario</a></li>
+            </ul>
+        </li>
+      </ul>
+
 {% endblock %}
 
  {% block bodypanel %}

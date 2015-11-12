@@ -1,9 +1,9 @@
-# -*- encoding: utf-8 -*-
 import os
 import webapp2
 import jinja2
 import logging
 
+from admin_controller.admin import *
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
 
@@ -156,14 +156,6 @@ class Profile(Handler):
     def get(self):
         self.render("profile.html")
 
-class Messageadmin(Handler):
-    def get(self):
-        self.render("messageadmin.html")
-
-class Paginaadmin(Handler):
-    def get(self):
-        self.render("paginaadmin.html")
-
 config = {}
 config['webapp2_extras.sessions'] = {
     'secret_key': 'some-secret-key',
@@ -177,9 +169,11 @@ app = webapp2.WSGIApplication([('/', Index),
             			       ('/logout',Logout),
                                ('/message',Message ),
                                ('/profile', Profile),
-                               ('/messageadmin',Messageadmin),
-                               ('/Paginaadmin',Paginaadmin),
+                               ('/admin/messageadmin',Messageadmin),
                                ('_ah/mail/',MailHandler),
+                               ('/admin', AdminHandler),
+                               ('/admin/AgregarTarea', AgregarTarea),
                                (MailHandler.mapping())
+
                               ],
                               debug=True, config=config)
