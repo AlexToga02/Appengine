@@ -269,7 +269,6 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('_ah/mail/',MailHandler),
                                ('/admin', AdminHandler),
                                ('/admin/AgregarTarea', AgregarTarea),
-                               (MailHandler.mapping())
                                ('/OAuth',OAuth),
                                ('/calendario',Calendario),
                                (LogBounceHandler.mapping()),
