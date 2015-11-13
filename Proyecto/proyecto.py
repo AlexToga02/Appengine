@@ -90,6 +90,7 @@ class Handler(webapp2.RequestHandler):
 class Cuentas(ndb.Model):
     username = ndb.StringProperty()
     password = ndb.StringProperty()
+    email   =  ndb.StringProperty()
 
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
@@ -131,9 +132,6 @@ class Registro(Handler):
 
     def post(self):
         global bandera
-        global mail_message
-        to_email = self.request.get("reg_email")
-        logging.info("message: " + message)
         bandera= 0
         user= self.request.get('reg_username')
         pw=self.request.get('reg_password')
@@ -152,7 +150,6 @@ class Registro(Handler):
         The toga Team
         """
         message.send()
-
         cuenta=Cuentas(username=user,password=pw,email=correo)
         cuentakey=cuenta.put()
         cuenta_user=cuentakey.get()
@@ -162,6 +159,17 @@ class Registro(Handler):
             self.render("apphome.html",msg=msg,bandera=bandera)
 
 
+class MailHandler(InboundMailHandler):
+    def receive(self, mail_message):
+        for content_type, pl in mail_message.bodies("text/plain"):
+            mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
+            mensaje.put()
+
+class LogBounceHandler(BounceNotificationHandler):
+	def receive(self, bounce_message):
+		logging.info('Received bounce post ... [%s]', self.request)
+		logging.info('Bounce original: %s', bounce_message.original)
+		logging.info('Bounce notification: %s', bounce_message.notification)
 
 class Index(Handler):
     def get(self):
@@ -207,17 +215,6 @@ class Profile(Handler):
     def get(self):
         self.render("profile.html")
 
-class MailHandler(InboundMailHandler):
-    def receive(self, mail_message):
-        for content_type, pl in mail_message.bodies("text/plain"):
-            mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
-            mensaje.put()
-
-class LogBounceHandler(BounceNotificationHandler):
-	def receive(self, bounce_message):
-		logging.info('Received bounce post ... [%s]', self.request)
-		logging.info('Bounce original: %s', bounce_message.original)
-		logging.info('Bounce notification: %s', bounce_message.notification)
 
 #************ oauth2Decorator
 decorator = OAuth2Decorator(
@@ -332,13 +329,12 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/message',Message ),
                                ('/profile', Profile),
                                ('/admin/messageadmin',Messageadmin),
-                               ('_ah/mail/',MailHandler),
                                ('/admin', AdminHandler),
                                ('/admin/AgregarTarea', AgregarTarea),
                                ('/OAuth',OAuth),
                                ('/calendario',Calendario),
+                                (MailHandler.mapping()),
                                (LogBounceHandler.mapping()),
-                               (MailHandler.mapping()),
                                (decorator.callback_path, decorator.callback_handler())
                               ],
                               debug=True, config=config)
