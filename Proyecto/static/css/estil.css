@@ -1,3 +1,6 @@
+body{
+  margin: 0 auto;
+}
 .social-footer a{
   color: #555555;
 
@@ -10,7 +13,7 @@
 #lineaazul{
   background-color: 489DD2;
   height: 170px;
-  width: 1335px;
+  width: 1315px;
   margin: 0 auto;
 }
 
@@ -20,9 +23,7 @@
   width: 100%;
 }
 
-#panel{
-  color: black;
-  height: 470px;
+#divpanel{
   margin: 0 auto;
   width: 80%;
 }
@@ -30,7 +31,10 @@
   color: black;
   height: 90px;
   margin: 0 auto;
-  width: 100%;
+}
+#panelcuerpo{
+  color: black;
+  margin: 0 auto;
 }
 
 #adminpanel{

@@ -80,19 +80,18 @@
 
       <div class="lineaazul" id="lineaazul">
         <div id="enterseparar"> </div> <br><br>
-        <div class="row">
+        <div class="row" id="divpanel">
+            <div class="panel panel-default" id="panel">
+               <div class="panel-heading" id="paneltitulo">
 
-          <div class="panel panel-default" id="panel">
-             <div class="panel-heading" id="paneltitulo">
-
-                 {% block titlepanel %}replace this{% endblock %}
+                   {% block titlepanel %}replace this{% endblock %}
 
                </div>
-             <div class="panel-body" id="panelcuerpo">
-               {% block bodypanel %}replace this
-               {% endblock %}
-           </div>
-         </div>
+               <div class="panel-body" id="panelcuerpo">
+                 {% block bodypanel %}replace this
+                 {% endblock %}
+               </div>
+             </div>
 
         </div> <!-- end:row -->
       {% block cuerpopagina %}
