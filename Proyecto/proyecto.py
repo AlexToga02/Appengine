@@ -22,9 +22,41 @@ from oauth2client.appengine import OAuth2Decorator
 global bandera
 bandera= 0
 
+def day(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[2])
+
+def month(fecha):
+    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    num = vector[1]
+    n=int(num)-1
+    mes = meses[n]
+    return str(mes)
+
+def year(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[0])
+
+def hour(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:19]
+    return hour
+
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
+jinja_env.filters['day'] = day
+jinja_env.filters['month'] = month
+jinja_env.filters['year'] = year
+jinja_env.filters['hour'] = hour
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -227,30 +259,62 @@ class OAuth(Handler):
         self.render("oauth.html", items=items, bandera=bandera, num=numero)
 
 class Calendario(Handler):
-	@decorator.oauth_required
-	def get(self):
-		tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
-		items = tasks.get('items', [])
-		response = '\n'.join([task.get('title','') for task in items])
+    @decorator.oauth_required
+    def get(self):
+        http=decorator.http()
+        request=service_calendar.events().list(calendarId='primary')
+        response_calendar=request.execute(http=http)
+        events =  response_calendar['items']
 
-		#############################################################
-		# PARA CALENDARIO
-		http=decorator.http()
-		request=service_calendar.events().list(calendarId='primary')
-		response_calendar=request.execute(http=http)
-		logging.info("RESPUESTA" + str(response_calendar))
-		for events in response_calendar['items']:
-			summary=events['summary']
+        self.render("calendario.html",eventos=events)
 
-		#############################################################
-		self.render("calendario.html", response=response, response_calendar=summary)
+    @decorator.oauth_required
+    def post(self):
+        http=decorator.http()
+        bandera = self.request.get("bandera")
+
+        if ( bandera == "1"):
+            event = {
+                'summary': 'Google I/O 2015',
+                'location': '800 Howard St., San Francisco, CA 94103',
+                'description': 'A chance to hear more about Google\'s developer products.',
+                'start': {
+                    'dateTime': '2015-11-28T09:00:00',
+                    'timeZone': 'America/Mexico_City',
+                },
+                'end': {
+                    'dateTime': '2015-11-28T10:00:00',
+                    'timeZone': 'America/Mexico_City',
+                },
+            }
+            request = service_calendar.events().insert(calendarId='primary', body=event)
+            response_calendar=request.execute(http=http)
+        elif (bandera == "0"):
+            calendar_id = self.request.get('calendar_id',allow_multiple = True)
+
+            for a in calendar_id:
+                request=service_calendar.events().delete(calendarId='primary', eventId=a)
+                response_calendar=request.execute(http=http)
+        else:
+             calendar_id = self.request.get('calendar_id')
+             event=service_calendar.events().get(calendarId='primary', eventId=calendar_id).execute(http=http)
+
+             event['summary'] = 'Appointment at Somewhere'
+             updated_event = service_calendar.events().update(calendarId='primary', eventId=calendar_id , body=event).execute(http=http)
 
 
+
+
+        request=service_calendar.events().list(calendarId='primary')
+        response_calendar=request.execute(http=http)
+        events =  response_calendar['items']
+        self.render("calendario.html",eventos=events)
 
 config = {}
 config['webapp2_extras.sessions'] = {
     'secret_key': 'some-secret-key',
 }
+
 
 app = webapp2.WSGIApplication([('/', Index),
             			       ('/application',AppHome),
