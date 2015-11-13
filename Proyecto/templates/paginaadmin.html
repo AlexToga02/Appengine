@@ -3,6 +3,7 @@
   <link rel="stylesheet" href="../css/paneldesple.css">
   <link rel="stylesheet" href="../css/tasks.css">
   <link rel="stylesheet" href="../css/agregartarea.css">
+  <link rel="stylesheet" href="../css/eventos.css">
 
 {% endblock %}
   {% block opciones %}
@@ -34,13 +35,41 @@
 {% endblock %}
 
   {% block bodypanel %}
+  <div class="row col-md-6">
+    <br><br>
+              <ul class="event-list">
+                <li>
+                  <time datetime="2014-07-20">
+                    <span class="day">4</span>
+                    <span class="month">Jul</span>
+                    <span class="year">2014</span>
+                    <span class="time">ALL DAY</span>
+                  </time>
+                  <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" />
+                  <div class="info">
+                    <h2 class="title">Independence Day</h2>
+                    <p class="desc">United States Holiday</p>
+                  </div>
+                  <div class="social">
+                    <ul>
+                      <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
+                      <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
+                      <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+    </div>
 
+    <div class="col-md-3" id="agragrevento">
 
+    </div>
 
    {% endblock %}
 
    {% block cuerpopagina %}
 
+    <!-- codigo tareas -->
     <div class="popup-box chat-popup" id="qnimate">
     		  <div class="popup-head">
 				        <div class="popup-head-left pull-left"><span>Tareas</span></div>
@@ -78,58 +107,53 @@
                       <!-- <button class="bg_none pull-right" type="submit" name="bandera" value="1"><i class="glyphicon glyphicon-plus"></i> </button> -->  <!-- agregar-->
 
         			    </div>
-        		    </div>
             </form>
 
-                                  <div class="feedback right">
-                                    <div class="tooltips">
-                                        <div class="btn-group dropup">
-                                          <button type="button" class="btn btn-primary dropdown-toggle btn-circle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-plus fa-2x" title="Report Bug"></i>
-                                          </button>
-                                          <ul class="dropdown-menu dropdown-menu-right dropdown-menu-form">
-                                            <li>
-                                              <div class="report">
-                                                <h2 class="text-center">Agregar Tarea</h2>
-                                                <form class="doo" method="post" action="/OAuth">
-                                                  <div class="col-sm-12">
-                                                    <textarea required name="comment" class="form-control" placeholder="Please tell us what bug or issue you've found, provide as much detail as possible."></textarea>
-                                                    <input name="screenshot" type="hidden" class="screen-uri">
-                                                    <span class="screenshot pull-right"><i class="fa fa-camera cam" title="Take Screenshot"></i></span>
-                                                   </div>
-                                                   <div class="col-sm-12 clearfix">
-                                                    <button class="btn btn-primary btn-block" name="bandera" value="1">Enviar</button>
-                                                   </div>
-                                               </form>
-                                              </div>
-                                              <div class="loading text-center hideme">
-                                                <h2>Please wait...</h2>
-                                                <h2><i class="fa fa-refresh fa-spin"></i></h2>
-                                              </div>
-                                              <div class="reported text-center hideme">
-                                                <h2>Thank you!</h2>
-                                                <p>Your submission has been received, we will review it shortly.</p>
-                                                 <div class="col-sm-12 clearfix">
-                                                    <button class="btn btn-success btn-block do-close">Close</button>
-                                                 </div>
-                                              </div>
-                                              <div class="failed text-center hideme">
-                                                <h2>Oh no!</h2>
-                                                <p>It looks like your submission was not sent</p>
-                                                 <div class="col-sm-12 clearfix">
-                                                    <button class="btn btn-danger btn-block do-close">Close</button>
-                                                 </div>
-                                              </div>
+                  <div class="feedback right">
+                    <div class="tooltips">
+                        <div class="btn-group dropup">
+                          <button type="button" class="btn btn-primary dropdown-toggle btn-circle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-plus fa-2x" title="Report Bug"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right dropdown-menu-form">
+                            <li>
+                              <div class="report">
+                                <h2 class="text-center">Agregar Tarea</h2>
+                                <form class="doo" method="post" action="/OAuth">
+                                  <div class="col-sm-12">
+                                    <textarea required name="comment" class="form-control" placeholder="Please tell us what bug or issue you've found, provide as much detail as possible."></textarea>
+                                    <input name="screenshot" type="hidden" class="screen-uri">
+                                    <span class="screenshot pull-right"><i class="fa fa-camera cam" title="Take Screenshot"></i></span>
+                                   </div>
+                                   <div class="col-sm-12 clearfix">
+                                    <button class="btn btn-primary btn-block" name="bandera" value="1">Enviar</button>
+                                   </div>
+                               </form>
+                              </div>
+                              <div class="loading text-center hideme">
+                                <h2>Please wait...</h2>
+                                <h2><i class="fa fa-refresh fa-spin"></i></h2>
+                              </div>
+                              <div class="reported text-center hideme">
+                                <h2>Thank you!</h2>
+                                <p>Your submission has been received, we will review it shortly.</p>
+                                 <div class="col-sm-12 clearfix">
+                                    <button class="btn btn-success btn-block do-close">Close</button>
+                                 </div>
+                              </div>
+                              <div class="failed text-center hideme">
+                                <h2>Oh no!</h2>
+                                <p>It looks like your submission was not sent</p>
+                                 <div class="col-sm-12 clearfix">
+                                    <button class="btn btn-danger btn-block do-close">Close</button>
+                                 </div>
+                              </div>
 
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      </div>
-                                  </div>
-
-
-
-
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                  </div>
 
 	  </div>
    {% endblock %}
