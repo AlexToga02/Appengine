@@ -1,5 +1,5 @@
 /*
-	Crystal Template 
+	Crystal Template
 	http://www.templatemo.com/preview/templatemo_437_crystal
 */
 
@@ -11,7 +11,7 @@ body
 	line-height: 24px;
     position: relative;
   }
-  
+
 .blue {
 	color: #06C;
 }
@@ -32,12 +32,12 @@ body
 @media (min-width: 768px) {
   .container {
     width: 700px;
-  }  
+  }
 }
 @media (min-width: 992px) {
   .container {
     width: 900px;
-  }  
+  }
 }
 @media (min-width: 1200px) {
   .container {
@@ -147,7 +147,7 @@ h1 { margin: 0; }
   display: block;
 }
 .flexslider .slides > li {
-  display: none;  
+  display: none;
   padding: 0;
   position: relative;
   -webkit-backface-visibility: hidden;
@@ -268,7 +268,7 @@ h1 { margin: 0; }
   z-index: 2;
   display: block;
   opacity: 1;
-  
+
   -webkit-transform: rotateY(180deg) translate3d(0,0,0);
   -ms-transform: rotateY(180deg) translate3d(0,0,0);
   transform: rotateY(180deg) translate3d(0,0,0);
@@ -395,7 +395,7 @@ h1 { margin: 0; }
 #team .team_thumb:hover .team_overlay
   {
     opacity: 0.8;
-  }  
+  }
 #team .team_description
   {
     background: #303030;
@@ -422,7 +422,7 @@ h1 { margin: 0; }
     display: inline-block;
     position: relative;
   }
-ul 
+ul
   {
     margin-bottom: 0;
   }
@@ -613,7 +613,7 @@ ul
     bottom: 0;
     left: 0;
   }
-  
+
 #work .work_thumb:hover .work_overlay
   {
     opacity: 0.8;
@@ -778,8 +778,8 @@ ul
   }
   h1 { font-size: 26px; }
   h2 { font-size: 18px; }
-  #home .btn { 
-    margin-top: 10px; 
+  #home .btn {
+    margin-top: 10px;
     width: 180px;
     height: 40px;
     padding-top: 8px;
@@ -807,7 +807,7 @@ ul
     width: auto;
     height: auto;
     padding: 10px 20px;
-    margin-top: 10px; 
+    margin-top: 10px;
   }
 }
 
