@@ -37,28 +37,38 @@
   {% block bodypanel %}
   <div class="row col-md-6">
     <br><br>
-              <ul class="event-list">
-                <li>
-                  <time datetime="2014-07-20">
-                    <span class="day">4</span>
-                    <span class="month">Jul</span>
-                    <span class="year">2014</span>
-                    <span class="time">ALL DAY</span>
-                  </time>
-                  <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" />
-                  <div class="info">
-                    <h2 class="title">Independence Day</h2>
-                    <p class="desc">United States Holiday</p>
-                  </div>
-                  <div class="social">
-                    <ul>
-                      <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-                      <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-                      <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
+    <ul class="event-list">
+  {% for evento in eventos %}
+
+      <li>
+        <time datetime="2014-07-20 0000">
+          <span class="day">{{evento.start['dateTime']|day}}</span>
+          <span class="month">{{evento.start['dateTime']|month}}</span>
+          <span class="year">{{evento.start['dateTime']|year}}</span>
+          <span class="time">12:00 AM</span>
+        </time>
+        <div class="info">
+          <h2 class="title">{{ evento.summary }}</h2>
+          <p class="desc">{{evento.location}}</p>
+          <p>{{evento.description}} </p>
+          <p>
+            {{evento.start['dateTime']|hour}}
+          </p>
+        </div>
+        <div class="social">
+          <ul>
+            <li class="facebook" style="width:33%;"><a href="#facebook"><input type="checkbox" name="calendar_id" value="{{evento.id}}" class=""></a></li>
+            <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
+            <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
+          </ul>
+        </div>
+      </li>
+
+      {% endfor %}
+
+
+
+    </ul>
     </div>
     <br><br>
     <div class="col-md-2"> </div>
@@ -82,25 +92,15 @@
 			  </div>
         <form  action="/OAuth" method="post">
 
-                <fieldset class="tasks-list">
-
-                  <label class="tasks-list-item">
-                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
-                    <span class="tasks-list-mark"></span>
-                    <span class="tasks-list-desc">title</span>
-                  </label>
-                  <label class="tasks-list-item">
-                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
-                    <span class="tasks-list-mark"></span>
-                    <span class="tasks-list-desc">titl2e</span>
-                  </label>
-                  <label class="tasks-list-item">
-                    <input type="checkbox" name="task_id" value="aa" class="tasks-list-cb">
-                    <span class="tasks-list-mark"></span>
-                    <span class="tasks-list-desc">titl3</span>
-                  </label>
-
-                </fieldset>
+          <fieldset class="tasks-list">
+          {% for task in items %}
+            <label class="tasks-list-item">
+              <input type="checkbox" name="task_id" value="{{task.id}}" class="tasks-list-cb">
+              <span class="tasks-list-mark"></span>
+              <span class="tasks-list-desc">{{task.title}}</span>
+            </label>
+          {% endfor %}
+          </fieldset>
 
                 <dy iv class="popup-messages-footer">
                 		<div class="btn-footer">
@@ -162,7 +162,7 @@
    {% endblock %}
 
 
-  {% block pie %}
+  {%block pie%}
   <script type="text/javascript" src="../js/paneldesple.js"></script>
   <script type="text/javascript" src="../js/agregartarea.js"></script>
-  {% endblock %}
+  {% endblock%}

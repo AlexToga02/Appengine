@@ -6,11 +6,43 @@ from webapp2_extras import sessions
 from apiclient.discovery import build
 from oauth2client.appengine import OAuth2Decorator
 
+
+def day(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[2])
+
+def month(fecha):
+    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    num = vector[1]
+    n=int(num)-1
+    mes = meses[n]
+    return str(mes)
+
+def year(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[0])
+
+def hour(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:19]
+    return hour
+
 template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
 
 
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
+jinja_env.filters['day'] = day
+jinja_env.filters['month'] = month
+jinja_env.filters['year'] = year
+jinja_env.filters['hour'] = hour
 
 #************ oauth2Decorator
 decorator = OAuth2Decorator(
@@ -50,11 +82,11 @@ class Handler(webapp2.RequestHandler):
 class AdminHandler(Handler):
     @decorator.oauth_required
     def get(self):
-         tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
-         items = tasks.get('items', [])
-         notas = ','.join([task.get('title','') for task in items])
-         lista = notas.split(',')
-         numero = len(lista)
+        tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+        items = tasks.get('items', [])
+        notas = ','.join([task.get('title','') for task in items])
+        lista = notas.split(',')
+        numero = len(lista)
 
         http=decorator.http()
         request=service_calendar.events().list(calendarId='primary')
