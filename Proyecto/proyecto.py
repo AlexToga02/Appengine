@@ -224,7 +224,7 @@ decorator = OAuth2Decorator(
 service = build('tasks','v1')
 service_calendar = build('calendar', 'v3')
 
-class OAuth(Handler):
+class Tareas(Handler):
     @decorator.oauth_required
     def get(self):
          tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
@@ -232,24 +232,25 @@ class OAuth(Handler):
          notas = ','.join([task.get('title','') for task in items])
          lista = notas.split(',')
          numero = len(lista)
-         self.render("oauth.html", items=items,num=numero)
+         self.render("tareas.html", items=items,num=numero)
 
     @decorator.oauth_required
     def post(self):
         bandera = self.request.get("bandera")
 
         if ( bandera == "1"):
-             task = {
-              'title': 'New Task'
-              }
-             service.tasks().insert(tasklist='@default', body=task).execute(http=decorator.http())
+            title=self.request.get("title")
+            task = {
+                'title': title
+            }
+            service.tasks().insert(tasklist='@default', body=task).execute(http=decorator.http())
         elif (bandera == "0"):
             task_id = self.request.get('task_id',allow_multiple = True)
             # service.tasks().delete(tasklist='@default',task='MTU1MTAxNzI3NzEzNDc3NTI5NTY6MDo0MDU0ODEwMg').execute(http=decorator.http())
             # service.tasks().delete(tasklist='@default',task=task_id).execute(http=decorator.http())
             for a in task_id:
                 service.tasks().delete(tasklist='@default',task=a).execute(http=decorator.http())
-        else:
+        elif (bandera=="2"):
              task_id = self.request.get('task_id')
              task = service.tasks().get(tasklist='@default', task=task_id).execute(http=decorator.http())
              task['title'] = 'modificado'
@@ -262,7 +263,7 @@ class OAuth(Handler):
         notas = ','.join([task.get('title','') for task in items])
         lista = notas.split(',')
         numero = len(lista)
-        self.render("oauth.html", items=items, bandera=bandera, num=numero)
+        self.render("paginaadmin.html",bandera=bandera,items=items,num=numero)
 
 class Calendario(Handler):
     @decorator.oauth_required
@@ -311,7 +312,7 @@ class Calendario(Handler):
         request=service_calendar.events().list(calendarId='primary')
         response_calendar=request.execute(http=http)
         events =  response_calendar['items']
-        self.render("calendario.html",eventos=events)
+        self.render("paginaadmin.html",eventos=events)
 
 
 config = {}
@@ -331,7 +332,7 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/admin/messageadmin',Messageadmin),
                                ('/admin', AdminHandler),
                                ('/admin/AgregarTarea', AgregarTarea),
-                               ('/OAuth',OAuth),
+                               ('/tareas',Tareas),
                                ('/calendario',Calendario),
                                (MailHandler.mapping()),
                                (LogBounceHandler.mapping()),

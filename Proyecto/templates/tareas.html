@@ -1,0 +1,75 @@
+   
+   <form  action="/tareas" method="post">
+
+                <fieldset class="tasks-list" style="position: absolute;
+                padding: 2px;
+                background: white;
+                width: 298px;
+                height: 270px;
+                overflow-y: scroll;">
+
+                {% for task in items %}
+                  <label class="tasks-list-item">
+                    <input type="checkbox" name="task_id" value="{{task.id}}" class="tasks-list-cb">
+                    <span class="tasks-list-mark"></span>
+                    <span class="tasks-list-desc">{{task.title}}</span>
+                  </label>
+                {% endfor %}
+                </fieldset>
+
+                            <div class="popup-messages-footer">
+                            		<div class="btn-footer">
+                                <button class="btn btn-danger dropdown-toggle btn-circle btn-lg" type="submit" name="bandera" value="0"><i class="fa fa-trash-o fa-2x"></i></button>   <!-- eliminar -->
+
+                                  <button  class="btn btn-warning dropdown-toggle btn-circle btn-lg" type="submit" name="bandera" value="2"><i class="fa fa-pencil fa-2x"></i></button>   <!-- modificar-->
+                                  <!-- <button class="bg_none pull-right" type="submit" name="bandera" value="1"><i class="glyphicon glyphicon-plus"></i> </button> -->  <!-- agregar-->
+
+                    			    </div>
+                        </form>
+
+                            <div class="feedback right">
+                                <div class="tooltips">
+                                    <div class="btn-group dropup">
+                                      <button type="button" class="btn btn-primary dropdown-toggle btn-circle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-plus fa-2x" title="Report Bug"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right dropdown-menu-form">
+                                        <li>
+                                          <div class="report">
+                                            <h2 class="text-center">Agregar Tarea</h2>
+                                            <form class="doo" method="post" action="/tareas">
+                                              <div class="col-sm-12">
+                                                <textarea required name="title" class="form-control" placeholder="Please tell us what bug or issue you've found, provide as much detail as possible."></textarea>
+
+
+                                               </div>
+                                               <div class="col-sm-12 clearfix">
+                                                <button class="btn btn-primary btn-block" name="bandera"  value="1">Enviar</button>
+                                               </div>
+                                           </form>
+                                          </div>
+                                          <div class="loading text-center hideme">
+                                            <h2>Please wait...</h2>
+                                            <h2><i class="fa fa-refresh fa-spin"></i></h2>
+                                          </div>
+                                          <div class="reported text-center hideme">
+                                            <h2>Thank you!</h2>
+                                            <p>Your submission has been received, we will review it shortly.</p>
+                                             <div class="col-sm-12 clearfix">
+                                                <button class="btn btn-success btn-block do-close">Close</button>
+                                             </div>
+                                          </div>
+                                          <div class="failed text-center hideme">
+                                            <h2>Oh no!</h2>
+                                            <p>It looks like your submission was not sent</p>
+                                             <div class="col-sm-12 clearfix">
+                                                <button class="btn btn-danger btn-block do-close">Close</button>
+                                             </div>
+                                          </div>
+
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                              </div>
+                              <script type="text/javascript" src="js/agregartarea.js"></script>

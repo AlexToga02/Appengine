@@ -1,8 +1,10 @@
 $(function(){
 $("#addClass").click(function () {
         $('#qnimate').addClass('popup-box-on');
+        $('#tareas').load('/tareas'));
           $('#social').hide();
-        
+
+
           });
 
           $("#removeClass").click(function () {
