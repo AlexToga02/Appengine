@@ -47,6 +47,10 @@ class Messageadmin(Handler):
     def get(self):
         self.render("messageadmin.html")
 
-class AgregarTarea(Handler):
+class Eventos(Handler):
     def get(self):
-        self.render("agregartarea.html")
+        self.render("agregarevento.html")
+
+class VerEvento(Handler):
+    def get(self):
+        self.render("verevento.html")

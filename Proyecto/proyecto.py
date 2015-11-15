@@ -156,6 +156,7 @@ class Profile(Handler):
     def get(self):
         self.render("profile.html")
 
+
 config = {}
 config['webapp2_extras.sessions'] = {
     'secret_key': 'some-secret-key',
@@ -172,7 +173,8 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/admin/messageadmin',Messageadmin),
                                ('_ah/mail/',MailHandler),
                                ('/admin', AdminHandler),
-                               ('/admin/AgregarTarea', AgregarTarea),
+                               ('/admin/eventos', Eventos),
+                               ('/admin/VerEvento', VerEvento),
                                (MailHandler.mapping())
 
                               ],

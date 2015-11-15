@@ -1,99 +1,137 @@
 {% extends "_basepanel.html" %}
+{% block linkcss %}
+<link rel="stylesheet" href="../css/eventos.css">
+{% endblock %}
 
-     {% block opciones %}
+  {% block opciones %}
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/perfil">Perfil</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Salir</a></li>
+          </ul>
+        </li>
+      </ul>
 
-     {% set navigation_bar = [
-             ('/usuario', 'usuario', 'Usuario')
-      ] -%}
+{% endblock %}
 
-     {%for href, id, caption in navigation_bar%}
-       <li{% if id == active_page %} class="active"{% endif %}>
-       <a href="{{href|e}}">{{caption|e}}</a></li>
-     {%endfor%}
+  {% block titlepanel %}<h1>Perfil</h1>{% endblock %}
+  {% block bodypanel %}
+  <div class="login-form-1">
+<form id="perfilcomp-form" class="text-left" method="post" action="/perfilcomp">
+   <div class="row">
+     <div class="col-md-4"></div>
+     <div class="form-group  col-md-6">
+       <label for="Nombre">Nombre Completo</label>
+       <input type="text" class="form-control" id="nombrecom" name="nombrecom" placeholder="Nombre Completo">
+     </div>
 
-     {% endblock %}
-<!-- end navigation -->
+     <div class="col-md-4"></div>
+     <div class="form-group  col-md-6">
+       <label for="correo">Correo</label>
+       <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo">
+     </div>
 
-{% block titlepanel %}<h1>Perfil</h1>{% endblock %}
- {% block bodypanel %}
- <br>
- <div class="login-form-1">
-  <form id="perfilcomp-form" class="text-left" method="post" action="/perfilcomp">
+     <div class="col-md-4"></div>
+     <div class="form-group  col-md-3">
+       <label for="profesion">Profesion</label>
+       <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesion">
+     </div>
+
+     <div class="form-group  col-md-3">
+       <label for="puesto">Puesto</label>
+       <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto">
+     </div>
+
+     <div class="col-md-4"></div>
+     <div class="form-group  col-md-4">
+       <label for="usuario">Usuario</label>
+       <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
+     </div>
+
+     <div class="form-group  col-md-2">
+       <br>
+       <!-- <input type="button" class="form-control btn btn-info " id="btndomicilio" name="btndomicilio" value="Domicilio"> -->
+       <a  id="btndomicilio" style="font-size:15px;" href="#"> <span class="glyphicon glyphicon-home"> </span> Agregar Domicilio</a>
+     </div>
+     </div> <!-- cierra row 1 -->
+
      <div class="row">
+     <div class="domicilio" id="divdomi">
        <div class="col-md-4"></div>
-       <div class="form-group  col-md-6">
-         <label for="Nombre">Nombre Completo</label>
-         <input type="text" class="form-control" id="nombrecom" name="nombrecom" placeholder="Nombre Completo">
+       <div class="form-group  col-md-3">
+         <label for="ciudad">Ciudad</label>
+         <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad">
        </div>
 
-       <div class="col-md-4"></div>
-       <div class="form-group  col-md-6">
-         <label for="correo">Correo</label>
-         <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo">
+       <div class="form-group  col-md-3">
+         <label for="pais">Pais</label>
+         <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais">
        </div>
 
        <div class="col-md-4"></div>
        <div class="form-group  col-md-4">
-         <label for="usuario">Usuario</label>
-         <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
+         <label for="colonia">Colonia</label>
+         <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia">
        </div>
 
        <div class="form-group  col-md-2">
-         <label for="domicilio">Domicilio</label>
-         <input type="submit" class="form-control" id="domicilio" name="domicilio" value="Domicilio">
+         <label for="codpos">Codigo Postal</label>
+         <input type="text" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal">
        </div>
-       <div class="domicilio" id="estrucdomi">
-         <div class="col-md-4"></div>
-         <div class="form-group  col-md-3">
-           <label for="ciudad">Ciudad</label>
-           <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad">
-         </div>
 
-         <div class="form-group  col-md-3">
-           <label for="pais">Pais</label>
-           <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais">
-         </div>
+       <div class="col-md-4"></div>
+       <div class="form-group  col-md-3">
+         <label for="calle">Calle</label>
+         <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle">
+       </div>
 
-         <div class="col-md-4"></div>
-         <div class="form-group  col-md-4">
-           <label for="colonia">Colonia</label>
-           <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia">
-         </div>
+       <div class="form-group  col-md-2">
+         <label for="numext">Num Ext</label>
+         <input type="text" class="form-control" id="numext" name="numext" placeholder="# Ext">
+       </div>
 
-         <div class="form-group  col-md-2">
-           <label for="codpos">Codigo Postal</label>
-           <input type="text" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal">
-         </div>
+       <div class="form-group  col-md-1">
+         <label for="numint">Int</label>
+         <input type="text" class="form-control" id="numext" name="numint" placeholder="# Int">
+       </div>
+     </div> <!--  cierra divdomi -->
 
-         <div class="col-md-4"></div>
-         <div class="form-group  col-md-3">
-           <label for="calle">Calle</label>
-           <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle">
-         </div>
-
-         <div class="form-group  col-md-2">
-           <label for="numext">Num Ext</label>
-           <input type="text" class="form-control" id="numext" name="numext" placeholder="# Ext">
-         </div>
-
-         <div class="form-group  col-md-1">
-           <label for="numint">Int</label>
-           <input type="text" class="form-control" id="numext" name="numint" placeholder="# Int">
-         </div>
-       </div> <!--  cierra div estrucdomi -->
-
-
-     </div> <!-- cierra row 1 -->
-     <br>
-     <div class="col-md-6"></div>
-     <div class="form-group  col-md-2">
-       <input type="submit" class="form-control" id="btnperfil" name="btnperfil" value="Actualizar">
-     </div>
-     <br>
-
-
-
-  </form>
+   </div> <!-- cierra row domicilio -->
+   <br>
+   <div class="col-md-6"></div>
+   <div class="form-group  col-md-2">
+     <input type="submit" class="form-control btn btn-success" id="btnperfil" name="btnperfil" value="Actualizar">
+   </div>
+</form>
 </div>
+   {% endblock %}
 
- {% endblock %}
+
+   {% block cuerpopagina %}
+
+   {% endblock %}
+
+
+  {%block pie%}
+    <script type="text/javascript">
+    $(function(){
+       $('#divdomi').hide();
+       $("#btndomicilio").click(function(event){
+
+
+           $('#divdomi').toggle();
+
+       });
+
+      //  $("#domicilio").click(function(){
+      //      $('#btndomicilio').hide();
+      //  });
+
+    });
+    </script>
+
+  {% endblock%}

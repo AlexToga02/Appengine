@@ -2,26 +2,25 @@
 
   {% block linkcss %}
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="../css/eventos.css">
    {% endblock %}
 
      {% block opciones %}
-
-
      <ul class="nav navbar-nav navbar-right">
        <li class="active dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
          <ul class="dropdown-menu">
-           <li><a href="#">Action</a></li>
-           <li><a href="#">Another action</a></li>
-           <li><a href="#">Something else here</a></li>
+           <li><a href="/admin">Entrada</a></li>
+           <li><a href="/admin/messageadmin">Mensajeria</a></li>
            <li role="separator" class="divider"></li>
-           <li><a href="#">Separated link</a></li>
+           <li><a href="#">Salir</a></li>
          </ul>
        </li>
      </ul>
 
      {% endblock %}
 <!-- end navigation -->
+
 {% block titlepanel %}<h1>Mensajería</h1>{% endblock %}
 
  {% block bodypanel %}
