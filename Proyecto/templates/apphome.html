@@ -8,13 +8,13 @@
   ] -%}
 
 {% block opciones %}
-    {%for href, id, caption in navigation_bar%}
+    {% for href, id, caption in navigation_bar %}
       <li{% if id == active_page %} class="active"{% endif %}>
       <a  id="login" href="{{href|e}}" data-title="<img src='img/team-img-2.png' width='10%' alt='imagen'
       style='display: block;
     margin-left: auto;
     margin-right: auto;'/>" >{{caption|e}}</a></li>
-    {%endfor%}
+    {% endfor %}
 {% endblock %}
 
 

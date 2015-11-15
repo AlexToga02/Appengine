@@ -5,6 +5,8 @@
   <link rel="stylesheet" href="../css/agregartarea.css">
   <link rel="stylesheet" href="../css/eventos.css">
   <link rel="stylesheet" href="../css/gmailscrollbar.css">
+  <link rel="stylesheet" href="../css/modal.css">
+
 
 {% endblock %}
   {% block opciones %}
@@ -21,6 +23,7 @@
 
 {% endblock %}
 
+
 {% block titlepanel %}
     <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -28,7 +31,7 @@
           <ul class="dropdown-menu">
             <li><a href="#" id="addClass">Tareas </a></li>
             <li class="divider"></li>
-            <li><a href="#">Calendario</a></li>
+            <li><a  href="#" >Calendario</a></li>
             </ul>
         </li>
       </ul>
@@ -36,9 +39,12 @@
 {% endblock %}
 
   {% block bodypanel %}
+  <form  action="/admin/calendario" method="post">
   <div class="row col-md-7">
     <br><br>
     <ul class="event-list">
+
+
   {% for evento in eventos %}
 
       <li>
@@ -58,9 +64,9 @@
         </div>
         <div class="social">
           <ul>
-            <li class="facebook" style="width:33%;"><a href="#facebook"><input type="checkbox" name="calendar_id" value="{{evento.id}}" class=""></a></li>
-            <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-            <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
+            <li class="facebook" style="width:33%;"><a ><input id="check" type="checkbox" name="calendar_id" value="{{evento.id}}"></a></li>
+            <li class="twitter" style="width:34%;"> <a class="event_id" id="{{evento.id}}"> <span class="glyphicon glyphicon-trash"></span></a> </li>
+            <li class="google-plus" style="width:33%;"><a class="event_id2"  id="{{evento.id}}" ><i class="fa fa-pencil"></i></a></li>
           </ul>
         </div>
       </li>
@@ -68,17 +74,18 @@
       {% endfor %}
 
 
-
     </ul>
     </div>
     <br><br>
     <div class="col-md-2"> </div>
-    <div class="row col-md-3" id="agregarevento">
+    <div class="row col-md-3">
+      <button type="submit" class="btn btn-info btn-lg"   name="bandera"  value="1"><span class="glyphicon glyphicon-plus"></span>Agregar Evento </button>
       <br>
-      <div class="col-md-2"> </div>
-      <button type="button" class="btn btn-primary" style="background-color:489DD2; color:1C4646;"><strong>Agregar Evento</strong></button>
-    </div>
+      <br>
+      <button type="submit" class="btn btn-danger btn-lg"  name="bandera" value="0"> <span class="glyphicon glyphicon-trash"></span>Eliminar Eventos </button>
 
+    </div>
+    </form>
    {% endblock %}
 
    {% block cuerpopagina %}
@@ -100,19 +107,60 @@
 
 
   {% block pie %}
+
   <script type="text/javascript">
+
+  function deselect(e) {
+    $('.pop').slideFadeToggle(function() {
+      e.removeClass('selected');
+    });
+  }
+
   $(function(){
-  $("#addClass").click(function () {
-          $('#qnimate').addClass('popup-box-on');
-          $('#tareas').load('/tareas');
-            $('#social').hide();
+          $("#addClass").click(function () {
+                $('#qnimate').addClass('popup-box-on');
+                $('#tareas').load('/admin/tareas');
+                $('#social').hide();
             });
 
             $("#removeClass").click(function () {
-          $('#qnimate').removeClass('popup-box-on');
-            $('#social').show();
+                $('#qnimate').removeClass('popup-box-on');
+                $('#social').show();
             });
-  })
+
+            $('a.event_id').click(function(){
+                var id = $(this).attr("id");
+                var d="http://proyecto-eps.appspot.com/admin";
+
+                $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
+                .done(function( data ) {
+                   window.location.href=d;
+
+                });
+
+            });
+            $('a.event_id2').click(function(){
+                var id = $(this).attr("id");
+                var d="http://proyecto-eps.appspot.com/admin";
+
+                $.post( "/admin/calendario", { bandera: "2", calendar_id: id })
+                .done(function( data ) {
+                   window.location.href=d;
+
+                });
+
+            });
+
+
+
+
+
+  });
+
+  $.fn.slideFadeToggle = function(easing, callback) {
+    return this.animate({ opacity: 'toggle', height: 'toggle' }, 'fast', easing, callback);
+  };
+
 
   </script>
 

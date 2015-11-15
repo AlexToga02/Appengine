@@ -95,10 +95,104 @@ class AdminHandler(Handler):
 
         self.render("paginaadmin.html",eventos=events,items=items,num=numero)
 
+
+class Tareas(Handler):
+    @decorator.oauth_required
+    def get(self):
+         tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+         items = tasks.get('items', [])
+         notas = ','.join([task.get('title','') for task in items])
+         lista = notas.split(',')
+         numero = len(lista)
+         self.render("tareas.html", items=items,num=numero)
+
+    @decorator.oauth_required
+    def post(self):
+        bandera = self.request.get("bandera")
+
+        if ( bandera == "1"):
+            title=self.request.get("title")
+            task = {
+                'title': title
+            }
+            service.tasks().insert(tasklist='@default', body=task).execute(http=decorator.http())
+        elif (bandera == "0"):
+            task_id = self.request.get('task_id',allow_multiple = True)
+            # service.tasks().delete(tasklist='@default',task='MTU1MTAxNzI3NzEzNDc3NTI5NTY6MDo0MDU0ODEwMg').execute(http=decorator.http())
+            # service.tasks().delete(tasklist='@default',task=task_id).execute(http=decorator.http())
+            for a in task_id:
+                service.tasks().delete(tasklist='@default',task=a).execute(http=decorator.http())
+        elif (bandera=="2"):
+             task_id = self.request.get('task_id')
+             task = service.tasks().get(tasklist='@default', task=task_id).execute(http=decorator.http())
+             task['title'] = 'modificado'
+             service.tasks().update(tasklist='@default', task=task_id, body=task).execute(http=decorator.http())
+
+
+
+        tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+        items = tasks.get('items', [])
+        notas = ','.join([task.get('title','') for task in items])
+        lista = notas.split(',')
+        numero = len(lista)
+        self.render("paginaadmin.html",bandera=bandera,items=items,num=numero)
+
+
+class Calendario(Handler):
+    @decorator.oauth_required
+    def get(self):
+        http=decorator.http()
+        request=service_calendar.events().list(calendarId='primary')
+        response_calendar=request.execute(http=http)
+        events =  response_calendar['items']
+
+        self.render("calendario.html",eventos=events)
+
+    @decorator.oauth_required
+    def post(self):
+        http=decorator.http()
+        bandera = self.request.get("bandera")
+
+        if ( bandera == "1"):
+            event = {
+                'summary': 'Google I/O 2015',
+                'location': '800 Howard St., San Francisco, CA 94103',
+                'description': 'A chance to hear more about Google\'s developer products.',
+                'start': {
+                    'dateTime': '2015-11-28T09:00:00',
+                    'timeZone': 'America/Mexico_City',
+                },
+                'end': {
+                    'dateTime': '2015-11-28T10:00:00',
+                    'timeZone': 'America/Mexico_City',
+                },
+            }
+            request = service_calendar.events().insert(calendarId='primary', body=event)
+            response_calendar=request.execute(http=http)
+        elif (bandera == "0"):
+            calendar_id = self.request.get('calendar_id',allow_multiple = True)
+
+            for a in calendar_id:
+                request=service_calendar.events().delete(calendarId='primary', eventId=a)
+                response_calendar=request.execute(http=http)
+        elif  (bandera == "2"):
+             calendar_id = self.request.get('calendar_id')
+             event=service_calendar.events().get(calendarId='primary', eventId=calendar_id).execute(http=http)
+
+             event['summary'] = 'Appointment at Somewhere'
+             updated_event = service_calendar.events().update(calendarId='primary', eventId=calendar_id , body=event).execute(http=http)
+
+        request=service_calendar.events().list(calendarId='primary')
+        response_calendar=request.execute(http=http)
+        events =  response_calendar['items']
+        self.render("paginaadmin.html",eventos=events)
+
+
+
 class Messageadmin(Handler):
     def get(self):
         self.render("messageadmin.html")
 
-class AgregarTarea(Handler):
+class Eventos(Handler):
     def get(self):
-        self.render("agregartarea.html")
+        self.render("eventoform.html")
