@@ -31,7 +31,7 @@ def year(fecha):
 
 def hour(fecha):
     datelong= str(fecha)
-    hour= datelong[11:19]
+    hour= datelong[11:16]
     return hour
 
 template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
@@ -135,12 +135,19 @@ class Tareas(Handler):
         notas = ','.join([task.get('title','') for task in items])
         lista = notas.split(',')
         numero = len(lista)
-        self.render("paginaadmin.html",bandera=bandera,items=items,num=numero)
+
+        http=decorator.http()
+        request=service_calendar.events().list(calendarId='primary')
+        response_calendar=request.execute(http=http)
+        events =  response_calendar['items']
+
+        self.render("paginaadmin.html",eventos=events,bandera=bandera,items=items,num=numero)
 
 
 class Calendario(Handler):
     @decorator.oauth_required
     def get(self):
+
         http=decorator.http()
         request=service_calendar.events().list(calendarId='primary')
         response_calendar=request.execute(http=http)
@@ -154,16 +161,27 @@ class Calendario(Handler):
         bandera = self.request.get("bandera")
 
         if ( bandera == "1"):
+            summary=self.request.get("eventName")
+            location=self.request.get("lugar")
+            description = self.request.get("descripcion")
+            fechaini=self.request.get("fechaini")
+            hora=self.request.get("horaini")
+            datetimeS=fechaini+'T'+hora
+            fechafin=self.request.get("fechafin")
+            horaf=self.request.get("horafin")
+            datetimeE=fechafin+'T'+horaf
+
+
             event = {
-                'summary': 'Google I/O 2015',
-                'location': '800 Howard St., San Francisco, CA 94103',
-                'description': 'A chance to hear more about Google\'s developer products.',
+                'summary': summary,
+                'location': location,
+                'description': description,
                 'start': {
-                    'dateTime': '2015-11-28T09:00:00',
+                    'dateTime': datetimeS,
                     'timeZone': 'America/Mexico_City',
                 },
                 'end': {
-                    'dateTime': '2015-11-28T10:00:00',
+                    'dateTime': datetimeE,
                     'timeZone': 'America/Mexico_City',
                 },
             }
