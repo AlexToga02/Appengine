@@ -65,8 +65,8 @@
         <div class="social">
           <ul>
             <li class="facebook" style="width:33%;"><a ><input id="check" type="checkbox" name="calendar_id" value="{{evento.id}}"></a></li>
-            <li class="twitter" style="width:34%;"> <a   class="event_id" id="{{evento.id}}"> <span class="glyphicon glyphicon-trash"></span></a> </li>
-            <li class="google-plus" style="width:33%;"><a class="event_id2"  id="{{evento.id}}" ><i class="fa fa-pencil"></i></a></li>
+            <li class="twitter" style="width:34%;"> <a  class="event_id" id="{{evento.id}}"> <span class="glyphicon glyphicon-trash"></span></a> </li>
+            <li class="google-plus" style="width:33%;"><a  href="/admin/calendario?calendar_id={{evento.id}}" class="event_id2"  id="{{evento.id}}" ><i class="fa fa-pencil"></i></a></li>
           </ul>
         </div>
       </li>
@@ -139,18 +139,20 @@
                 });
 
             });
-            $('a.event_id2').click(function(){
-                var id = $(this).attr("id");
-                var d="http://proyecto-eps.appspot.com/admin";
-
-                $.post( "/admin/calendario", { bandera: "2", calendar_id: id })
-                .done(function( data ) {
-                   window.location.href=d;
-
-                });
-
-            });
-
+            // $('a.event_id2').click(function(){
+            //     var id = $(this).attr("id");
+            //
+            //     var d="http://proyecto-eps.appspot.com/calendario?calendar_id="+id;
+            //       window.location.href=d;
+            //
+            //     // $.post( "/admin/calendario", { bandera: "2", calendar_id: id })
+            //     // .done(function( data ) {
+            //     //    window.location.href=d;
+            //     //
+            //     // });
+            //
+            // });
+            //
 
 
 

@@ -34,6 +34,15 @@ def hour(fecha):
     hour= datelong[11:16]
     return hour
 
+def date(fecha):
+    datelong= str(fecha)
+    hour= datelong[0:10]
+    return hour
+
+def time(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:19]
+    return hour
 template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
 
 
@@ -43,6 +52,8 @@ jinja_env.filters['day'] = day
 jinja_env.filters['month'] = month
 jinja_env.filters['year'] = year
 jinja_env.filters['hour'] = hour
+jinja_env.filters['date'] = date
+jinja_env.filters['time'] = time
 
 #************ oauth2Decorator
 decorator = OAuth2Decorator(
@@ -149,11 +160,13 @@ class Calendario(Handler):
     def get(self):
 
         http=decorator.http()
-        request=service_calendar.events().list(calendarId='primary')
-        response_calendar=request.execute(http=http)
-        events =  response_calendar['items']
+        # request=service_calendar.events().list(calendarId='primary')
+        # response_calendar=request.execute(http=http)
+        # events =  response_calendar['items']
+        calendar_id = self.request.get('calendar_id')
+        event=service_calendar.events().get(calendarId='primary', eventId=calendar_id).execute(http=http)
 
-        self.render("calendario.html",eventos=events)
+        self.render("eventoupdate.html",evento=event)
 
     @decorator.oauth_required
     def post(self):
@@ -194,11 +207,33 @@ class Calendario(Handler):
                 request=service_calendar.events().delete(calendarId='primary', eventId=a)
                 response_calendar=request.execute(http=http)
         elif  (bandera == "2"):
-             calendar_id = self.request.get('calendar_id')
-             event=service_calendar.events().get(calendarId='primary', eventId=calendar_id).execute(http=http)
+             event_id = self.request.get('calendar_id')
+             summary = self.request.get("summary")
+             description=self.request.get("description")
+             location= self.request.get("location")
+             fechaini=self.request.get("fechaini")
+             fechafin=self.request.get("fechafin")
+             horaini=self.request.get("horaini")
+             horafin=self.request.get("horafin")
+             datetimeS=fechaini+'T'+horaini
+             datetimeE=fechafin+'T'+horafin
+             event = service_calendar.events().get(calendarId='primary', eventId=event_id ).execute(http=http)
 
-             event['summary'] = 'Appointment at Somewhere'
-             updated_event = service_calendar.events().update(calendarId='primary', eventId=calendar_id , body=event).execute(http=http)
+             event = {
+                 'summary': summary,
+                 'location': location,
+                 'description': description,
+                 'start': {
+                     'dateTime': datetimeS,
+                     'timeZone': 'America/Mexico_City',
+                 },
+                 'end': {
+                     'dateTime': datetimeE,
+                     'timeZone': 'America/Mexico_City',
+                 },
+             }
+
+             updated_event = service_calendar.events().update(calendarId='primary', eventId=event_id , body=event).execute(http=http)
 
         request=service_calendar.events().list(calendarId='primary')
         response_calendar=request.execute(http=http)
