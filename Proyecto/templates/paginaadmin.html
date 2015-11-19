@@ -130,30 +130,14 @@
 
             $('a.event_id').click(function(){
                 var id = $(this).attr("id");
-                var d="http://proyecto-eps.appspot.com/admin";
-
                 $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
-                .done(function( data ) {
-                   window.location.href=d;
+                .sucess(function( data ) {
+                   window.location.href="/admin";
 
                 });
 
             });
-            // $('a.event_id2').click(function(){
-            //     var id = $(this).attr("id");
-            //
-            //     var d="http://proyecto-eps.appspot.com/calendario?calendar_id="+id;
-            //       window.location.href=d;
-            //
-            //     // $.post( "/admin/calendario", { bandera: "2", calendar_id: id })
-            //     // .done(function( data ) {
-            //     //    window.location.href=d;
-            //     //
-            //     // });
-            //
-            // });
-            //
-
+      
 
 
 
