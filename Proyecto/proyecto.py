@@ -3,8 +3,9 @@ import webapp2
 import jinja2
 import logging
 import httplib2
-import datetime
 
+
+from Crypto.Hash import SHA256
 from admin_controller.admin import *
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
@@ -19,49 +20,23 @@ from apiclient.discovery import build
 from oauth2client.appengine import OAuth2Decorator
 
 
+
+
 global bandera
 bandera= 0
-
-def day(fecha):
-    datelong= str(fecha)
-    date= datelong[0:10]
-    vector= date.split('-')
-    return str(vector[2])
-
-def month(fecha):
-    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
-    datelong= str(fecha)
-    date= datelong[0:10]
-    vector= date.split('-')
-    num = vector[1]
-    n=int(num)-1
-    mes = meses[n]
-    return str(mes)
-
-def year(fecha):
-    datelong= str(fecha)
-    date= datelong[0:10]
-    vector= date.split('-')
-    return str(vector[0])
-
-def hour(fecha):
-    datelong= str(fecha)
-    hour= datelong[11:19]
-    return hour
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
-jinja_env.filters['day'] = day
-jinja_env.filters['month'] = month
-jinja_env.filters['year'] = year
-jinja_env.filters['hour'] = hour
 
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
+
+def check_password(clear_password, password_hash):
+    return SHA256.new(clear_password).hexdigest() == password_hash
 
 class Handler(webapp2.RequestHandler):
     def dispatch(self):
@@ -103,7 +78,7 @@ class Login(Handler):
     def post(self):
         global bandera
         user = self.request.get('lg_username')
-        pw = self.request.get('lg_password')
+        pw=SHA256.new(self.request.get('lg_password')).hexdigest()
 
         logging.info('Checking user='+ str(user) + 'pw='+ str(pw))
         msg = ''
@@ -134,7 +109,7 @@ class Registro(Handler):
         global bandera
         bandera= 0
         user= self.request.get('reg_username')
-        pw=self.request.get('reg_password')
+        pw=SHA256.new(self.request.get('reg_password')).hexdigest()
         correo =self.request.get('reg_email')
 
         message = mail.EmailMessage(sender="Example.com Support <proyecto-eps@appspot.gserviceaccount.com>",
@@ -182,14 +157,17 @@ class Index(Handler):
 
 class AppHome(Handler):
    def get(self):
-       global bandera
-       bandera=0
-       user = self.session.get('user')
-       logging.info('Checkin index user value='+str(user))
-       template_values={
-           'user':user
-           }
-       self.render("apphome.html", user=template_values)
+       if self.session.get('user'):
+           self.redirect("/admin")
+       else:
+           global bandera
+           bandera=0
+           user = self.session.get('user')
+           logging.info('Checkin index user value='+str(user))
+           template_values={
+               'user':user
+               }
+           self.render("apphome.html", user=template_values)
 
 class Sitios(Handler):
    def get(self):

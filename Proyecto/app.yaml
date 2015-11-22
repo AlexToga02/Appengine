@@ -16,14 +16,17 @@ handlers:
 
 - url: /fonts
   static_dir: static/fonts
+  mime_type: application/font-woff2
 
 
 - url: /.*
   script: proyecto.app
+  secure: always
 
 
 - url: /admin/.*
   script: proyecto.app
+  secure: always
 
 
 - url: /_ah/mail/.+
@@ -40,6 +43,9 @@ libraries:
 
 - name: jinja2
   version: latest
+
+- name: pycrypto
+  version: "2.6"
 
 inbound_services:
 - mail_bounce

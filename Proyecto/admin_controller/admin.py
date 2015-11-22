@@ -5,7 +5,7 @@ import jinja2
 from webapp2_extras import sessions
 from apiclient.discovery import build
 from oauth2client.appengine import OAuth2Decorator
-
+from Crypto.Hash import SHA256
 
 def day(fecha):
     datelong= str(fecha)
@@ -43,6 +43,7 @@ def time(fecha):
     datelong= str(fecha)
     hour= datelong[11:19]
     return hour
+
 template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
 
 
@@ -89,6 +90,9 @@ class Handler(webapp2.RequestHandler):
 
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
+
+def check_password(clear_password, password_hash):
+    return SHA256.new(clear_password).hexdigest() == password_hash
 
 class AdminHandler(Handler):
     @decorator.oauth_required

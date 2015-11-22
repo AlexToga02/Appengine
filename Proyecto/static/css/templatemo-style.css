@@ -2,13 +2,25 @@
 	Crystal Template
 	http://www.templatemo.com/preview/templatemo_437_crystal
 */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url("../fonts/sans.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url("../fonts/opensansbold.woff2") format('woff2');
+}
 
 body
   {
     background: #FFFFFF;
     color: #555555;
     font-family: 'Open Sans', sans-serif;
-	line-height: 24px;
+	  line-height: 24px;
     position: relative;
   }
 
@@ -619,79 +631,6 @@ ul
     opacity: 0.8;
   }
 /* end work */
-
-/* start pricing */
-#pricing
-  {
-    min-height: 300px;
-    padding: 80px 0 80px 0;
-  }
-#pricing h3
-  {
-    font-weight: bold;
-    letter-spacing: 1px !important;
-    padding-bottom: 30px;
-  }
-#pricing p
-  {
-    font-weight: 400;
-  }
-#pricing .plan
-  {
-    margin: 40px 0 0 0;
-  }
-#pricing .plan_one
-  {
-    background-color: #404040;
-    padding: 30px 0 0 0;
-  }
-#pricing .plan_two
-  {
-    background: #66AF33;
-    padding: 30px 0 0 0;
-  }
-#pricing .plan_three
-  {
-    background: #404040;
-    padding: 30px 0 0 0;
-  }
-#pricing .plan_four
-  {
-    background: #66AF33;
-    padding: 30px 0 0 0;
-  }
-#pricing .plan .plan_title
-  {
-    background: #DDDDDD;
-    padding: 30px;
-    margin: 0;
-  }
-#pricing .plan ul
-  {
-    padding: 0;
-  }
-#pricing .plan ul li
-  {
-    color: #FFFFFF;
-    display: block;
-    padding: 14px 0 14px 0;
-  }
-#pricing .plan .btn
-  {
-    background: transparent;
-    border-color: #FFFFFF;
-    border-radius: 2px;
-    width: 140px;
-    margin: 10px 10px 40px 10px;
-    -webkit-transition: all 0.4s ease-in-out;
-            transition: all 0.4s ease-in-out;
-  }
-#pricing .plan .btn:hover
-  {
-    background: #FFFFFF;
-    color: #66AF33;
-  }
-/* end pricing */
 
 /* start contact */
 #contact
