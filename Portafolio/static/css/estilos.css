@@ -9,6 +9,11 @@ body{
 
 }
 
+#footer{
+	background-image: url(http://deals.vroomvroomvroom.com.au/images/bg-footer.png);
+	height: 5%;
+}
+
 #imagen-banner img{
  position:absolute;
  float: left;
@@ -26,7 +31,7 @@ body{
 }
 
 
-#cuerpo{	
+#cuerpo{
   background: #cf2a27;
   color: black;
   height: auto;
