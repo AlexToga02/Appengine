@@ -67,6 +67,35 @@ class Cuentas(ndb.Model):
     password = ndb.StringProperty()
     email   =  ndb.StringProperty()
 
+
+class Domicilioo(ndb.Model):
+    calle = ndb.StringProperty()
+    num_int = ndb.StringProperty()
+    num_ext = ndb.IntegerProperty()
+    colonia = ndb.StringProperty()
+    ciudad = ndb.StringProperty()
+    pais = ndb.StringProperty()
+    codpos = ndb.IntegerProperty()
+
+class NombreCompleto(ndb.Model):
+    nombres= ndb.StringProperty()
+    apellidos= ndb.StringProperty()
+
+class Usuario(ndb.Model):
+    nomcompleto = ndb.StructuredProperty(NombreCompleto, repeated=True)
+    domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
+    profesion = ndb.StringProperty()
+    puesto = ndb.StringProperty()
+    cuenta = ndb.StructuredProperty(Cuentas,repeated=True)
+
+class Factura(ndb.Model):
+    nomempresa = ndb.StringProperty(required=True)
+    domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
+    correo = ndb.StringProperty(required=True)
+    rfc = ndb.StringProperty(required=True)
+
+
+
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
 
@@ -87,14 +116,15 @@ class Login(Handler):
             bandera = 1
             self.render("apphome.html", bandera=bandera)
         else:
-            consulta=Cuentas.query(ndb.AND(Cuentas.username==user, Cuentas.password==pw )).get()
+            consulta=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.password==pw)).get()
+
             if consulta is not None:
                 logging.info('POST consulta=' + str(consulta))
                 #Vinculo el usuario obtenido de mi datastore con mi sesion.
                 bandera=0
-                self.session['user'] = consulta.username
+                self.session['user'] =consulta.cuenta[0].username
                 logging.info("%s just logged in" % user)
-                self.redirect('/')
+                self.redirect('/perfil')
             else:
                 logging.info('POST consulta=' + str(consulta))
                 bandera = 2
@@ -109,7 +139,6 @@ class Registro(Handler):
         global bandera
         bandera= 0
         user= self.request.get('reg_username')
-        pw=SHA256.new(self.request.get('reg_password')).hexdigest()
         correo =self.request.get('reg_email')
 
         message = mail.EmailMessage(sender="Example.com Support <proyecto-eps@appspot.gserviceaccount.com>",
@@ -125,11 +154,18 @@ class Registro(Handler):
         The toga Team
         """
         message.send()
-        cuenta=Cuentas(username=user,password=pw,email=correo)
-        cuentakey=cuenta.put()
-        cuenta_user=cuentakey.get()
+        pw=SHA256.new(self.request.get('reg_password')).hexdigest()
+        email=self.request.get('reg_email')
+        nombres=self.request.get('reg_firstname')
+        apellidos=self.request.get('reg_lastname')
 
-        if cuenta_user == cuenta:
+        usuario=Usuario(cuenta=[Cuentas(username= user,password=pw,email=email)],
+                        nomcompleto=[NombreCompleto(nombres=nombres,apellidos=apellidos)],
+                        domicilio=[Domicilioo(calle=" ")])
+        userkey=usuario.put()
+        cuenta_user=userkey.get()
+
+        if cuenta_user == usuario:
             msg= "Gracias Por Registarse..."
             self.render("apphome.html",msg=msg,bandera=bandera)
 
@@ -189,9 +225,84 @@ class Message(Handler):
     def get(self):
         self.render("message.html")
 
+class EntradaUsuario(Handler):
+    def get(self):
+        self.render("entradausuario.html")
+
+class DFactura(Handler):
+    def get(self):
+
+        self.render("dfacturacion.html")
+
+    def post(self):
+        nomempresa= self.request.get('nomempresa')
+        correo=self.request.get('correo')
+        rfc=self.request.get('rfc')
+        pais=self.request.get('pais')
+        ciudad=self.request.get('ciudad')
+        calle= self.request.get('calle')
+        colonia=self.request.get('colonia')
+        num_int=self.request.get('numint')
+        num_ext=int(self.request.get('numext'))
+        codpos=int(self.request.get('codpos'))
+
+        facturas=Factura(nomempresa=nomempresa,
+                        rfc=rfc,
+                        correo=correo,
+                        domicilio=[Domicilioo(pais=pais,
+                                              ciudad=ciudad,
+                                              calle=calle,
+                                              colonia=colonia,
+                                              num_ext=num_ext,
+                                              num_int=num_int,
+                                              codpos=codpos)])
+        facturaskey=facturas.put()
+        cuenta_factura=facturaskey.get()
+
+        if cuenta_factura == facturas:
+            msg= "Datos Guardados Correctamente"
+            self.render("dfacturacion.html",msg=msg)
 class Profile(Handler):
     def get(self):
-        self.render("profile.html")
+        if self.session.get('user'):
+            user = self.session.get('user')
+            consulta=Usuario.query(Usuario.cuenta.username==user).get()
+            self.render("profile.html", query=consulta,  user=user)
+
+    def post(self):
+        nombres= self.request.get('nombres')
+        apellidos = self.request.get('apellidos')
+        correo = self.request.get('correo')
+        profesion= self.request.get('profesion')
+        puesto = self.request.get('puesto')
+        calle = self.request.get('calle')
+        num_int = self.request.get('numint')
+        num_ext = int(self.request.get('numext'))
+        colonia = self.request.get('colonia')
+        ciudad = self.request.get('ciudad')
+        pais = self.request.get('pais')
+        codpos = int(self.request.get('codpos'))
+        user = self.session.get('user')
+        consulta=Usuario.query(Usuario.cuenta.username==user).get()
+
+        if consulta is not None:
+
+            consulta.nomcompleto[0].nombres = nombres
+            consulta.nomcompleto[0].apellidos = apellidos
+            consulta.cuenta[0].email = correo
+            consulta.profesion = profesion
+            consulta.puesto = puesto
+            consulta.domicilio[0].pais = pais
+            consulta.domicilio[0].ciudad = ciudad
+            consulta.domicilio[0].colonia = colonia
+            consulta.domicilio[0].calle = calle
+            consulta.domicilio[0].codpos = codpos
+            consulta.domicilio[0].num_int = num_int
+            consulta.domicilio[0].num_ext = num_ext
+            consulta.put()
+        msg="Perfil Actualizado"
+        self.render("profile.html",  query=consulta, msg=msg)
+
 
 
 #************ oauth2Decorator
@@ -224,6 +335,10 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/admin/tareas',Tareas),
                                ('/admin/calendario',Calendario),
                                ('/admin/evento',Eventos),
+                               ('/admin/VerEvento', VerEvento),
+                               ('/entradausuario',EntradaUsuario),
+                               ('/dfacturacion',DFactura),
+                               ('/admin/facturas', Facturas),
                                (MailHandler.mapping()),
                                (LogBounceHandler.mapping()),
                                (decorator.callback_path, decorator.callback_handler())

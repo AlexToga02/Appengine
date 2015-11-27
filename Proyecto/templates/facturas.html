@@ -29,29 +29,28 @@
 
           <div class="row">
             <div class="form-group  col-md-12">
-
-         <table id="table" class="table table-striped table-bordered" cellspacing="0"  width="100%" >
+         <table id="table" class="table table-striped table-bordered"  width="100%" >
                 <thead>
                   <tr>
                     <th></th>
-                    <th class="span2">Nombre</th>
-                    <th class="span9">Mensaje</th>
-                    <th class="span2">Fecha</th>
+                    <th class="span2">Empresa</th>
+                    <th class="span7">Domicilio</th>
+                    <th class="span2">RFC</th>
+                    <th class="span2">Correo</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr>
-                    <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
-                    <td><strong>John Doe</strong></td>
-                    <td><strong>Message body goes here</strong></td>
-                    <td><strong>Sept6</strong></td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
-                    <td>John Doe</td>
-                    <td>Message body goes here</td>
-                    <td>Sept4</td>
-                  </tr>
+                  {% for factura in facturas%}
+                    <tr>
+                      <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
+                      <td><strong>{{factura.nomempresa}}</strong></td>
+                      <td><strong>{{factura.domicilio[0].calle }}  #{{factura.domicilio[0].num_ext }} int. {{factura.domicilio[0].num_int }}, colonia {{factura.domicilio[0].colonia}}, {{factura.domicilio[0].ciudad }}, {{factura.domicilio[0].pais }}, C.P. {{factura.domicilio[0].codpos }}</strong></td>
+                      <td><strong>{{factura.rfc}}</strong></td>
+                      <td><strong>{{factura.correo}}</strong></td>
+                    </tr>
+                  {% endfor %}
+
                 </tbody>
           </table>
         </div>

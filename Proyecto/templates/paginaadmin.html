@@ -9,25 +9,26 @@
 
 
 {% endblock %}
-  {% block opciones %}
 
-  {% set navigation_bar = [
-         ('/admin/messageadmin', 'messageadmin', 'Mensajeria'),
-          ('/usuario', 'usuario', 'Usuario')
-   ] -%}
-
-       {% for href, id, caption in navigation_bar %}
-         <li{% if id == active_page %} class="active"{% endif %}>
-         <a href="{{href|e}}">{{caption|e}}</a></li>
-       {% endfor %}
-
+{% block opciones %}
+  <ul class="nav navbar-nav navbar-right">
+    <li class="active dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/admin">Entrada</a></li>
+        <li><a href="/admin/messageadmin">Mensajeria</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Salir</a></li>
+      </ul>
+    </li>
+  </ul>
 {% endblock %}
 
 
 {% block titlepanel %}
     <ul class="nav navbar-nav">
         <li class="dropdown">
-          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" style="color:107298;text-decoration: none;">Bienvenido<span class="caret"></span></a></h2>
+          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" style="color:308C96;text-decoration: none;">Bienvenido<span class="caret"></span></a></h2>
           <ul class="dropdown-menu">
             <li><a href="#" id="addClass">Tareas </a></li>
             <li class="divider"></li>
@@ -89,7 +90,6 @@
    {% endblock %}
 
    {% block cuerpopagina %}
-
     <!-- codigo tareas -->
     <div class="popup-box chat-popup" id="qnimate">
     		  <div class="popup-head">
@@ -102,52 +102,45 @@
         </div>
 
 
-	  </div>
    {% endblock %}
 
 
   {% block pie %}
 
-  <script type="text/javascript">
+    <script type="text/javascript">
 
-  function deselect(e) {
-    $('.pop').slideFadeToggle(function() {
-      e.removeClass('selected');
-    });
-  }
+      function deselect(e) {
+        $('.pop').slideFadeToggle(function() {
+          e.removeClass('selected');
+        });
+      }
 
-  $(function(){
-          $("#addClass").click(function () {
-                $('#qnimate').addClass('popup-box-on');
-                $('#tareas').load('/admin/tareas');
-                $('#social').hide();
-            });
-
-            $("#removeClass").click(function () {
-                $('#qnimate').removeClass('popup-box-on');
-                $('#social').show();
-            });
-
-            $('a.event_id').click(function(){
-                var id = $(this).attr("id");
-                $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
-                .sucess(function( data ) {
-                   window.location.href="/admin";
-
+      $(function(){
+              $("#addClass").click(function () {
+                    $('#qnimate').addClass('popup-box-on');
+                    $('#tareas').load('/admin/tareas');
+                    $('#social').hide();
                 });
 
-            });
-      
+                $("#removeClass").click(function () {
+                    $('#qnimate').removeClass('popup-box-on');
+                    $('#social').show();
+                });
 
+                $('a.event_id').click(function(){
+                    var id = $(this).attr("id");
+                    $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
+                    .sucess(function( data ) {
+                       window.location.href="/admin";
 
+                    });
 
-  });
+                });
+      });
 
-  $.fn.slideFadeToggle = function(easing, callback) {
-    return this.animate({ opacity: 'toggle', height: 'toggle' }, 'fast', easing, callback);
-  };
-
-
-  </script>
+      $.fn.slideFadeToggle = function(easing, callback) {
+        return this.animate({ opacity: 'toggle', height: 'toggle' }, 'fast', easing, callback);
+      };
+    </script>
 
   {% endblock %}

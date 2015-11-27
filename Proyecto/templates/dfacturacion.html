@@ -19,11 +19,10 @@
 
 {% endblock %}
 
-  {% block titlepanel %}<h1>Perfil</h1>{% endblock %}
+  {% block titlepanel %}<h1>Datos de Facturacion</h1>{% endblock %}
   {% block bodypanel %}
   <div class="login-form-1">
-    <!-- {{query}} -->
-
+    {{query}}
     {% if msg %}
 
       <div class="alert alert-success alert-dismissible" role="alert">
@@ -31,41 +30,31 @@
           <strong>{{msg}}</strong>
       </div>
     {% endif %}
-    <form id="perfilcomp-form" class="text-left" method="post" action="/perfil">
+
+    <form id="perfilcomp-form" class="text-left" method="post" action="/dfacturacion">
        <div class="row" id="actualizar">
 
-         <div class="col-md-4"></div>
-         <div class="form-group  col-md-3">
-           <label for="Nombres">Nombres</label>
-           <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" value="{{query.nomcompleto[0].nombres}}">
-         </div>
-         <div class="col-md-4"></div>
-         <div class="form-group  col-md-3">
-           <label for="apellidos">Apellidos</label>
-           <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="{{query.nomcompleto[0].apellidos}}">
+         <div class="col-md-4"> </div>
+         <div class="form-group  col-md-6">
+           <label for="nomempresa">Nombre de la empresa</label>
+           <input type="text" class="form-control" id="nomempresa" name="nomempresa" placeholder="Nombre de la empresa" required="True">
          </div>
 
          <div class="col-md-4"></div>
          <div class="form-group  col-md-6">
            <label for="correo">Correo</label>
-           <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo" value="{{query.cuenta[0].email}}">
+           <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo" required="True">
          </div>
 
          <div class="col-md-4"></div>
          <div class="form-group  col-md-3">
-           <label for="profesion">Profesion</label>
-           <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesion" value="{{query.profesion}}">
+           <label for="rfc">RFC</label>
+           <input type="text" class="form-control" id="rfc" name="rfc" placeholder="RFC" required="True">
          </div>
 
-         <div class="form-group  col-md-3">
-           <label for="puesto">Puesto</label>
-           <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto" value="{{query.puesto}}">
-         </div>
-
-         <div class="col-md-4"></div>
+         <div class="col-md-6"></div>
          <div class="form-group  col-md-2">
            <h4><strong>Domicilio</strong></h4>
-           <!-- <a  id="btndomicilio" style="font-size:15px;" href="#"> <span class="glyphicon glyphicon-home"> </span> Agregar Domicilio</a> -->
          </div>
          </div> <!-- cierra row 1 -->
 
@@ -74,39 +63,39 @@
            <div class="col-md-4"></div>
            <div class="form-group  col-md-3">
              <label for="pais">Pais</label>
-             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais" value="{{query.domicilio[0].pais}}">
+             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais" required="True">
            </div>
 
            <div class="form-group  col-md-3">
              <label for="ciudad">Ciudad</label>
-             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad" value="{{query.domicilio[0].ciudad}}">
+             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad" required="True">
            </div>
 
            <div class="col-md-4"></div>
            <div class="form-group  col-md-4">
              <label for="colonia">Colonia</label>
-             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" value="{{query.domicilio[0].colonia}}">
+             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" required="True">
            </div>
 
            <div class="form-group  col-md-2">
              <label for="codpos">Codigo Postal</label>
-             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal" value="{{query.domicilio[0].codpos}}">
+             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal" required="True" >
            </div>
 
            <div class="col-md-4"></div>
            <div class="form-group  col-md-3">
              <label for="calle">Calle</label>
-             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" value="{{query.domicilio[0].calle}}">
+             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" required="True">
            </div>
 
            <div class="form-group  col-md-2">
              <label for="numext">Num Ext</label>
-             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext" value="{{query.domicilio[0].num_ext}}">
+             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext" required="True" >
            </div>
 
            <div class="form-group  col-md-1">
              <label for="numint">Interior</label>
-             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int" value="{{query.domicilio[0].num_int}}">
+             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int" required="True">
            </div>
          </div> <!--  cierra divdomi -->
 
@@ -114,12 +103,12 @@
        <br>
        <div class="col-md-6"></div>
        <div class="form-group  col-md-2">
-         <input type="submit" class="form-control btn btn-success" id="btnactualizar" name="btnactualizar" value="Actualizar">
+         <input type="submit" class="form-control btn btn-success" id="btnactualizar" name="btnactualizar" value="Guardar Datos">
        </div>
        <br>
 
     </form>
-</div> <!-- div arriba de form-->
+</div>
    {% endblock %}
 
 
