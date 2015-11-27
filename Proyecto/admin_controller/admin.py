@@ -3,6 +3,7 @@ import os
 import jinja2
 
 from webapp2_extras import sessions
+from google.appengine.ext import ndb
 
 
 template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
@@ -54,3 +55,22 @@ class Eventos(Handler):
 class VerEvento(Handler):
     def get(self):
         self.render("verevento.html")
+class Domicilioo(ndb.Model):
+    calle = ndb.StringProperty()
+    num_int = ndb.StringProperty()
+    num_ext = ndb.IntegerProperty()
+    colonia = ndb.StringProperty()
+    ciudad = ndb.StringProperty()
+    pais = ndb.StringProperty()
+    codpos = ndb.IntegerProperty()
+
+class Factura(ndb.Model):
+    nomempresa = ndb.StringProperty(required=True)
+    domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
+    correo = ndb.StringProperty(required=True)
+    rfc = ndb.StringProperty(required=True)
+
+class Facturas(Handler):
+    def get(self):
+        consulta= Factura.query().fetch()
+        self.render("facturas.html", facturas=consulta)

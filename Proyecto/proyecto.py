@@ -76,8 +76,8 @@ class Usuario(ndb.Model):
 class Factura(ndb.Model):
     nomempresa = ndb.StringProperty(required=True)
     domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
-    folio = ndb.IntegerProperty(required=True)
-    RFC = ndb.StringProperty(required=True)
+    correo = ndb.StringProperty(required=True)
+    rfc = ndb.StringProperty(required=True)
 
 
 class Correos(ndb.Model):
@@ -192,8 +192,37 @@ class EntradaUsuario(Handler):
 
 class DFactura(Handler):
     def get(self):
+
         self.render("dfacturacion.html")
 
+    def post(self):
+        nomempresa= self.request.get('nomempresa')
+        correo=self.request.get('correo')
+        rfc=self.request.get('rfc')
+        pais=self.request.get('pais')
+        ciudad=self.request.get('ciudad')
+        calle= self.request.get('calle')
+        colonia=self.request.get('colonia')
+        num_int=self.request.get('numint')
+        num_ext=int(self.request.get('numext'))
+        codpos=int(self.request.get('codpos'))
+
+        facturas=Factura(nomempresa=nomempresa,
+                        rfc=rfc,
+                        correo=correo,
+                        domicilio=[Domicilioo(pais=pais,
+                                              ciudad=ciudad,
+                                              calle=calle,
+                                              colonia=colonia,
+                                              num_ext=num_ext,
+                                              num_int=num_int,
+                                              codpos=codpos)])
+        facturaskey=facturas.put()
+        cuenta_factura=facturaskey.get()
+
+        if cuenta_factura == facturas:
+            msg= "Datos Guardados Correctamente"
+            self.render("dfacturacion.html",msg=msg)
 class Profile(Handler):
     def get(self):
         if self.session.get('user'):
@@ -256,6 +285,7 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/admin/VerEvento', VerEvento),
                                ('/entradausuario',EntradaUsuario),
                                ('/dfacturacion',DFactura),
+                               ('/admin/facturas', Facturas),
                                (MailHandler.mapping())
 
                               ],

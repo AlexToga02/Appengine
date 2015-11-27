@@ -1,0 +1,81 @@
+{% extends "_basepanel.html" %}
+
+  {% block linkcss %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="../css/eventos.css">
+   {% endblock %}
+
+     {% block opciones %}
+     <ul class="nav navbar-nav navbar-right">
+       <li class="active dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+         <ul class="dropdown-menu">
+           <li><a href="/admin">Entrada</a></li>
+           <li><a href="/admin/messageadmin">Mensajeria</a></li>
+           <li role="separator" class="divider"></li>
+           <li><a href="#">Salir</a></li>
+         </ul>
+       </li>
+     </ul>
+
+     {% endblock %}
+<!-- end navigation -->
+
+{% block titlepanel %}<h1>Mensajería</h1>{% endblock %}
+
+ {% block bodypanel %}
+
+
+
+          <div class="row">
+            <div class="form-group  col-md-12">
+         <table id="table" class="table table-striped table-bordered"  width="100%" >
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th class="span2">Empresa</th>
+                    <th class="span7">Domicilio</th>
+                    <th class="span2">RFC</th>
+                    <th class="span2">Correo</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for factura in facturas%}
+                    <tr>
+                      <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
+                      <td><strong>{{factura.nomempresa}}</strong></td>
+                      <td><strong>{{factura.domicilio[0].calle }}  #{{factura.domicilio[0].num_ext }} int. {{factura.domicilio[0].num_int }}, colonia {{factura.domicilio[0].colonia}}, {{factura.domicilio[0].ciudad }}, {{factura.domicilio[0].pais }}, C.P. {{factura.domicilio[0].codpos }}</strong></td>
+                      <td><strong>{{factura.rfc}}</strong></td>
+                      <td><strong>{{factura.correo}}</strong></td>
+                    </tr>
+                  {% endfor %}
+
+                </tbody>
+          </table>
+        </div>
+
+
+      </div>
+{% endblock %}
+
+
+{% block pie %}
+<script src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+
+$('#table').DataTable( {
+          "language": {
+             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+         },
+        // paginate: true,
+        scrollY:   '30vh',
+        scrollCollapse: true,
+        ordering: true,
+        searching:true,
+  } );
+</script>
+
+{% endblock %}

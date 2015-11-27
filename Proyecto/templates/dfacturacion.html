@@ -22,26 +22,34 @@
   {% block titlepanel %}<h1>Datos de Facturacion</h1>{% endblock %}
   {% block bodypanel %}
   <div class="login-form-1">
+    {{query}}
+    {% if msg %}
 
-    <form id="perfilcomp-form" class="text-left" method="post" action="/perfil">
+      <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>{{msg}}</strong>
+      </div>
+    {% endif %}
+
+    <form id="perfilcomp-form" class="text-left" method="post" action="/dfacturacion">
        <div class="row" id="actualizar">
 
          <div class="col-md-4"> </div>
          <div class="form-group  col-md-6">
            <label for="nomempresa">Nombre de la empresa</label>
-           <input type="text" class="form-control" id="nomempresa" name="nomempresa" placeholder="Nombre de la empresa">
+           <input type="text" class="form-control" id="nomempresa" name="nomempresa" placeholder="Nombre de la empresa" required="True">
          </div>
 
          <div class="col-md-4"></div>
          <div class="form-group  col-md-6">
            <label for="correo">Correo</label>
-           <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo" >
+           <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo" required="True">
          </div>
 
          <div class="col-md-4"></div>
          <div class="form-group  col-md-3">
            <label for="rfc">RFC</label>
-           <input type="text" class="form-control" id="rfc" name="rfc" placeholder="RFC" >
+           <input type="text" class="form-control" id="rfc" name="rfc" placeholder="RFC" required="True">
          </div>
 
          <div class="col-md-6"></div>
@@ -55,39 +63,39 @@
            <div class="col-md-4"></div>
            <div class="form-group  col-md-3">
              <label for="pais">Pais</label>
-             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais">
+             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais" required="True">
            </div>
 
            <div class="form-group  col-md-3">
              <label for="ciudad">Ciudad</label>
-             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad">
+             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad" required="True">
            </div>
 
            <div class="col-md-4"></div>
            <div class="form-group  col-md-4">
              <label for="colonia">Colonia</label>
-             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia">
+             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" required="True">
            </div>
 
            <div class="form-group  col-md-2">
              <label for="codpos">Codigo Postal</label>
-             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal">
+             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal" required="True" >
            </div>
 
            <div class="col-md-4"></div>
            <div class="form-group  col-md-3">
              <label for="calle">Calle</label>
-             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle">
+             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" required="True">
            </div>
 
            <div class="form-group  col-md-2">
              <label for="numext">Num Ext</label>
-             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext">
+             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext" required="True" >
            </div>
 
            <div class="form-group  col-md-1">
              <label for="numint">Interior</label>
-             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int">
+             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int" required="True">
            </div>
          </div> <!--  cierra divdomi -->
 
