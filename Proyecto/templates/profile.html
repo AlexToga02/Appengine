@@ -12,7 +12,7 @@
             <li><a href="/perfil">Perfil</a></li>
             <li><a href="#">Something else here</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Salir</a></li>
+            <li><a href="/logout">Salir</a></li>
           </ul>
         </li>
       </ul>
@@ -37,29 +37,29 @@
          <div class="col-md-4"></div>
          <div class="form-group  col-md-3">
            <label for="Nombres">Nombres</label>
-           <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" value="{{query.nomcompleto[0].nombres}}">
+           <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" value="{{query.nomcompleto[0].nombres}}" required>
          </div>
          <div class="col-md-4"></div>
          <div class="form-group  col-md-3">
            <label for="apellidos">Apellidos</label>
-           <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="{{query.nomcompleto[0].apellidos}}">
+           <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="{{query.nomcompleto[0].apellidos}}" required>
          </div>
 
          <div class="col-md-4"></div>
          <div class="form-group  col-md-6">
            <label for="correo">Correo</label>
-           <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo" value="{{query.cuenta[0].email}}">
+           <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo" value="{{query.cuenta[0].email}}" required>
          </div>
 
          <div class="col-md-4"></div>
          <div class="form-group  col-md-3">
            <label for="profesion">Profesion</label>
-           <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesion" value="{{query.profesion}}">
+           <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesion"  {% if query.profesion is not none %} value="{{query.profesion}}" {% endif %} required>
          </div>
 
          <div class="form-group  col-md-3">
            <label for="puesto">Puesto</label>
-           <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto" value="{{query.puesto}}">
+           <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto"  {% if query.profesion is not none %}  value="{{query.puesto}}" {% endif %} required>
          </div>
 
          <div class="col-md-4"></div>
@@ -74,39 +74,39 @@
            <div class="col-md-4"></div>
            <div class="form-group  col-md-3">
              <label for="pais">Pais</label>
-             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais" value="{{query.domicilio[0].pais}}">
+             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais"   {% if query.domicilio[0].pais is not none %} value="{{query.domicilio[0].pais}}" {% endif %}  required>
            </div>
 
            <div class="form-group  col-md-3">
              <label for="ciudad">Ciudad</label>
-             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad" value="{{query.domicilio[0].ciudad}}">
+             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad"  {% if query.domicilio[0].ciudad is not none %} value="{{query.domicilio[0].ciudad}}" {% endif %}  required>
            </div>
 
            <div class="col-md-4"></div>
            <div class="form-group  col-md-4">
              <label for="colonia">Colonia</label>
-             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" value="{{query.domicilio[0].colonia}}">
+             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia"  {% if query.domicilio[0].colonia is not none %} value="{{query.domicilio[0].colonia}}" {% endif %}  required>
            </div>
 
            <div class="form-group  col-md-2">
              <label for="codpos">Codigo Postal</label>
-             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal" value="{{query.domicilio[0].codpos}}">
+             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal"  {% if query.domicilio[0].codpos is not none %}value="{{query.domicilio[0].codpos}}" {% endif %} required >
            </div>
 
            <div class="col-md-4"></div>
            <div class="form-group  col-md-3">
              <label for="calle">Calle</label>
-             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" value="{{query.domicilio[0].calle}}">
+             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle"  {% if query.domicilio[0].calle != " " %} value="{{query.domicilio[0].calle}}" {% endif %}  required>
            </div>
 
            <div class="form-group  col-md-2">
              <label for="numext">Num Ext</label>
-             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext" value="{{query.domicilio[0].num_ext}}">
+             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext" {% if query.domicilio[0].num_ext is not none %} value="{{query.domicilio[0].num_ext}}"{% endif %} required>
            </div>
 
            <div class="form-group  col-md-1">
              <label for="numint">Interior</label>
-             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int" value="{{query.domicilio[0].num_int}}">
+             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int" {% if query.domicilio[0].num_int is not none %} value="{{query.domicilio[0].num_int}}"{% endif %} required>
            </div>
          </div> <!--  cierra divdomi -->
 

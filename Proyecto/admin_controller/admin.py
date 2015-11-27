@@ -253,7 +253,7 @@ class Messageadmin(Handler):
 
 class Eventos(Handler):
     def get(self):
-        self.render("agregarevento.html")
+        self.render("eventoform.html")
 
 class VerEvento(Handler):
     def get(self):

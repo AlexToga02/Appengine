@@ -32,7 +32,7 @@
           <ul class="dropdown-menu">
             <li><a href="#" id="addClass">Tareas </a></li>
             <li class="divider"></li>
-            <li><a  href="#" >Calendario</a></li>
+            <li><a  href="/admin/facturas" >Facturas</a></li>
             </ul>
         </li>
       </ul>
@@ -130,10 +130,10 @@
                 $('a.event_id').click(function(){
                     var id = $(this).attr("id");
                     $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
-                    .sucess(function( data ) {
+                    .done(function( data ) {
                        window.location.href="/admin";
 
-                    });
+                    })  ;
 
                 });
       });

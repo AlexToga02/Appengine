@@ -87,6 +87,7 @@ class Usuario(ndb.Model):
     profesion = ndb.StringProperty()
     puesto = ndb.StringProperty()
     cuenta = ndb.StructuredProperty(Cuentas,repeated=True)
+    perfilupdated= ndb.BooleanProperty(default=False)
 
 class Factura(ndb.Model):
     nomempresa = ndb.StringProperty(required=True)
@@ -124,7 +125,10 @@ class Login(Handler):
                 bandera=0
                 self.session['user'] =consulta.cuenta[0].username
                 logging.info("%s just logged in" % user)
-                self.redirect('/perfil')
+                if consulta.perfilupdated:
+                    self.redirect('/entradausuario')
+                else:
+                    self.redirect('/perfil')
             else:
                 logging.info('POST consulta=' + str(consulta))
                 bandera = 2
@@ -299,6 +303,7 @@ class Profile(Handler):
             consulta.domicilio[0].codpos = codpos
             consulta.domicilio[0].num_int = num_int
             consulta.domicilio[0].num_ext = num_ext
+            consulta.perfilupdated=True
             consulta.put()
         msg="Perfil Actualizado"
         self.render("profile.html",  query=consulta, msg=msg)
