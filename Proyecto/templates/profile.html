@@ -4,6 +4,7 @@
 {% endblock %}
 
   {% block opciones %}
+
       <ul class="nav navbar-nav navbar-right">
         <li class="active dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
@@ -21,93 +22,104 @@
   {% block titlepanel %}<h1>Perfil</h1>{% endblock %}
   {% block bodypanel %}
   <div class="login-form-1">
-<form id="perfilcomp-form" class="text-left" method="post" action="/perfilcomp">
-   <div class="row">
-     <div class="col-md-4"></div>
-     <div class="form-group  col-md-6">
-       <label for="Nombre">Nombre Completo</label>
-       <input type="text" class="form-control" id="nombrecom" name="nombrecom" placeholder="Nombre Completo">
-     </div>
+    <!-- {{query}} -->
 
-     <div class="col-md-4"></div>
-     <div class="form-group  col-md-6">
-       <label for="correo">Correo</label>
-       <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo">
-     </div>
+    {% if msg %}
 
-     <div class="col-md-4"></div>
-     <div class="form-group  col-md-3">
-       <label for="profesion">Profesion</label>
-       <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesion">
-     </div>
+      <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>{{msg}}</strong>
+      </div>
+    {% endif %}
+    <form id="perfilcomp-form" class="text-left" method="post" action="/perfil">
+       <div class="row" id="actualizar">
 
-     <div class="form-group  col-md-3">
-       <label for="puesto">Puesto</label>
-       <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto">
-     </div>
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-3">
+           <label for="Nombres">Nombres</label>
+           <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" value="{{query.nomcompleto[0].nombres}}">
+         </div>
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-3">
+           <label for="apellidos">Apellidos</label>
+           <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="{{query.nomcompleto[0].apellidos}}">
+         </div>
 
-     <div class="col-md-4"></div>
-     <div class="form-group  col-md-4">
-       <label for="usuario">Usuario</label>
-       <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
-     </div>
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-6">
+           <label for="correo">Correo</label>
+           <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo" value="{{query.cuenta[0].email}}">
+         </div>
 
-     <div class="form-group  col-md-2">
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-3">
+           <label for="profesion">Profesion</label>
+           <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesion" value="{{query.profesion}}">
+         </div>
+
+         <div class="form-group  col-md-3">
+           <label for="puesto">Puesto</label>
+           <input type="text" class="form-control" id="puesto" name="puesto" placeholder="Puesto" value="{{query.puesto}}">
+         </div>
+
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-2">
+           <h4><strong>Domicilio</strong></h4>
+           <!-- <a  id="btndomicilio" style="font-size:15px;" href="#"> <span class="glyphicon glyphicon-home"> </span> Agregar Domicilio</a> -->
+         </div>
+         </div> <!-- cierra row 1 -->
+
+         <div class="row">
+         <div class="domicilio" id="divdomi">
+           <div class="col-md-4"></div>
+           <div class="form-group  col-md-3">
+             <label for="pais">Pais</label>
+             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais" value="{{query.domicilio[0].pais}}">
+           </div>
+
+           <div class="form-group  col-md-3">
+             <label for="ciudad">Ciudad</label>
+             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad" value="{{query.domicilio[0].ciudad}}">
+           </div>
+
+           <div class="col-md-4"></div>
+           <div class="form-group  col-md-4">
+             <label for="colonia">Colonia</label>
+             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" value="{{query.domicilio[0].colonia}}">
+           </div>
+
+           <div class="form-group  col-md-2">
+             <label for="codpos">Codigo Postal</label>
+             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal" value="{{query.domicilio[0].codpos}}">
+           </div>
+
+           <div class="col-md-4"></div>
+           <div class="form-group  col-md-3">
+             <label for="calle">Calle</label>
+             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" value="{{query.domicilio[0].calle}}">
+           </div>
+
+           <div class="form-group  col-md-2">
+             <label for="numext">Num Ext</label>
+             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext" value="{{query.domicilio[0].num_ext}}">
+           </div>
+
+           <div class="form-group  col-md-1">
+             <label for="numint">Interior</label>
+             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int" value="{{query.domicilio[0].num_int}}">
+           </div>
+         </div> <!--  cierra divdomi -->
+
+       </div> <!-- cierra row domicilio -->
        <br>
-       <!-- <input type="button" class="form-control btn btn-info " id="btndomicilio" name="btndomicilio" value="Domicilio"> -->
-       <a  id="btndomicilio" style="font-size:15px;" href="#"> <span class="glyphicon glyphicon-home"> </span> Agregar Domicilio</a>
-     </div>
-     </div> <!-- cierra row 1 -->
-
-     <div class="row">
-     <div class="domicilio" id="divdomi">
-       <div class="col-md-4"></div>
-       <div class="form-group  col-md-3">
-         <label for="ciudad">Ciudad</label>
-         <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad">
-       </div>
-
-       <div class="form-group  col-md-3">
-         <label for="pais">Pais</label>
-         <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais">
-       </div>
-
-       <div class="col-md-4"></div>
-       <div class="form-group  col-md-4">
-         <label for="colonia">Colonia</label>
-         <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia">
-       </div>
-
+       <div class="col-md-6"></div>
        <div class="form-group  col-md-2">
-         <label for="codpos">Codigo Postal</label>
-         <input type="text" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal">
+         <input type="submit" class="form-control btn btn-success" id="btnactualizar" name="btnactualizar" value="Actualizar">
        </div>
+       <br>
 
-       <div class="col-md-4"></div>
-       <div class="form-group  col-md-3">
-         <label for="calle">Calle</label>
-         <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle">
-       </div>
-
-       <div class="form-group  col-md-2">
-         <label for="numext">Num Ext</label>
-         <input type="text" class="form-control" id="numext" name="numext" placeholder="# Ext">
-       </div>
-
-       <div class="form-group  col-md-1">
-         <label for="numint">Int</label>
-         <input type="text" class="form-control" id="numext" name="numint" placeholder="# Int">
-       </div>
-     </div> <!--  cierra divdomi -->
-
-   </div> <!-- cierra row domicilio -->
-   <br>
-   <div class="col-md-6"></div>
-   <div class="form-group  col-md-2">
-     <input type="submit" class="form-control btn btn-success" id="btnperfil" name="btnperfil" value="Actualizar">
-   </div>
-</form>
-</div>
+    </form>
+</div> <!-- div arriba de form-->
    {% endblock %}
 
 
@@ -117,21 +129,5 @@
 
 
   {%block pie%}
-    <script type="text/javascript">
-    $(function(){
-       $('#divdomi').hide();
-       $("#btndomicilio").click(function(event){
-
-
-           $('#divdomi').toggle();
-
-       });
-
-      //  $("#domicilio").click(function(){
-      //      $('#btndomicilio').hide();
-      //  });
-
-    });
-    </script>
 
   {% endblock%}

@@ -1,0 +1,114 @@
+{% extends "_basepanel.html" %}
+{% block linkcss %}
+<link rel="stylesheet" href="../css/eventos.css">
+{% endblock %}
+
+  {% block opciones %}
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/perfil">Perfil</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Salir</a></li>
+          </ul>
+        </li>
+      </ul>
+
+{% endblock %}
+
+  {% block titlepanel %}<h1>Datos de Facturacion</h1>{% endblock %}
+  {% block bodypanel %}
+  <div class="login-form-1">
+
+    <form id="perfilcomp-form" class="text-left" method="post" action="/perfil">
+       <div class="row" id="actualizar">
+
+         <div class="col-md-4"> </div>
+         <div class="form-group  col-md-6">
+           <label for="nomempresa">Nombre de la empresa</label>
+           <input type="text" class="form-control" id="nomempresa" name="nomempresa" placeholder="Nombre de la empresa">
+         </div>
+
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-6">
+           <label for="correo">Correo</label>
+           <input type="text" class="form-control" id="correo" name="correo" placeholder="Correo" >
+         </div>
+
+         <div class="col-md-4"></div>
+         <div class="form-group  col-md-3">
+           <label for="rfc">RFC</label>
+           <input type="text" class="form-control" id="rfc" name="rfc" placeholder="RFC" >
+         </div>
+
+         <div class="col-md-6"></div>
+         <div class="form-group  col-md-2">
+           <h4><strong>Domicilio</strong></h4>
+         </div>
+         </div> <!-- cierra row 1 -->
+
+         <div class="row">
+         <div class="domicilio" id="divdomi">
+           <div class="col-md-4"></div>
+           <div class="form-group  col-md-3">
+             <label for="pais">Pais</label>
+             <input type="text" class="form-control" id="pais" name="pais" placeholder="Pais">
+           </div>
+
+           <div class="form-group  col-md-3">
+             <label for="ciudad">Ciudad</label>
+             <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad">
+           </div>
+
+           <div class="col-md-4"></div>
+           <div class="form-group  col-md-4">
+             <label for="colonia">Colonia</label>
+             <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia">
+           </div>
+
+           <div class="form-group  col-md-2">
+             <label for="codpos">Codigo Postal</label>
+             <input type="integer" class="form-control" id="codpos" name="codpos" placeholder="Codigo postal">
+           </div>
+
+           <div class="col-md-4"></div>
+           <div class="form-group  col-md-3">
+             <label for="calle">Calle</label>
+             <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle">
+           </div>
+
+           <div class="form-group  col-md-2">
+             <label for="numext">Num Ext</label>
+             <input type="Integer" class="form-control" id="numext" name="numext" placeholder="# Ext">
+           </div>
+
+           <div class="form-group  col-md-1">
+             <label for="numint">Interior</label>
+             <input type="text" class="form-control" id="numext" name="numint" placeholder="Int">
+           </div>
+         </div> <!--  cierra divdomi -->
+
+       </div> <!-- cierra row domicilio -->
+       <br>
+       <div class="col-md-6"></div>
+       <div class="form-group  col-md-2">
+         <input type="submit" class="form-control btn btn-success" id="btnactualizar" name="btnactualizar" value="Guardar Datos">
+       </div>
+       <br>
+
+    </form>
+</div>
+   {% endblock %}
+
+
+   {% block cuerpopagina %}
+
+   {% endblock %}
+
+
+  {%block pie%}
+
+  {% endblock%}

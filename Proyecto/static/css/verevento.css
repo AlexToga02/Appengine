@@ -33,8 +33,6 @@ color: #fff;
 background-color: #F1F1F1;
 }
 
-
-
 .bg_blur
 {
     background-image:url('http://data2.whicdn.com/images/139218968/large.jpg');
@@ -50,8 +48,8 @@ background-color: #F1F1F1;
 }
 
 .picture{
-    height:150px;
-    width:150px;
+    height:140px;
+    width:140px;
     position:absolute;
     top: 75px;
     left:-75px;
