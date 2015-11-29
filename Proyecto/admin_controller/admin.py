@@ -216,8 +216,8 @@ class Calendario(Handler):
                             datetime= datetimeS,
                             lugar=location,
                             cupo=cupo)
-            eventoskey=eventos.put()
-
+            eventos.put()
+            
             request = service_calendar.events().insert(calendarId='primary', body=event)
             response_calendar=request.execute(http=http)
         elif (bandera == "0"):

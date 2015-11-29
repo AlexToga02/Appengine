@@ -98,8 +98,7 @@ class Factura(ndb.Model):
 class Evento(ndb.Model):
     nomevento = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-    fecha = ndb.StringProperty()
-    hora = ndb.StringProperty()
+    datetime = ndb.StringProperty()
     lugar = ndb.StringProperty()
     cupo = ndb.IntegerProperty()
 
@@ -237,7 +236,11 @@ class Message(Handler):
 
 class EntradaUsuario(Handler):
     def get(self):
-        self.render("entradausuario.html")
+        if self.session.get('user'):
+            consulta=Evento.query().fetch()
+            self.render("entradausuario.html",eventos=consulta)
+        else:
+            self.redirect("/application")
 
 class DFactura(Handler):
     def get(self):
