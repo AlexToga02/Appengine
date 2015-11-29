@@ -278,11 +278,8 @@ class Message(Handler):
 
 class EntradaUsuario(Handler):
     def get(self):
-        if self.session.get('user'):
-            consulta=Evento.query().fetch()
-            self.render("entradausuario.html",eventos=consulta)
-        else:
-            self.redirect("/application")
+        consulta=Evento.query().fetch()
+        self.render("entradausuario.html",eventos=consulta)
 
 class DFactura(Handler):
     def get(self):
