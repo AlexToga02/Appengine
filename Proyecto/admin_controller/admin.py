@@ -193,7 +193,7 @@ class Calendario(Handler):
             datetimeS=fechaini+'T'+hora
             fechafin=self.request.get("fechafin")
             horaf=self.request.get("horafin")
-            cupo=self.request.get("cupo")
+            cupo=int(self.request.get("cupo"))
             datetimeE=fechafin+'T'+horaf
 
 
