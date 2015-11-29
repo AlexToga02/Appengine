@@ -215,7 +215,7 @@ class Calendario(Handler):
                             descripcion=description,
                             datetime= datetimeS,
                             lugar=location,
-                            cupo=cupo)])
+                            cupo=cupo)
             eventoskey=eventos.put()
 
             request = service_calendar.events().insert(calendarId='primary', body=event)
