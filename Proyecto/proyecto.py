@@ -139,9 +139,10 @@ class Factura(ndb.Model):
 
 
 class Evento(ndb.Model):
+    eventid=ndb.StringProperty()
     nomevento = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-    datet = ndb.DateTimeProperty()
+    datetime = ndb.StringProperty()
     lugar = ndb.StringProperty()
     cupo = ndb.IntegerProperty()
 

@@ -160,9 +160,10 @@ class Tareas(Handler):
         self.render("paginaadmin.html",eventos=events,bandera=bandera,items=items,num=numero)
 
 class Evento(ndb.Model):
+    eventid=ndb.StringProperty()
     nomevento = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-    datetime = ndb.DateTimeProperty()
+    datetime = ndb.StringProperty()
     lugar = ndb.StringProperty()
     cupo = ndb.IntegerProperty()
 
@@ -210,16 +211,24 @@ class Calendario(Handler):
                     'timeZone': 'America/Mexico_City',
                 },
             }
+            horavect = hora.split(":")
+            h = horavect[0]
+            hnum= len(horavect[0])
+            if hnum==1:
+               horaf= "0"+hora
+               datetimeS=fechaini+'T'+horaf
 
-            eventos=Evento(nomevento=summary,
+            request = service_calendar.events().insert(calendarId='primary', body=event)
+            response_calendar=request.execute(http=http)
+
+            eventos=Evento(eventid=response_calendar.get('id'),
+                            nomevento=summary,
                             descripcion=description,
                             datetime= datetimeS,
                             lugar=location,
                             cupo=cupo)
             eventos.put()
 
-            request = service_calendar.events().insert(calendarId='primary', body=event)
-            response_calendar=request.execute(http=http)
         elif (bandera == "0"):
             calendar_id = self.request.get('calendar_id',allow_multiple = True)
 
