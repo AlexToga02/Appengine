@@ -25,11 +25,53 @@ from oauth2client.appengine import OAuth2Decorator
 global bandera
 bandera= 0
 
+def day(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[2])
+
+def month(fecha):
+    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    num = vector[1]
+    n=int(num)-1
+    mes = meses[n]
+    return str(mes)
+
+def year(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[0])
+
+def hour(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:16]
+    return hour
+
+def date(fecha):
+    datelong= str(fecha)
+    hour= datelong[0:10]
+    return hour
+
+def time(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:19]
+    return hour
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
+jinja_env.filters['day'] = day
+jinja_env.filters['month'] = month
+jinja_env.filters['year'] = year
+jinja_env.filters['hour'] = hour
+jinja_env.filters['date'] = date
+jinja_env.filters['time'] = time
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -99,7 +141,7 @@ class Factura(ndb.Model):
 class Evento(ndb.Model):
     nomevento = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-    datetime = ndb.StringProperty()
+    datet = ndb.StringProperty()
     lugar = ndb.StringProperty()
     cupo = ndb.IntegerProperty()
 
