@@ -1,0 +1,45 @@
+body{
+  margin: 0 auto;
+}
+.social-footer a{
+  color: #555555;
+
+}
+.social-footer a:hover{
+   text-decoration:none;
+   color: black;
+
+}
+#lineaazul{
+  background-color: 489DD2;
+  height: 170px;
+  width: 1315px;
+  margin: 0 auto;
+}
+
+#enterseparar{
+  background-color: 489DD2;
+  height: 10px;
+  width: 100%;
+}
+
+#divpanel{
+  margin: 0 auto;
+  width: 80%;
+}
+#paneltitulo{
+  background-color: C2C7C9;
+  color: black;
+  height: 90px;
+  margin: 0 auto;
+}
+#panelcuerpo{
+  color: black;
+  margin: 0 auto;
+}
+
+#adminpanel{
+  background-color: blue;
+  height: 50px;
+  width: 40%;
+}

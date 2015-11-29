@@ -1,0 +1,109 @@
+{% extends "_basepanel.html" %}
+
+     {% block opciones %}
+
+     {% set navigation_bar = [
+             ('/usuario', 'usuario', 'Usuario')
+      ] -%}
+
+     {%for href, id, caption in navigation_bar%}
+       <li{% if id == active_page %} class="active"{% endif %}>
+       <a href="{{href|e}}">{{caption|e}}</a></li>
+     {%endfor%}
+
+     {% endblock %}
+<!-- end navigation -->
+
+{% block titlepanel %}<h1>Mensajería</h1>{% endblock %}
+
+ {% block bodypanel %}
+
+      <div class="row">
+
+
+            <div class="form-group  col-md-2">
+              <botton class="btninbox"><a href="#"><span class="badge">42</span> <label> Inbox</label> </a>
+              </botton>
+            </div>
+
+            <div class="form-group  col-md-4">
+              <div class="col-md-3"></div>
+              <button type="button" class="btn btn-primary btn-xs" >+</button>
+            </div>
+
+          </div>  <!-- cierra row 4 -->
+
+          <div class="row">
+            <div class="form-group  col-md-6">
+
+         <table id="table" class="table table-striped table-bordered"  width="100%" >
+              <!-- <thead>
+                <tr>
+                  <th></th>
+                  <th class="span2">Nombre</th>
+                  <th class="span2"></th>
+                  <th class="span9">Mensaje</th>
+                  <th class="span2">Fecha</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
+                  <td><strong>John Doe</strong></td>
+                  <td></td>
+                  <td><strong>Message body goes here</strong></td>
+                  <td><strong>11:23 PM</strong></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"> <a href="#"><i class="icon-star-empty"></i></a></td>
+                  <td>John Doe</td>
+                  <td></td>
+                  <td>Message body goes here</td>
+                  <td>Sept4</td>
+                </tr>
+
+
+
+              </tbody> -->
+          </table>
+        </div>
+
+
+      </div>
+{% endblock %}
+
+
+{% block pie %}
+<script>
+var dataSet = [
+    [ "John Doe", "Message body goes here", "Sept3"],
+    [ "Alex Doe", "Message body goes here", "Sept5"],
+    [ "John Doe", "Message body goes here", "Sept1"],
+    [ "Jon Doe", "Message body goes here", "Sept6"],
+    [ "John Doe", "Message body goes here", "Sept12"],
+    [ "Yhn Doe", "Message body goes here", "Sept11"],
+    [ "John Doe", "Message body goes here", "Sept8"],
+
+];
+
+$('#table').DataTable( {
+        data: dataSet,
+        columns: [
+            { title: "Nombre" },
+            { title: "Mensaje" },
+            { title: "Fecha" },
+        ],
+          "language": {
+             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+         },
+        paging: false,
+        // paginate: true,
+        scrollY:   '30vh',
+        scrollCollapse: true,
+        ordering: true,
+        searching:true,
+  } );
+</script>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+$ cd AppengineProjects/
+$ dev_appserver.py Practica_3/
+
+
+http://localhost:8000/instances ->Navegador
+http://localhost:8000/datastore ->Visor DataStore
+
+
+appengine.google.com
+	entrar con la de aotech10@gmail 
+
+console.developers.google.com
+	crear proyecto
+		Nombre de la Práctica 
+		id: (Será el que sustituya el app.yam donde dice application:id)
+
+$ cd AppengineProjects/
+$ appcfg.py -A portafolio-atoga update Portafolio/
+
+https://id.appspot.com
+
