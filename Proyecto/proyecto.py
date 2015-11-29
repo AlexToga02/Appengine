@@ -95,7 +95,13 @@ class Factura(ndb.Model):
     correo = ndb.StringProperty(required=True)
     rfc = ndb.StringProperty(required=True)
 
-
+class Evento(ndb.Model):
+    nomevento = ndb.StringProperty()
+    descripcion = ndb.StringProperty()
+    fecha = ndb.StringProperty()
+    hora = ndb.StringProperty()
+    lugar = ndb.StringProperty()
+    cupo = ndb.IntegerProperty()
 
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()

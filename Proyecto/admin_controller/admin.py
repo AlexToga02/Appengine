@@ -159,6 +159,12 @@ class Tareas(Handler):
 
         self.render("paginaadmin.html",eventos=events,bandera=bandera,items=items,num=numero)
 
+class Evento(ndb.Model):
+    nomevento = ndb.StringProperty()
+    descripcion = ndb.StringProperty()
+    datetime = ndb.StringProperty()
+    lugar = ndb.StringProperty()
+    cupo = ndb.IntegerProperty()
 
 class Calendario(Handler):
     @decorator.oauth_required
@@ -187,6 +193,7 @@ class Calendario(Handler):
             datetimeS=fechaini+'T'+hora
             fechafin=self.request.get("fechafin")
             horaf=self.request.get("horafin")
+            cupo=self.request.get("cupo")
             datetimeE=fechafin+'T'+horaf
 
 
@@ -203,6 +210,14 @@ class Calendario(Handler):
                     'timeZone': 'America/Mexico_City',
                 },
             }
+
+            eventos=Evento(nomevento=summary,
+                            descripcion=description,
+                            datetime= datetimeS,
+                            lugar=location,
+                            cupo=cupo)])
+            eventoskey=eventos.put()
+
             request = service_calendar.events().insert(calendarId='primary', body=event)
             response_calendar=request.execute(http=http)
         elif (bandera == "0"):
