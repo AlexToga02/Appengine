@@ -48,10 +48,6 @@ class Messageadmin(Handler):
     def get(self):
         self.render("messageadmin.html")
 
-class Eventos(Handler):
-    def get(self):
-        self.render("agregarevento.html")
-
 class VerEvento(Handler):
     def get(self):
         self.render("verevento.html")

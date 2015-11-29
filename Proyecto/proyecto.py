@@ -2,6 +2,8 @@ import os
 import webapp2
 import jinja2
 import logging
+import datetime
+import time
 
 from admin_controller.admin import *
 from google.appengine.ext import ndb
@@ -79,9 +81,16 @@ class Factura(ndb.Model):
     correo = ndb.StringProperty(required=True)
     rfc = ndb.StringProperty(required=True)
 
-
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
+
+class Eventos(ndb.Model):
+    nomevento = ndb.StringProperty()
+    descripcion = ndb.StringProperty()
+    Fecha = dateProperty()
+    Hora = timeProperty()
+    lugar = ndb.StringProperty()
+    numinvi = ndb.IntegerPropery()
 
 class MailHandler(InboundMailHandler):
     def receive(self, mail_message):
@@ -281,7 +290,6 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/admin/messageadmin',Messageadmin),
                                ('_ah/mail/',MailHandler),
                                ('/admin', AdminHandler),
-                               ('/admin/eventos', Eventos),
                                ('/admin/VerEvento', VerEvento),
                                ('/entradausuario',EntradaUsuario),
                                ('/dfacturacion',DFactura),
