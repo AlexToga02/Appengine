@@ -1,0 +1,61 @@
+<html>
+  <head>
+   <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+   <title>oAuth 2.0 Example</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/event_list.css">
+  </head>
+  <body>
+    <div class="container">
+  <form  action="/calendario" method="post">
+		<div class="row col-md-9">
+			<div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
+				<ul class="event-list">
+      {% for evento in eventos %}
+
+					<li>
+						<time datetime="2014-07-20 0000">
+							<span class="day">{{evento.start['dateTime']|day}}</span>
+							<span class="month">{{evento.start['dateTime']|month}}</span>
+							<span class="year">{{evento.start['dateTime']|year}}</span>
+							<span class="time">12:00 AM</span>
+						</time>
+						<div class="info">
+							<h2 class="title">{{ evento.summary }}</h2>
+							<p class="desc">{{evento.location}}</p>
+              <p>{{evento.description}} </p>
+              <p>
+                {{evento.start['dateTime']|hour}}
+              </p>
+						</div>
+						<div class="social">
+							<ul>
+								<li class="facebook" style="width:33%;"><a href="#facebook"><input type="checkbox" name="calendar_id" value="{{evento.id}}" class=""></a></li>
+								<li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
+								<li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
+							</ul>
+						</div>
+					</li>
+
+          {% endfor %}
+
+
+
+				</ul>
+			</div>
+		</div>
+        <button type="submit" name="bandera" value="1">Agregar</button>
+        <button type="submit" name="bandera" value="0">Eliminar</button>
+       <button type="submit" name="bandera" value="3">Modificar</button>
+    </form>
+  </div>
+
+
+
+
+
+
+</body>
+</html>

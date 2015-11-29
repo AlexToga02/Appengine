@@ -1,0 +1,159 @@
+{% extends "_basepanel.html" %}
+{% block title %}
+   Application Home
+{% endblock %}
+{% block linkcss %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css ">
+
+
+{% endblock %}
+
+{% block opciones %}
+
+{% set navigation_bar = [
+  ('/admin', 'admin', 'Panel'),
+  ('/', 'home', 'home'),
+
+  ] -%}
+
+    {% for href, id, caption in navigation_bar %}
+      <li{% if id == active_page %} class="active"{% endif %} >
+      <a  href="{{href|e}}">{% if id=='admin' %}
+        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+      {% endif %} {{caption|e}}</a></li>
+    {% endfor %}
+{% endblock %}
+
+
+{% set active_page = "admin" %}
+
+
+{% block bodycontent %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="container">
+  <form action="/admin/calendario" method="post" class="form" role="form">
+    <input type="text" name="calendar_id" value="{{evento.id}}" hidden>
+    <div class="row">
+        <div class="col-md-6">
+              <label for=""> Nombre del evento</label> <br>
+              <input class="form-control" name="summary" placeholder="Nombre del evento" type="text" value="{{evento.summary}}"/>
+        </div>
+    </div>
+    <br>
+     <div class="row">
+        <div class="col-md-8">
+            <label for=""> Descripción</label> <br>
+          <textarea name="description"  id="message" class="form-control" rows="3" cols="25" required="required" placeholder="Descripcion">{{evento.description}}</textarea>
+        </div>
+     </div>
+<br>
+<br>
+<div class="row">
+  <div class="col-md-4">
+    <label for=""> Fecha Inicio</label> <br>
+    <input type="text" id="datepicker" name="fechaini" value="{{evento.start['dateTime']|date}}">
+  </div>
+  <div class="col-md-4">
+
+  </div>
+  <div class="col-md-5">
+    <label for=""> Hora</label> <br>
+    <div class="input-group bootstrap-timepicker timepicker">
+        <input name="horaini" id="timepicker1" type="text" class="form-control input-small" value="{{evento.start['dateTime']|time}}">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <label for=""> Fecha Fin</label> <br>
+    <input type="text" id="datepicker2" name="fechafin" value="{{evento.end['dateTime']|date}}">
+  </div>
+  <div class="col-md-4">
+
+  </div>
+  <div class="col-md-5">
+    <label for=""> Hora</label> <br>
+
+    <div class="input-group bootstrap-timepicker timepicker">
+        <input name="horafin" id="timepicker2" type="text" class="form-control input-small" value="{{evento.end['dateTime']|time}}">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  <br>
+  <br>
+  <div class="row">
+      <div class="col-md-6">
+          <label for=""> Lugar</label> <br>
+          <input class="form-control"  value="{{evento.location}}" name="location" placeholder="Lugar" type="text" />
+      </div>
+  </div>
+  <br><br>
+  <button class="btn btn-lg btn-primary" name="bandera" value="2" type="submit">
+    Actualizar</button>
+  </form>
+
+
+</div>
+{% endblock %}
+
+{% block pie %}
+  <script src="../js/bootstrap-timepicker.js">
+</script>
+      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+
+    $(function() {
+      $.datepicker.regional['es'] = {
+ closeText: 'Cerrar',
+ prevText: '<Ant',
+ nextText: 'Sig>',
+ currentText: 'Hoy',
+ monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+ dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+ weekHeader: 'Sm',
+ dateFormat: 'yy-mm-dd',
+ firstDay: 1,
+ isRTL: false,
+ showMonthAfterYear: false,
+ yearSuffix: ''
+ };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+
+   $('#timepicker1').timepicker({
+               showMeridian: false,
+               defaultTime: false,
+               showSeconds: true,
+   });
+
+      $('#timepicker2').timepicker({
+                  showMeridian: false,
+                  defaultTime: false,
+                  showSeconds: true,
+      });
+
+});
+
+    </script>
+
+
+
+{% endblock %}

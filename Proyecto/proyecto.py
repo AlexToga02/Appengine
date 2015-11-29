@@ -2,9 +2,10 @@ import os
 import webapp2
 import jinja2
 import logging
-import datetime
-import time
+import httplib2
 
+
+from Crypto.Hash import SHA256
 from admin_controller.admin import *
 from google.appengine.ext import ndb
 from webapp2_extras import sessions
@@ -12,10 +13,18 @@ from webapp2_extras import sessions
 from google.appengine.api import mail
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
+from google.appengine.ext.webapp.mail_handlers import BounceNotification
+from google.appengine.ext.webapp.mail_handlers import BounceNotificationHandler
+
+from apiclient.discovery import build
+from oauth2client.appengine import OAuth2Decorator
+
+
+
 
 global bandera
-mail_message = mail.EmailMessage()
 bandera= 0
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
@@ -25,6 +34,9 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 def render_str(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
+
+def check_password(clear_password, password_hash):
+    return SHA256.new(clear_password).hexdigest() == password_hash
 
 class Handler(webapp2.RequestHandler):
     def dispatch(self):
@@ -53,7 +65,8 @@ class Handler(webapp2.RequestHandler):
 class Cuentas(ndb.Model):
     username = ndb.StringProperty()
     password = ndb.StringProperty()
-    email = ndb.StringProperty()
+    email   =  ndb.StringProperty()
+
 
 class Domicilioo(ndb.Model):
     calle = ndb.StringProperty()
@@ -74,6 +87,7 @@ class Usuario(ndb.Model):
     profesion = ndb.StringProperty()
     puesto = ndb.StringProperty()
     cuenta = ndb.StructuredProperty(Cuentas,repeated=True)
+    perfilupdated= ndb.BooleanProperty(default=False)
 
 class Factura(ndb.Model):
     nomempresa = ndb.StringProperty(required=True)
@@ -81,22 +95,10 @@ class Factura(ndb.Model):
     correo = ndb.StringProperty(required=True)
     rfc = ndb.StringProperty(required=True)
 
+
+
 class Correos(ndb.Model):
     mensaje_body = ndb.StringProperty()
-
-class Eventos(ndb.Model):
-    nomevento = ndb.StringProperty()
-    descripcion = ndb.StringProperty()
-    Fecha = dateProperty()
-    Hora = timeProperty()
-    lugar = ndb.StringProperty()
-    numinvi = ndb.IntegerPropery()
-
-class MailHandler(InboundMailHandler):
-    def receive(self, mail_message):
-        for content_type, pl in mail_message.bodies("text/plain"):
-            mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
-            mensaje.put()
 
 class Login(Handler):
     def get(self):
@@ -106,7 +108,7 @@ class Login(Handler):
     def post(self):
         global bandera
         user = self.request.get('lg_username')
-        pw = self.request.get('lg_password')
+        pw=SHA256.new(self.request.get('lg_password')).hexdigest()
 
         logging.info('Checking user='+ str(user) + 'pw='+ str(pw))
         msg = ''
@@ -123,7 +125,10 @@ class Login(Handler):
                 bandera=0
                 self.session['user'] =consulta.cuenta[0].username
                 logging.info("%s just logged in" % user)
-                self.redirect('/perfil')
+                if consulta.perfilupdated:
+                    self.redirect('/entradausuario')
+                else:
+                    self.redirect('/perfil')
             else:
                 logging.info('POST consulta=' + str(consulta))
                 bandera = 2
@@ -132,13 +137,28 @@ class Login(Handler):
 
 class Registro(Handler):
     def get(self):
-	       self.render("registro.html")
+        self.render("registro.html")
 
     def post(self):
         global bandera
         bandera= 0
         user= self.request.get('reg_username')
-        pw=self.request.get('reg_password')
+        correo =self.request.get('reg_email')
+
+        message = mail.EmailMessage(sender="Example.com Support <proyecto-eps@appspot.gserviceaccount.com>",
+                                    subject="Your account has been approved")
+        message.to = correo
+        message.body = """
+        Dear """+user+ """:
+        Your example.com account has been approved.  You can now visit
+        http://www.example.com/ and sign in using your Google Account to
+        access new features.
+        Please let us know if you have any questions.
+
+        The toga Team
+        """
+        message.send()
+        pw=SHA256.new(self.request.get('reg_password')).hexdigest()
         email=self.request.get('reg_email')
         nombres=self.request.get('reg_firstname')
         apellidos=self.request.get('reg_lastname')
@@ -154,6 +174,17 @@ class Registro(Handler):
             self.render("apphome.html",msg=msg,bandera=bandera)
 
 
+class MailHandler(InboundMailHandler):
+    def receive(self, mail_message):
+        for content_type, pl in mail_message.bodies("text/plain"):
+            mensaje = Correos(mensaje_body=pl.payload.decode('utf-8'))
+            mensaje.put()
+
+class LogBounceHandler(BounceNotificationHandler):
+	def receive(self, bounce_message):
+		logging.info('Received bounce post ... [%s]', self.request)
+		logging.info('Bounce original: %s', bounce_message.original)
+		logging.info('Bounce notification: %s', bounce_message.notification)
 
 class Index(Handler):
     def get(self):
@@ -166,14 +197,17 @@ class Index(Handler):
 
 class AppHome(Handler):
    def get(self):
-       global bandera
-       bandera=0
-       user = self.session.get('user')
-       logging.info('Checkin index user value='+str(user))
-       template_values={
-           'user':user
-           }
-       self.render("apphome.html", user=template_values)
+       if self.session.get('user'):
+           self.redirect("/admin")
+       else:
+           global bandera
+           bandera=0
+           user = self.session.get('user')
+           logging.info('Checkin index user value='+str(user))
+           template_values={
+               'user':user
+               }
+           self.render("apphome.html", user=template_values)
 
 class Sitios(Handler):
    def get(self):
@@ -269,15 +303,29 @@ class Profile(Handler):
             consulta.domicilio[0].codpos = codpos
             consulta.domicilio[0].num_int = num_int
             consulta.domicilio[0].num_ext = num_ext
+            consulta.perfilupdated=True
             consulta.put()
         msg="Perfil Actualizado"
         self.render("profile.html",  query=consulta, msg=msg)
+
+
+
+#************ oauth2Decorator
+decorator = OAuth2Decorator(
+    client_id='141147046388-jekjfmorkjlhpt5eh9nh9rvuk3h443lv.apps.googleusercontent.com',
+    client_secret='foKPCKiZST5HloYvhGStc-iJ',
+    scope='https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/calendar')
+service = build('tasks','v1')
+service_calendar = build('calendar', 'v3')
+
+
 
 
 config = {}
 config['webapp2_extras.sessions'] = {
     'secret_key': 'some-secret-key',
 }
+
 
 app = webapp2.WSGIApplication([('/', Index),
             			       ('/application',AppHome),
@@ -288,13 +336,16 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/message',Message ),
                                ('/perfil', Profile),
                                ('/admin/messageadmin',Messageadmin),
-                               ('_ah/mail/',MailHandler),
                                ('/admin', AdminHandler),
+                               ('/admin/tareas',Tareas),
+                               ('/admin/calendario',Calendario),
+                               ('/admin/evento',Eventos),
                                ('/admin/VerEvento', VerEvento),
                                ('/entradausuario',EntradaUsuario),
                                ('/dfacturacion',DFactura),
                                ('/admin/facturas', Facturas),
-                               (MailHandler.mapping())
-
+                               (MailHandler.mapping()),
+                               (LogBounceHandler.mapping()),
+                               (decorator.callback_path, decorator.callback_handler())
                               ],
                               debug=True, config=config)

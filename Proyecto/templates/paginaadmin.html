@@ -4,7 +4,11 @@
   <link rel="stylesheet" href="../css/tasks.css">
   <link rel="stylesheet" href="../css/agregartarea.css">
   <link rel="stylesheet" href="../css/eventos.css">
-  {% endblock %}
+  <link rel="stylesheet" href="../css/gmailscrollbar.css">
+  <link rel="stylesheet" href="../css/modal.css">
+
+
+{% endblock %}
 
 {% block opciones %}
   <ul class="nav navbar-nav navbar-right">
@@ -20,6 +24,7 @@
   </ul>
 {% endblock %}
 
+
 {% block titlepanel %}
     <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -27,7 +32,7 @@
           <ul class="dropdown-menu">
             <li><a href="#" id="addClass">Tareas </a></li>
             <li class="divider"></li>
-            <li><a href="#">Calendario</a></li>
+            <li><a  href="/admin/facturas" >Facturas</a></li>
             </ul>
         </li>
       </ul>
@@ -35,79 +40,107 @@
 {% endblock %}
 
   {% block bodypanel %}
-  <div class="row col-md-6">
+  <form  action="/admin/calendario" method="post">
+  <div class="row col-md-7">
     <br><br>
-              <ul class="event-list">
-                <li>
-                  <time datetime="2014-07-20">
-                    <span class="day">4</span>
-                    <span class="month">Jul</span>
-                    <span class="year">2014</span>
-                    <span class="time">ALL DAY</span>
-                  </time>
-                  <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" />
-                  <div class="info">
-                    <h2 class="title">Independence Day</h2>
-                    <p class="desc">United States Holiday</p>
-                  </div>
-                  <div class="social">
-                    <ul>
-                      <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-                      <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-                      <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
+    <ul class="event-list">
 
-              <a id="btnevento" href="/admin/eventos" data-title="<img src='../img/team-img-2.png' width='10%' alt='imagen'
-                    style='display: block;
-                    margin-left: auto;
-                    margin-right: auto;'/>" class="btn btn-info btn-lg" style="background-color:308C96;">
-                <span class="glyphicon glyphicon-plus"></span> Agregar Evento
-              </a>
+
+  {% for evento in eventos %}
+
+      <li>
+        <time datetime="2014-07-20 0000">
+          <span class="day">{{evento.start['dateTime']|day}}</span>
+          <span class="month">{{evento.start['dateTime']|month}}</span>
+          <span class="year">{{evento.start['dateTime']|year}}</span>
+          <span class="time">12:00 AM</span>
+        </time>
+        <div class="info">
+          <h2 class="title">{{ evento.summary }}</h2>
+          <p class="desc">{{evento.location}}</p>
+          <p>{{evento.description}} </p>
+          <p>
+            {{evento.start['dateTime']|hour}}&nbsp; hrs.
+          </p>
+        </div>
+        <div class="social">
+          <ul>
+            <li class="facebook" style="width:33%;"><a ><input id="check" type="checkbox" name="calendar_id" value="{{evento.id}}"></a></li>
+            <li class="twitter" style="width:34%;"> <a  class="event_id" id="{{evento.id}}"> <span class="glyphicon glyphicon-trash"></span></a> </li>
+            <li class="google-plus" style="width:33%;"><a  href="/admin/calendario?calendar_id={{evento.id}}" class="event_id2"  id="{{evento.id}}" ><i class="fa fa-pencil"></i></a></li>
+          </ul>
+        </div>
+      </li>
+
+      {% endfor %}
+
+
+    </ul>
     </div>
     <br><br>
     <div class="col-md-2"> </div>
     <div class="row col-md-3">
+      <a class="btn btn-info btn-lg"  href="/admin/evento"><span class="glyphicon glyphicon-plus"></span>Agregar Evento </a>
       <br>
-      <div class="col-md-1"> </div>
+      <br>
+      <button type="submit" class="btn btn-danger btn-lg"  name="bandera" value="0"> <span class="glyphicon glyphicon-trash"></span>Eliminar Eventos </button>
 
     </div>
-
+    </form>
    {% endblock %}
 
    {% block cuerpopagina %}
     <!-- codigo tareas -->
-      <div class="popup-box chat-popup" id="qnimate">
-        <div class="popup-head">
-              <div class="popup-head-left pull-left"><span>Tareas</span></div>
-              <div class="popup-head-right pull-right">
-              <button data-widget="remove" id="removeClass" class="btn btn-default dropdown-toggle btn-circle btn-lg" type="button"><i class="fa fa-power-off fa-2x"></i></button>
-              </div>
+    <div class="popup-box chat-popup" id="qnimate">
+    		  <div class="popup-head">
+				        <div class="popup-head-left pull-left"><span>Tareas</span></div>
+    					  <div class="popup-head-right pull-right">
+    						<button data-widget="remove" id="removeClass" class="btn btn-default dropdown-toggle btn-circle btn-lg" type="button"><i class="fa fa-power-off fa-2x"></i></button>
+                </div>
+			  </div>
+        <div id="tareas" >
         </div>
-        <div id="getperfil">
-
-        </div>
-
-      </div>
-
 
 
    {% endblock %}
 
 
   {% block pie %}
-  <script type="text/javascript">
-      $('#btnevento').click( function (e) {
-          e.preventDefault();
-         $(this).ekkoLightbox();
-    });
 
-  </script>
+    <script type="text/javascript">
 
-  <script type="text/javascript" src="../js/paneldesple.js"></script>
-  <script type="text/javascript" src="../js/agregartarea.js"></script>
+      function deselect(e) {
+        $('.pop').slideFadeToggle(function() {
+          e.removeClass('selected');
+        });
+      }
 
+      $(function(){
+              $("#addClass").click(function () {
+                    $('#qnimate').addClass('popup-box-on');
+                    $('#tareas').load('/admin/tareas');
+                    $('#social').hide();
+                });
+
+                $("#removeClass").click(function () {
+                    $('#qnimate').removeClass('popup-box-on');
+                    $('#social').show();
+                });
+
+                $('a.event_id').click(function(){
+                    var id = $(this).attr("id");
+                    $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
+                    .done(function( data ) {
+                       window.location.href="/admin";
+
+                    })  ;
+
+                });
+      });
+
+      $.fn.slideFadeToggle = function(easing, callback) {
+        return this.animate({ opacity: 'toggle', height: 'toggle' }, 'fast', easing, callback);
+      };
+    </script>
 
   {% endblock %}
