@@ -162,7 +162,7 @@ class Tareas(Handler):
 class Evento(ndb.Model):
     nomevento = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-    datetime = ndb.StringProperty()
+    datetime = ndb.DateTimeProperty()
     lugar = ndb.StringProperty()
     cupo = ndb.IntegerProperty()
 

@@ -141,7 +141,7 @@ class Factura(ndb.Model):
 class Evento(ndb.Model):
     nomevento = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-    datet = ndb.StringProperty()
+    datet = ndb.DateTimeProperty()
     lugar = ndb.StringProperty()
     cupo = ndb.IntegerProperty()
 
