@@ -25,11 +25,53 @@ from oauth2client.appengine import OAuth2Decorator
 global bandera
 bandera= 0
 
+def day(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[2])
+
+def month(fecha):
+    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    num = vector[1]
+    n=int(num)-1
+    mes = meses[n]
+    return str(mes)
+
+def year(fecha):
+    datelong= str(fecha)
+    date= datelong[0:10]
+    vector= date.split('-')
+    return str(vector[0])
+
+def hour(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:16]
+    return hour
+
+def date(fecha):
+    datelong= str(fecha)
+    hour= datelong[0:10]
+    return hour
+
+def time(fecha):
+    datelong= str(fecha)
+    hour= datelong[11:19]
+    return hour
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
+jinja_env.filters['day'] = day
+jinja_env.filters['month'] = month
+jinja_env.filters['year'] = year
+jinja_env.filters['hour'] = hour
+jinja_env.filters['date'] = date
+jinja_env.filters['time'] = time
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -88,6 +130,8 @@ class Usuario(ndb.Model):
     puesto = ndb.StringProperty()
     cuenta = ndb.StructuredProperty(Cuentas,repeated=True)
     perfilupdated= ndb.BooleanProperty(default=False)
+    eventos = ndb.StringProperty(repeated=True)
+
 
 class Factura(ndb.Model):
     nomempresa = ndb.StringProperty(required=True)
@@ -95,6 +139,14 @@ class Factura(ndb.Model):
     correo = ndb.StringProperty(required=True)
     rfc = ndb.StringProperty(required=True)
 
+
+class Evento(ndb.Model):
+    eventid=ndb.StringProperty()
+    nomevento = ndb.StringProperty()
+    descripcion = ndb.StringProperty()
+    datetime = ndb.StringProperty()
+    lugar = ndb.StringProperty()
+    cupo = ndb.IntegerProperty()
 
 
 class Correos(ndb.Model):
@@ -124,6 +176,7 @@ class Login(Handler):
                 #Vinculo el usuario obtenido de mi datastore con mi sesion.
                 bandera=0
                 self.session['user'] =consulta.cuenta[0].username
+                self.session['correo']=consulta.cuenta[0].email
                 logging.info("%s just logged in" % user)
                 if consulta.perfilupdated:
                     self.redirect('/entradausuario')
@@ -198,7 +251,7 @@ class Index(Handler):
 class AppHome(Handler):
    def get(self):
        if self.session.get('user'):
-           self.redirect("/admin")
+           self.redirect("/entradausuario")
        else:
            global bandera
            bandera=0
@@ -221,9 +274,8 @@ class Sitios(Handler):
 class Logout(Handler):
     def get(self):
         if self.session.get('user'):
-            msg = 'You are loging out..'
-            self.render("logout.html", error=msg)
             del self.session['user']
+            self.redirect("/application")
 
 class Message(Handler):
     def get(self):
@@ -231,7 +283,22 @@ class Message(Handler):
 
 class EntradaUsuario(Handler):
     def get(self):
-        self.render("entradausuario.html")
+        user = self.session.get('user')
+        email = self.session.get('correo')
+        usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
+        consulta=Evento.query().fetch()
+        self.render("entradausuario.html",eventos=consulta, user=user, usuario=usuario)
+
+    def post(self):
+        user  = self.session.get('user')
+        email = self.session.get('correo')
+        eventoid= self.request.get("eventoid")
+        # evento = Evento.query(Evento.eventid==eventoid).get()
+        # aqui se sumaria al numero de asistencia
+        usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
+        usuario.eventos.append(eventoid)
+        usuario.put()
+
 
 class DFactura(Handler):
     def get(self):
@@ -274,6 +341,7 @@ class Profile(Handler):
             self.render("profile.html", query=consulta,  user=user)
 
     def post(self):
+        user = self.session.get('user')
         nombres= self.request.get('nombres')
         apellidos = self.request.get('apellidos')
         correo = self.request.get('correo')
@@ -306,7 +374,7 @@ class Profile(Handler):
             consulta.perfilupdated=True
             consulta.put()
         msg="Perfil Actualizado"
-        self.render("profile.html",  query=consulta, msg=msg)
+        self.render("profile.html",query=consulta, msg=msg, user=user)
 
 
 

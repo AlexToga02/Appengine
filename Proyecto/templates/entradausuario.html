@@ -1,130 +1,80 @@
 {% extends "_basepanel.html" %}
 {% block linkcss %}
-<link rel="stylesheet" href="../css/eventos.css">
-<link rel="stylesheet" href="../css/entradausuario.css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="css/eventos.css">
+<link rel="stylesheet" href="css/3dbutton.css">
 {% endblock %}
 
   {% block opciones %}
 
       <ul class="nav navbar-nav navbar-right">
         <li class="active dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/perfil">Perfil</a></li>
-            <li><a href="#">Something else here</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Salir</a></li>
+            <li><a href="/logout">Salir</a></li>
           </ul>
         </li>
       </ul>
 
 {% endblock %}
 
-  {% block titlepanel %}<h1>Eventos Proximos</h1>{% endblock %}
-
+  {% block titlepanel %}<h2>Eventos Proximos</h2>{% endblock %}
   {% block bodypanel %}
-  <div class="container">
-  <div class="row">
-    <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
-      <ul class="event-list">
-        <li>
-          <time datetime="2014-07-20">
-            <span class="day">4</span>
-            <span class="month">Jul</span>
-            <span class="year">2014</span>
-            <span class="time">ALL DAY</span>
-          </time>
+  {% if not eventos %}
+        <h1>No hay eventos :/ por el momento</h1>
 
-          <div class="info">
-            <h2 class="title">Independence Day</h2>
-            <p class="desc">United States Holiday</p>
-          </div>
+    {% else %}
 
-                      <div class="social">
-              <ul>
-              <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-gears"></span></a></li>
-            </ul>
-          </div>
-        </li>
+  <div class="row col-md-7">
+    <br><br>
+    <ul class="event-list">
 
-        <li>
-          <time datetime="2014-07-20 0000">
-            <span class="day">8</span>
-            <span class="month">Jul</span>
-            <span class="year">2014</span>
-            <span class="time">12:00 AM</span>
-          </time>
-          <div class="info">
-            <h2 class="title">One Piece Unlimited World Red</h2>
-            <p class="desc">PS Vita</p>
-            <ul>
-              <li style="width:50%;"><a href="#website"><span class="fa fa-globe"></span> Website</a></li>
-              <li style="width:50%;"><span class="fa fa-money"></span> $39.99</li>
-            </ul>
-          </div>
-          <div class="social">
-            <ul>
-              <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-gears"></span></a></li>
-              <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-              <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-            </ul>
-          </div>
-        </li>
+  {% for evento in eventos %}
 
-        <li>
-          <time datetime="2014-07-20 2000">
-            <span class="day">20</span>
-            <span class="month">Jan</span>
-            <span class="year">2014</span>
-            <span class="time">8:00 PM</span>
-          </time>
-          <img alt="My 24th Birthday!" src="https://farm5.staticflickr.com/4150/5045502202_1d867c8a41_q.jpg" />
-          <div class="info">
-            <h2 class="title">Mouse0270's 24th Birthday!</h2>
-            <p class="desc">Bar Hopping in Erie, Pa.</p>
-            <ul>
-              <li style="width:33%;">1 <span class="glyphicon glyphicon-ok"></span></li>
-              <li style="width:34%;">3 <span class="fa fa-question"></span></li>
-              <li style="width:33%;">103 <span class="fa fa-envelope"></span></li>
-            </ul>
-          </div>
-          <div class="social">
-            <ul>
-              <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-              <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-              <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-            </ul>
-          </div>
-        </li>
+      <li>
+        <time datetime="2014-07-20 0000">
+          <span class="day">{{evento.datetime|day}}</span>
+          <span class="month">{{evento.datetime|month}}</span>
+          <span class="year">{{evento.datetime|year}}</span>
+          <span class="time">12:00 AM</span>
+        </time>
+        <div class="info">
+          <h2 class="title">{{ evento.nomevento }}</h2>
+          <p class="desc">{{evento.lugar}}</p>
+          <p class="desc">{{evento.descripcion}} </p>
+          <p class="desc">
+            {{evento.datetime|hour}}&nbsp; hrs.
+          </p>
+          <ul>
+								<li style="width:70%;"></li>
 
-        <li>
-          <time datetime="2014-07-31 1600">
-            <span class="day">31</span>
-            <span class="month">Jan</span>
-            <span class="year">2014</span>
-            <span class="time">4:00 PM</span>
-          </time>
-          <img alt="Disney Junior Live On Tour!" src="http://www.thechaifetzarena.com/images/main/DL13_PiratePrincess_thumb.jpg" />
-          <div class="info">
-            <h2 class="title">Disney Junior Live On Tour!</h2>
-            <p class="desc"> Pirate and Princess Adventure</p>
-            <ul>
-              <li style="width:33%;">$49.99 <span class="fa fa-male"></span></li>
-              <li style="width:34%;">$29.99 <span class="fa fa-child"></span></li>
-            </ul>
-          </div>
-          <div class="social">
-            <ul>
-              <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-              <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-              <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+                {% if evento.eventid in usuario.eventos %}
+                  	<li style="width:5%;"> <label style="color:blue;">Registadoo </label></li>
+                {% else %}
+                  	<li style="width:5%;"> <a class="boton azul formaBoton" style="color:white;" href="#" name="eventoid" id="{{evento.eventid}}">Registrarme!!</a></li>
+                {% endif %}
+
+
+
+
+
+
+
+
+                	<li style="width:10%;"></li>
+							</ul>
+        </div>
+      </li>
+
+
+
+      {% endfor %}
+
+
+    </ul>
     </div>
-  </div>
-</div>
+    {% endif %}
 
    {% endblock %}
 
@@ -135,5 +85,23 @@
 
 
   {%block pie%}
+  <script type="text/javascript">
+
+
+  $('[name="eventoid"]').click(function(){
+      var id = $(this).attr("id");
+      $.post( "/entradausuario", { eventoid: id })
+      .fail(function(data){
+        alert(JSON.stringify(data));
+      })
+      .done(function( data ) {
+         window.location.href="/entradausuario";
+
+      });
+
+  });
+
+
+  </script>
 
   {% endblock%}
