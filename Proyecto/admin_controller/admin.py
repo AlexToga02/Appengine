@@ -146,18 +146,48 @@ class Tareas(Handler):
 
 
 
-        tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
-        items = tasks.get('items', [])
-        notas = ','.join([task.get('title','') for task in items])
-        lista = notas.split(',')
-        numero = len(lista)
+        # tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+        # items = tasks.get('items', [])
+        # notas = ','.join([task.get('title','') for task in items])
+        # lista = notas.split(',')
+        # numero = len(lista)
+        #
+        # http=decorator.http()
+        # request=service_calendar.events().list(calendarId='primary')
+        # response_calendar=request.execute(http=http)
+        # events =  response_calendar['items']
+        #
+        # self.render("paginaadmin.html",eventos=events,bandera=bandera,items=items,num=numero)
+        self.redirect("/admin")
 
-        http=decorator.http()
-        request=service_calendar.events().list(calendarId='primary')
-        response_calendar=request.execute(http=http)
-        events =  response_calendar['items']
 
-        self.render("paginaadmin.html",eventos=events,bandera=bandera,items=items,num=numero)
+class Cuentas(ndb.Model):
+    username = ndb.StringProperty()
+    password = ndb.StringProperty()
+    email   =  ndb.StringProperty()
+
+
+class Domicilioo(ndb.Model):
+    calle = ndb.StringProperty()
+    num_int = ndb.StringProperty()
+    num_ext = ndb.IntegerProperty()
+    colonia = ndb.StringProperty()
+    ciudad = ndb.StringProperty()
+    pais = ndb.StringProperty()
+    codpos = ndb.IntegerProperty()
+
+class NombreCompleto(ndb.Model):
+    nombres= ndb.StringProperty()
+    apellidos= ndb.StringProperty()
+
+class Usuario(ndb.Model):
+    nomcompleto = ndb.StructuredProperty(NombreCompleto, repeated=True)
+    domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
+    profesion = ndb.StringProperty()
+    puesto = ndb.StringProperty()
+    cuenta = ndb.StructuredProperty(Cuentas,repeated=True)
+    perfilupdated= ndb.BooleanProperty(default=False)
+    eventos = ndb.StringProperty(repeated=True)
 
 class Evento(ndb.Model):
     eventid=ndb.StringProperty()
@@ -235,6 +265,18 @@ class Calendario(Handler):
             for a in calendar_id:
                 request=service_calendar.events().delete(calendarId='primary', eventId=a)
                 response_calendar=request.execute(http=http)
+                evento= Evento.query(Evento.eventid==a).get()
+                evento.key.delete()
+
+                user=self.session.get('user')
+                correo = self.session.get('correo')
+                usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==correo)).get()
+
+                if a in usuario.eventos:
+                    idx = usuario.eventos.index(a)
+                    del usuario.eventos[idx]
+                    usuario.put()
+
         elif  (bandera == "2"):
              event_id = self.request.get('calendar_id')
              summary = self.request.get("summary")
@@ -263,11 +305,7 @@ class Calendario(Handler):
              }
 
              updated_event = service_calendar.events().update(calendarId='primary', eventId=event_id , body=event).execute(http=http)
-
-        request=service_calendar.events().list(calendarId='primary')
-        response_calendar=request.execute(http=http)
-        events =  response_calendar['items']
-        self.render("paginaadmin.html",eventos=events)
+        self.redirect("/admin")
 
 
 

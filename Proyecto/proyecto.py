@@ -130,6 +130,8 @@ class Usuario(ndb.Model):
     puesto = ndb.StringProperty()
     cuenta = ndb.StructuredProperty(Cuentas,repeated=True)
     perfilupdated= ndb.BooleanProperty(default=False)
+    eventos = ndb.StringProperty(repeated=True)
+
 
 class Factura(ndb.Model):
     nomempresa = ndb.StringProperty(required=True)
@@ -174,6 +176,7 @@ class Login(Handler):
                 #Vinculo el usuario obtenido de mi datastore con mi sesion.
                 bandera=0
                 self.session['user'] =consulta.cuenta[0].username
+                self.session['correo']=consulta.cuenta[0].email
                 logging.info("%s just logged in" % user)
                 if consulta.perfilupdated:
                     self.redirect('/entradausuario')
@@ -271,8 +274,6 @@ class Sitios(Handler):
 class Logout(Handler):
     def get(self):
         if self.session.get('user'):
-            # msg = 'You are loging out..'
-            # self.render("logout.html", error=msg)
             del self.session['user']
             self.redirect("/application")
 
@@ -283,8 +284,21 @@ class Message(Handler):
 class EntradaUsuario(Handler):
     def get(self):
         user = self.session.get('user')
+        email = self.session.get('correo')
+        usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
         consulta=Evento.query().fetch()
-        self.render("entradausuario.html",eventos=consulta, user=user)
+        self.render("entradausuario.html",eventos=consulta, user=user, usuario=usuario)
+
+    def post(self):
+        user  = self.session.get('user')
+        email = self.session.get('correo')
+        eventoid= self.request.get("eventoid")
+        # evento = Evento.query(Evento.eventid==eventoid).get()
+        # aqui se sumaria al numero de asistencia
+        usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
+        usuario.eventos.append(eventoid)
+        usuario.put()
+
 
 class DFactura(Handler):
     def get(self):
@@ -327,6 +341,7 @@ class Profile(Handler):
             self.render("profile.html", query=consulta,  user=user)
 
     def post(self):
+        user = self.session.get('user')
         nombres= self.request.get('nombres')
         apellidos = self.request.get('apellidos')
         correo = self.request.get('correo')
@@ -359,7 +374,7 @@ class Profile(Handler):
             consulta.perfilupdated=True
             consulta.put()
         msg="Perfil Actualizado"
-        self.render("profile.html",  query=consulta, msg=msg)
+        self.render("profile.html",query=consulta, msg=msg, user=user)
 
 
 

@@ -41,7 +41,7 @@
 
   {% block bodypanel %}
   <form  action="/admin/calendario" method="post">
-  <div class="row col-md-5">
+  <div class="row col-md-6">
     <br><br>
     <ul class="event-list">
 
@@ -58,10 +58,14 @@
         <div class="info">
           <h2 class="title">{{ evento.summary }}</h2>
           <p class="desc">{{evento.location}}</p>
-          <p>{{evento.description}} </p>
-          <p>
+          <p class="desc">{{evento.description}} </p>
+          <p class="desc">
             {{evento.start['dateTime']|hour}}&nbsp; hrs.
           </p>
+              <ul>
+								<li style="text-decoration: none;">1 <span class="glyphicon glyphicon-ok"></span></li>
+
+							</ul>
         </div>
         <div class="social">
           <ul>
@@ -72,18 +76,18 @@
         </div>
       </li>
 
+
       {% endfor %}
-
-
     </ul>
     </div>
     <br><br>
+
     <div class="col-md-4"> </div>
-    <div class="row col-md-3">
-      <a class="btn btn-info btn-lg"  href="/admin/evento"><span class="glyphicon glyphicon-plus"></span>Agregar Evento </a>
+    <div class="row col-md-2">
+      <a class="btn btn-info btn-lg"  href="/admin/evento"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;Agregar Evento </a>
       <br>
       <br>
-      <button type="submit" class="btn btn-danger btn-lg"  name="bandera" value="0"> <span class="glyphicon glyphicon-trash"></span>Eliminar Eventos </button>
+      <button type="submit" class="btn btn-danger btn-lg"  name="bandera" value="0"> <span class="glyphicon glyphicon-trash"></span>&nbsp;Eliminar Eventos </button>
 
     </div>
     </form>
@@ -131,10 +135,13 @@
                 $('a.event_id').click(function(){
                     var id = $(this).attr("id");
                     $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
+                    .fail(function(data){
+                      alert(JSON.stringify(data));
+                    })
                     .done(function( data ) {
                        window.location.href="/admin";
 
-                    })  ;
+                    });
 
                 });
       });

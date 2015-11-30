@@ -1,6 +1,7 @@
 {% extends "_basepanel.html" %}
 {% block linkcss %}
-<link rel="stylesheet" href="../css/eventos.css">
+<link rel="stylesheet" href="css/eventos.css">
+<link rel="stylesheet" href="css/3dbutton.css">
 {% endblock %}
 
   {% block opciones %}
@@ -20,9 +21,15 @@
 
   {% block titlepanel %}<h2>Eventos Proximos</h2>{% endblock %}
   {% block bodypanel %}
+  {% if not eventos %}
+        <h1>No hay eventos :/ por el momento</h1>
+
+    {% else %}
+
   <div class="row col-md-7">
     <br><br>
     <ul class="event-list">
+
   {% for evento in eventos %}
 
       <li>
@@ -35,18 +42,39 @@
         <div class="info">
           <h2 class="title">{{ evento.nomevento }}</h2>
           <p class="desc">{{evento.lugar}}</p>
-          <p>{{evento.descripcion}} </p>
-          <p>
+          <p class="desc">{{evento.descripcion}} </p>
+          <p class="desc">
             {{evento.datetime|hour}}&nbsp; hrs.
           </p>
+          <ul>
+								<li style="width:70%;"></li>
+
+                {% if evento.eventid in usuario.eventos %}
+                  	<li style="width:5%;"> <label style="color:blue;">Registadoo </label></li>
+                {% else %}
+                  	<li style="width:5%;"> <a class="boton azul formaBoton" style="color:white;" href="#" name="eventoid" id="{{evento.eventid}}">Registrarme!!</a></li>
+                {% endif %}
+
+
+
+
+
+
+
+
+                	<li style="width:10%;"></li>
+							</ul>
         </div>
       </li>
+
+
 
       {% endfor %}
 
 
     </ul>
     </div>
+    {% endif %}
 
    {% endblock %}
 
@@ -57,5 +85,23 @@
 
 
   {%block pie%}
+  <script type="text/javascript">
+
+
+  $('[name="eventoid"]').click(function(){
+      var id = $(this).attr("id");
+      $.post( "/entradausuario", { eventoid: id })
+      .fail(function(data){
+        alert(JSON.stringify(data));
+      })
+      .done(function( data ) {
+         window.location.href="/entradausuario";
+
+      });
+
+  });
+
+
+  </script>
 
   {% endblock%}
