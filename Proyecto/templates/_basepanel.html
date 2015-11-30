@@ -1,5 +1,8 @@
 <html>
  <head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="icon" type="image/png" href="img/team-img-2.png">
    <title> {% block title %}Sitio Creado con Google App Engine{% endblock %}</title>
 
@@ -61,43 +64,45 @@
      </div>
      </nav>
      <!-- end navigation -->
+   </header>
 
-    <div id="bodycontent">
-{% block bodycontent %}
-      <div class="lineaazul" id="lineaazul">
-        <div id="enterseparar"> </div> <br><br>
-        <div class="row" id="divpanel">
-            <div class="panel panel-default" id="panel">
-               <div class="panel-heading" id="paneltitulo">
+    <div id="bodycontent" class="container">
+    {% block bodycontent %}
+        <!-- <div id="enterseparar"> </div> <br><br> -->
+          <br>
+          <div class="row" >
+            <div class="panel panel-primary">
+               <div class="panel-heading">
 
                    {% block titlepanel %}replace this{% endblock %}
 
                </div>
-               <div class="panel-body" id="panelcuerpo">
-                 {% block bodypanel %}replace this
+               <div class="panel-body">
+                 {% block bodypanel %}
+                  replace this
                  {% endblock %}
                </div>
              </div>
 
-        </div> <!-- end:row -->
-      {% block cuerpopagina %}
+          </div> <!-- end:row -->
+            {% block cuerpopagina %}
 
-      {% endblock %}
-        <div id="social" class="row social-footer">
-          <div class="col-md-9">
+            {% endblock %}
+          <div id="social" class="row social-footer">
+              <div class="col-md-9">
 
+              </div>
+              <div class="col-md-2">
+               <a href="www.google.com">  <i class="fa fa-google-plus-square fa-3x" > </i> </a>
+               <a href="www.facebook.com">      <i class="fa fa-facebook-square fa-3x"></i>  </a>
+               <a href="www.twitter.com">      <i class="fa fa-twitter-square fa-3x"></i>  </a>
+              </div>
+
+              <div class="col-md-1">
+
+              </div>
           </div>
-          <div class="col-md-2">
-           <a href="www.google.com">  <i class="fa fa-google-plus-square fa-3x" > </i> </a>
-           <a href="www.facebook.com">      <i class="fa fa-facebook-square fa-3x"></i>  </a>
-           <a href="www.twitter.com">      <i class="fa fa-twitter-square fa-3x"></i>  </a>
-          </div>
 
-          <div class="col-md-1">
-
-          </div>
-      </div>
-    </div>
 
     {% endblock %}
     </div>

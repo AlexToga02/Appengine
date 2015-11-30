@@ -26,9 +26,9 @@
 
 
 {% block titlepanel %}
-    <ul class="nav navbar-nav">
+    <ul class="ul-no-style">
         <li class="dropdown">
-          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" style="color:308C96;text-decoration: none;">Bienvenido<span class="caret"></span></a></h2>
+          <h2 class="dropdown-toggle" data-toggle="dropdown"><a href="#" style="color: white;text-decoration: none;">Bienvenido<span class="caret"></span></a></h2>
           <ul class="dropdown-menu">
             <li><a href="#" id="addClass">Tareas </a></li>
             <li class="divider"></li>
@@ -41,7 +41,7 @@
 
   {% block bodypanel %}
   <form  action="/admin/calendario" method="post">
-  <div class="row col-md-7">
+  <div class="row col-md-5">
     <br><br>
     <ul class="event-list">
 
@@ -78,7 +78,7 @@
     </ul>
     </div>
     <br><br>
-    <div class="col-md-2"> </div>
+    <div class="col-md-4"> </div>
     <div class="row col-md-3">
       <a class="btn btn-info btn-lg"  href="/admin/evento"><span class="glyphicon glyphicon-plus"></span>Agregar Evento </a>
       <br>
@@ -100,6 +100,7 @@
 			  </div>
         <div id="tareas" >
         </div>
+    </div>
 
 
    {% endblock %}

@@ -248,7 +248,7 @@ class Index(Handler):
 class AppHome(Handler):
    def get(self):
        if self.session.get('user'):
-           self.redirect("/admin")
+           self.redirect("/entradausuario")
        else:
            global bandera
            bandera=0
@@ -271,9 +271,10 @@ class Sitios(Handler):
 class Logout(Handler):
     def get(self):
         if self.session.get('user'):
-            msg = 'You are loging out..'
-            self.render("logout.html", error=msg)
+            # msg = 'You are loging out..'
+            # self.render("logout.html", error=msg)
             del self.session['user']
+            self.redirect("/application")
 
 class Message(Handler):
     def get(self):
@@ -281,8 +282,9 @@ class Message(Handler):
 
 class EntradaUsuario(Handler):
     def get(self):
+        user = self.session.get('user')
         consulta=Evento.query().fetch()
-        self.render("entradausuario.html",eventos=consulta)
+        self.render("entradausuario.html",eventos=consulta, user=user)
 
 class DFactura(Handler):
     def get(self):
