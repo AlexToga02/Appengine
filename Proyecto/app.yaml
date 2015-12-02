@@ -53,3 +53,6 @@ libraries:
 inbound_services:
 - mail_bounce
 - mail
+
+builtins:
+- appstats: on
