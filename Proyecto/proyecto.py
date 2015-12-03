@@ -3,6 +3,7 @@ import webapp2
 import jinja2
 import logging
 import httplib2
+import uuid
 
 
 from Crypto.Hash import SHA256
@@ -32,7 +33,7 @@ def day(fecha):
     return str(vector[2])
 
 def month(fecha):
-    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
+    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"]
     datelong= str(fecha)
     date= datelong[0:10]
     vector= date.split('-')
@@ -124,6 +125,7 @@ class NombreCompleto(ndb.Model):
     apellidos= ndb.StringProperty()
 
 class Usuario(ndb.Model):
+    privilegio = ndb.StringProperty(default="user")
     nomcompleto = ndb.StructuredProperty(NombreCompleto, repeated=True)
     domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
     profesion = ndb.StringProperty()
@@ -283,11 +285,14 @@ class Message(Handler):
 
 class EntradaUsuario(Handler):
     def get(self):
-        user = self.session.get('user')
-        email = self.session.get('correo')
-        usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
-        consulta=Evento.query().fetch()
-        self.render("entradausuario.html",eventos=consulta, user=user, usuario=usuario)
+        if self.session.get('user'):
+            user = self.session.get('user')
+            email = self.session.get('correo')
+            usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
+            consulta=Evento.query().fetch()
+            self.render("entradausuario.html",eventos=consulta, user=user, usuario=usuario)
+        else:
+            self.redirect("/application")
 
     def post(self):
         user  = self.session.get('user')
@@ -299,13 +304,38 @@ class EntradaUsuario(Handler):
         usuario.eventos.append(eventoid)
         usuario.put()
 
+class RegisterUser(Handler):
+    def get(self):
+        if self.session.get('user'):
+            user = self.session.get('user')
+            email = self.session.get('correo')
+            usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==email)).get()
+            eventos = Evento.query().fetch()
+
+            # eventuser=Evento.query(ndb.AND(Evento.eventid==consulta))
+            self.render("registeruser.html",usuario=usuario,eventos=eventos,user=user)
+
+    def post(self):
+        eventoid = self.request.get("evento")
+        user=self.session.get('user')
+        correo = self.session.get('correo')
+        usuario=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.email==correo)).get()
+        if eventoid in usuario.eventos:
+            idx = usuario.eventos.index(eventoid)
+            del usuario.eventos[idx]
+            usuario.put()
+
+
+
 
 class DFactura(Handler):
     def get(self):
-
-        self.render("dfacturacion.html")
+        if self.session.get('user'):
+            user = self.session.get('user')
+            self.render("dfacturacion.html",user=user)
 
     def post(self):
+        user = self.session.get('user')
         nomempresa= self.request.get('nomempresa')
         correo=self.request.get('correo')
         rfc=self.request.get('rfc')
@@ -332,7 +362,7 @@ class DFactura(Handler):
 
         if cuenta_factura == facturas:
             msg= "Datos Guardados Correctamente"
-            self.render("dfacturacion.html",msg=msg)
+            self.render("dfacturacion.html",msg=msg,user=user)
 class Profile(Handler):
     def get(self):
         if self.session.get('user'):
@@ -376,6 +406,34 @@ class Profile(Handler):
         msg="Perfil Actualizado"
         self.render("profile.html",query=consulta, msg=msg, user=user)
 
+class Administrador(Handler):
+    def get(self):
+        global bandera
+        self.render("loginAdmin.html", bandera= bandera)
+
+    def post(self):
+        global bandera
+        user = self.request.get('adminuser')
+        pw=SHA256.new(self.request.get('adminpass')).hexdigest()
+        msg = ''
+        if pw == '' or user == '' :
+            bandera = 1
+            self.render("loginAdmin.html", bandera=bandera)
+        else:
+            consulta=Usuario.query(ndb.AND(Usuario.cuenta.username==user,Usuario.cuenta.password==pw,Usuario.privilegio=="admin")).get()
+            if consulta is not None:
+                logging.info('POST consulta=' + str(consulta))
+                #Vinculo el usuario obtenido de mi datastore con mi sesion.
+                bandera = 0
+                self.session['user'] =consulta.cuenta[0].username
+                self.redirect('/admin')
+            else:
+                logging.info('POST consulta=' + str(consulta))
+                bandera = 2
+                # msg = 'Incorrect user or password.. please try again'
+                self.render("loginAdmin.html", bandera=bandera)
+
+
 
 
 #************ oauth2Decorator
@@ -412,6 +470,8 @@ app = webapp2.WSGIApplication([('/', Index),
                                ('/entradausuario',EntradaUsuario),
                                ('/dfacturacion',DFactura),
                                ('/admin/facturas', Facturas),
+                               ('/administrador',Administrador),
+                               ('/registros', RegisterUser),
                                (MailHandler.mapping()),
                                (LogBounceHandler.mapping()),
                                (decorator.callback_path, decorator.callback_handler())

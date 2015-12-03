@@ -1,0 +1,74 @@
+{% extends "_basepanel.html" %}
+{% block linkcss %}
+    <link rel="stylesheet" href="css/eventos.css">
+    <link rel="stylesheet" href="css/3dbutton.css">
+{% endblock %}
+
+  {% block opciones %}
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user}}<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+              <li><a href="/entradausuario">Entrada</a></li>
+            <li><a href="/perfil">Perfil</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/logout">Salir</a></li>
+          </ul>
+        </li>
+      </ul>
+
+  {% endblock %}
+
+  {% block titlepanel %}<h2>Eventos Proximos</h2>{% endblock %}
+
+  {% block bodypanel %}
+  <table class="table">
+      <thead>
+          <tr>
+              <th>Evento</th>
+              <th>Descripcion</th>
+              <th>Lugar</th>
+              <th>Fecha</th>
+              <th> </th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for evento in eventos %}
+         {% for item in usuario.eventos %}
+              {% if item == evento.eventid %}
+                      <tr>
+                          <td>{{evento.nomevento}} </td>
+                          <td>{{evento.descripcion}} </td>
+                          <td>{{evento.lugar}}</td>
+                          <td>{{evento.datetime|day}} / {{evento.datetime|month}} / {{evento.datetime|year}}</td>
+                          <td> <a  href="#"class="btn btn-danger" id="{{evento.eventid}}" name="evento"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a> </td>
+                      </tr>
+
+
+
+              {% endif %}
+         {% endfor %}
+      {% endfor %}
+      </tbody>
+  </table>
+  <a class="btn btn-primary" href="/dfacturacion">Hacer Factura</a>
+
+  {% endblock%}
+
+  {%block pie%}
+  <script type="text/javascript">
+
+        $("[name='evento']").click(function(){
+            var id = $(this).attr("id");
+            $.post( "/registros", {evento: id})
+            .done(function( data ) {
+               window.location.href="/registros";
+
+            });
+
+        });
+
+  </script>
+
+  {% endblock%}

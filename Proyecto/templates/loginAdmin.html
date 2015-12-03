@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Calm breeze login screen</title>
+          <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+    <div class="wrapper">
+	<div class="container">
+		<h1>Welcome</h1>
+
+		<form class="form" action="/administrador" method="post">
+			<input type="text" placeholder="Username" name="adminuser">
+			<input type="password" placeholder="Password" name="adminpass">
+			<button type="submit" id="login-button">Login</button>
+		</form>
+
+    {% if bandera == 1 %}
+
+     <div class="alert alert-warning" role="alert">Please specify Account and Password</div>
+     {% elif bandera == 2 %}
+     <div class="alert alert-danger" role="alert">Incorrect user or password.. please try again</div>
+     {% endif %}
+	</div>
+
+	<ul class="bg-bubbles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+    <script src="js/jquery.js"></script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -15,10 +15,8 @@
     <li class="active dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
       <ul class="dropdown-menu">
-        <li><a href="/admin">Entrada</a></li>
-        <li><a href="/admin/messageadmin">Mensajeria</a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="#">Salir</a></li>
+        <li><a href="/logout">Salir</a></li>
       </ul>
     </li>
   </ul>
@@ -50,17 +48,17 @@
 
       <li>
         <time datetime="2014-07-20 0000">
-          <span class="day">{{evento.start['dateTime']|day}}</span>
-          <span class="month">{{evento.start['dateTime']|month}}</span>
-          <span class="year">{{evento.start['dateTime']|year}}</span>
+          <span class="day">{{evento.datetime|day}}</span>
+          <span class="month">{{evento.datetime|month}}</span>
+          <span class="year">{{evento.datetime|year}}</span>
           <span class="time">12:00 AM</span>
         </time>
         <div class="info">
-          <h2 class="title">{{ evento.summary }}</h2>
-          <p class="desc">{{evento.location}}</p>
-          <p class="desc">{{evento.description}} </p>
+          <h2 class="title">{{evento.nomevento}}</h2>
+          <p class="desc">{{evento.lugar}}</p>
+          <p class="desc">{{evento.descripcion}} </p>
           <p class="desc">
-            {{evento.start['dateTime']|hour}}&nbsp; hrs.
+            {{evento.datetime|hour}}&nbsp; hrs.
           </p>
               <ul>
 								<li style="text-decoration: none;">1 <span class="glyphicon glyphicon-ok"></span></li>
@@ -69,9 +67,9 @@
         </div>
         <div class="social">
           <ul>
-            <li class="facebook" style="width:33%;"><a ><input id="check" type="checkbox" name="calendar_id" value="{{evento.id}}"></a></li>
-            <li class="twitter" style="width:34%;"> <a  class="event_id" id="{{evento.id}}"> <span class="glyphicon glyphicon-trash"></span></a> </li>
-            <li class="google-plus" style="width:33%;"><a  href="/admin/calendario?calendar_id={{evento.id}}" class="event_id2"  id="{{evento.id}}" ><i class="fa fa-pencil"></i></a></li>
+            <li class="facebook" style="width:33%;"><a ><input id="check" type="checkbox" name="calendar_id" value="{{evento.eventid}}"></a></li>
+            <li class="twitter" style="width:34%;"> <a  class="event_id" id="{{evento.eventid}}"> <span class="glyphicon glyphicon-trash"></span></a> </li>
+            <li class="google-plus" style="width:33%;"><a  href="/admin/calendario?calendar_id={{evento.eventid}}" class="event_id2"  id="{{evento.eventid}}" ><i class="fa fa-pencil"></i></a></li>
           </ul>
         </div>
       </li>
@@ -135,9 +133,9 @@
                 $('a.event_id').click(function(){
                     var id = $(this).attr("id");
                     $.post( "/admin/calendario", { bandera: "0", calendar_id: id })
-                    .fail(function(data){
-                      alert(JSON.stringify(data));
-                    })
+                    // .fail(function(data){
+                    //   alert(JSON.stringify(data));
+                    // })
                     .done(function( data ) {
                        window.location.href="/admin";
 

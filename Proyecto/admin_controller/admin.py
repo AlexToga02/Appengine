@@ -1,6 +1,7 @@
 import webapp2
 import os
 import jinja2
+import uuid
 
 from webapp2_extras import sessions
 from apiclient.discovery import build
@@ -15,7 +16,7 @@ def day(fecha):
     return str(vector[2])
 
 def month(fecha):
-    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
+    meses =["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"]
     datelong= str(fecha)
     date= datelong[0:10]
     vector= date.split('-')
@@ -98,18 +99,25 @@ def check_password(clear_password, password_hash):
 class AdminHandler(Handler):
     @decorator.oauth_required
     def get(self):
-        tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
-        items = tasks.get('items', [])
-        notas = ','.join([task.get('title','') for task in items])
-        lista = notas.split(',')
-        numero = len(lista)
+        if self.session.get('user'):
+            # Api de las tareas
+            tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
+            items = tasks.get('items', [])
+            notas = ','.join([task.get('title','') for task in items])
+            lista = notas.split(',')
+            numero = len(lista)
 
-        http=decorator.http()
-        request=service_calendar.events().list(calendarId='primary')
-        response_calendar=request.execute(http=http)
-        events =  response_calendar['items']
+            http=decorator.http()
+            request=service_calendar.events().list(calendarId='primary')
+            response_calendar=request.execute(http=http)
+            events =  response_calendar['items']
 
-        self.render("paginaadmin.html",eventos=events,items=items,num=numero)
+            eventos = Evento.query().fetch()
+
+            # self.render("paginaadmin.html",eventos=events,items=items,num=numero)
+            self.render("paginaadmin.html",eventos=eventos,items=items)
+        else:
+            self.redirect("/administrador")
 
 
 class Tareas(Handler):
@@ -143,21 +151,6 @@ class Tareas(Handler):
              task = service.tasks().get(tasklist='@default', task=task_id).execute(http=decorator.http())
              task['title'] = 'modificado'
              service.tasks().update(tasklist='@default', task=task_id, body=task).execute(http=decorator.http())
-
-
-
-        # tasks=service.tasks().list(tasklist='@default').execute(http=decorator.http())
-        # items = tasks.get('items', [])
-        # notas = ','.join([task.get('title','') for task in items])
-        # lista = notas.split(',')
-        # numero = len(lista)
-        #
-        # http=decorator.http()
-        # request=service_calendar.events().list(calendarId='primary')
-        # response_calendar=request.execute(http=http)
-        # events =  response_calendar['items']
-        #
-        # self.render("paginaadmin.html",eventos=events,bandera=bandera,items=items,num=numero)
         self.redirect("/admin")
 
 
@@ -181,6 +174,7 @@ class NombreCompleto(ndb.Model):
     apellidos= ndb.StringProperty()
 
 class Usuario(ndb.Model):
+    privilegio = ndb.StringProperty(default="user")
     nomcompleto = ndb.StructuredProperty(NombreCompleto, repeated=True)
     domicilio = ndb.StructuredProperty(Domicilioo,repeated=True)
     profesion = ndb.StringProperty()
@@ -198,21 +192,15 @@ class Evento(ndb.Model):
     cupo = ndb.IntegerProperty()
 
 class Calendario(Handler):
-    @decorator.oauth_required
     def get(self):
-
-        http=decorator.http()
-        # request=service_calendar.events().list(calendarId='primary')
-        # response_calendar=request.execute(http=http)
-        # events =  response_calendar['items']
+        # http=decorator.http()
         calendar_id = self.request.get('calendar_id')
-        event=service_calendar.events().get(calendarId='primary', eventId=calendar_id).execute(http=http)
+        # event=service_calendar.events().get(calendarId='primary', eventId=calendar_id).execute(http=http)
+        eventos = Evento.query(Evento.eventid==calendar_id).get()
+        self.render("eventoupdate.html",evento=eventos)
 
-        self.render("eventoupdate.html",evento=event)
-
-    @decorator.oauth_required
     def post(self):
-        http=decorator.http()
+        # http=decorator.http()
         bandera = self.request.get("bandera")
 
         if ( bandera == "1"):
@@ -222,36 +210,26 @@ class Calendario(Handler):
             fechaini=self.request.get("fechaini")
             hora=self.request.get("horaini")
             datetimeS=fechaini+'T'+hora
-            fechafin=self.request.get("fechafin")
-            horaf=self.request.get("horafin")
             cupo=int(self.request.get("cupo"))
-            datetimeE=fechafin+'T'+horaf
+            # event = {
+            #     'summary': summary,
+            #     'location': location,
+            #     'description': description,
+            #     'start': {
+            #         'dateTime': datetimeS,
+            #         'timeZone': 'America/Mexico_City',
+            #     }
+            # }
+            # request = service_calendar.events().insert(calendarId='primary', body=event)
+            # response_calendar=request.execute(http=http)
 
-
-            event = {
-                'summary': summary,
-                'location': location,
-                'description': description,
-                'start': {
-                    'dateTime': datetimeS,
-                    'timeZone': 'America/Mexico_City',
-                },
-                'end': {
-                    'dateTime': datetimeE,
-                    'timeZone': 'America/Mexico_City',
-                },
-            }
             horavect = hora.split(":")
             h = horavect[0]
             hnum= len(horavect[0])
             if hnum==1:
                horaf= "0"+hora
                datetimeS=fechaini+'T'+horaf
-
-            request = service_calendar.events().insert(calendarId='primary', body=event)
-            response_calendar=request.execute(http=http)
-
-            eventos=Evento(eventid=response_calendar.get('id'),
+            eventos=Evento(eventid=str(uuid.uuid4()),
                             nomevento=summary,
                             descripcion=description,
                             datetime= datetimeS,
@@ -263,8 +241,10 @@ class Calendario(Handler):
             calendar_id = self.request.get('calendar_id',allow_multiple = True)
 
             for a in calendar_id:
-                request=service_calendar.events().delete(calendarId='primary', eventId=a)
-                response_calendar=request.execute(http=http)
+                #Eliminar con API Calendar
+                # request=service_calendar.events().delete(calendarId='primary', eventId=a)
+                # response_calendar=request.execute(http=http)
+                ################################
                 evento= Evento.query(Evento.eventid==a).get()
                 evento.key.delete()
 
@@ -278,36 +258,42 @@ class Calendario(Handler):
                     usuario.put()
 
         elif  (bandera == "2"):
+
              event_id = self.request.get('calendar_id')
              summary = self.request.get("summary")
              description=self.request.get("description")
              location= self.request.get("location")
              fechaini=self.request.get("fechaini")
-             fechafin=self.request.get("fechafin")
              horaini=self.request.get("horaini")
-             horafin=self.request.get("horafin")
              datetimeS=fechaini+'T'+horaini
-             datetimeE=fechafin+'T'+horafin
-             event = service_calendar.events().get(calendarId='primary', eventId=event_id ).execute(http=http)
+             cupo=int(self.request.get("cupo"))
 
-             event = {
-                 'summary': summary,
-                 'location': location,
-                 'description': description,
-                 'start': {
-                     'dateTime': datetimeS,
-                     'timeZone': 'America/Mexico_City',
-                 },
-                 'end': {
-                     'dateTime': datetimeE,
-                     'timeZone': 'America/Mexico_City',
-                 },
-             }
+             horavect = horaini.split(":")
+             h = horavect[0]
+             hnum= len(horavect[0])
+             if hnum==1:
+                horaf= "0"+horaini
+                datetimeS=fechaini+'T'+horaf
 
-             updated_event = service_calendar.events().update(calendarId='primary', eventId=event_id , body=event).execute(http=http)
+             consulta= Evento.query(Evento.eventid==event_id).get()
+             consulta.nomevento= summary
+             consulta.descripcion= description
+             consulta.datetime= datetimeS
+             consulta.lugar= location
+             consulta.cupo = cupo
+             consulta.put()
+            #  event = service_calendar.events().get(calendarId='primary', eventId=event_id ).execute(http=http)
+            #  event = {
+            #      'summary': summary,
+            #      'location': location,
+            #      'description': description,
+            #      'start': {
+            #          'dateTime': datetimeS,
+            #          'timeZone': 'America/Mexico_City',
+            #      }
+            #  }
+            #  updated_event = service_calendar.events().update(calendarId='primary', eventId=event_id , body=event).execute(http=http)
         self.redirect("/admin")
-
-
 
 class Messageadmin(Handler):
     def get(self):
